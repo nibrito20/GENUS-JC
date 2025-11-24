@@ -15,15 +15,41 @@
                 <i><img src="{% static 'assets/icons/x.png' %}" alt="Fechar-Menu"></i>
             </button>
         </div>
-        
-        <ul style="list-style: none; padding: 20px; font-size: 1.2em;">
-            <li style="margin-bottom: 15px;">
-                <a href="{% url 'jornal:favoritos' %}" style="text-decoration: none; color: #f333;">Noticias Favoritas</a>
-            </li>
-            <li style="margin-bottom: 15px;">
-                <a href="{% url 'aval:feedback' %}" style="text-decoration: none; color: #f333;">Feedback</a>
-            </li>
+
+        <div class="topo-menu">
+          <h2>Categorias</h2>
+          <button id="fechar-categorias" class="fechar-btn">✕</button>
+        </div>
+    
+        <ul class="lista-categorias">
+          <li><a href="#">Recentes</a></li>
+          <li><a href="#">Para você</a></li>
+          <li><a href="#">Pernambuco</a></li>
+          <li><a href="#">Mundo</a></li>
+          <li><a href="#">Política</a></li>
+          <li><a href="#">Economia</a></li>
+          <li><a href="#">Blog do Torcedor</a></li>
+          <li><a href="#">Social</a></li>
+          <li><a href="#">Saúde e Bem-estar</a></li>
+          <li><a href="#">Educação</a></li>
+          <li><a href="#">Cultura</a></li>
+          <li><a href="#">Receitas</a></li>
+          <li><a href="#">Opinião</a></li>
+          <li><a href="#">Mobilidade</a></li>
+          <li><a href="#">Segurança</a></li>
+          <li><a href="#">Recall de Marcas</a></li>
         </ul>
+    
+        <div class="footer-menu">
+          <p>📣 Anuncie no JC</p>
+          <span>Siga o JC</span>
+          <div class="redes">
+            <a href="#">📘</a>
+            <a href="#">📸</a>
+            <a href="#">🐦</a>
+            <a href="#">▶</a>
+          </div>
+        </div>
     </aside>
     <div class="overlay" id="overlay"> </div>
         <header>

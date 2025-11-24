@@ -1,5 +1,6 @@
 
 {% extends 'layout.html' %}
+{% load static %}
 {% block title %}
     {% if query %}
         Resultados para: {{ query }}
@@ -8,6 +9,37 @@
     {% endif %}
 {% endblock %}
 {% block content %}
+    <link rel="stylesheet" href="{% static 'styles/index.css' %}">
+    <h1 class="title">| Relevantes</h1>
+    <div class="container">
+      <button class="arrow-left control" aria-label="Previous image">◀</button>
+      <button class="arrow-right control" aria-label="Next Image">▶</button>
+      <div class="gallery-wrapper">
+        <div class="gallery">
+            <div class="item current-item">
+                <div class="overlay-img active">Titulo da noticia</div>
+                <img src="" alt="img-noticia">
+            </div>
+            <div class="item">
+                <div class="overlay-img">Titulo da noticia</div>
+                <img src="" alt="img-noticia">
+            </div>
+            <div class="item">
+                <div class="overlay-img">Titulo da noticia</div>
+                <img src="" alt="img-noticia">
+            </div>
+            <div class="item">
+                <div class="overlay-img">Titulo da noticia</div>
+                <img src="" alt="img-noticia">
+            </div>
+            <div class="item">
+                <div class="overlay-img">Titulo da noticia</div>
+                <img src="" alt="img-noticia">
+            </div>
+        </div>
+      </div>
+    </div>
+    
 
     <section class="noticias-principais">
         {% if query %}
@@ -55,5 +87,5 @@
         </div>
     </section>
     {% endif %}
-
+    <script src="{% static 'scripts/index.js' %}"></script>
 {% endblock %}
