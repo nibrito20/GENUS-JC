@@ -9,22 +9,6 @@
 {% endblock %}
 {% block content %}
 
-
-{% if user.is_authenticated and not query %}
-    {% if sequencia_dias > 0 %}
-        <div class="arvore-card" style="max-width: 800px; margin: 20px auto; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
-            <p>Você está com uma sequência de 
-                <strong>{{ sequencia_dias }}</strong> 
-                {% if sequencia_dias == 1 %}dia{% else %}dias{% endif %} consecutivos lendo notícias!
-            </p>
-        </div>
-    {% else %}
-        <div class="arvore-card" style="max-width: 800px; margin: 20px auto; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; text-align: center;">
-            <p>Leia pelo menos uma notícia completa hoje para crescer sua árvore.</p>
-        </div>
-    {% endif %}
-{% endif %}
-
     <section class="noticias-principais">
         {% if query %}
             <h1 class="titulo-principal">Resultados da pesquisa para: "{{ query }}"</h1>

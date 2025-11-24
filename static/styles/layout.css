@@ -1,9 +1,9 @@
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
 }
+
 
 main {
     padding-top: 10px; 
@@ -17,14 +17,15 @@ header {
 
 .nav-uol {
     background-color: #111;
-    padding: 10px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
+    height: 60px;
 }
-.nav-uol > img {
+.nav-uol > i > img {
     height: 40px;
+    display: flex;
+    align-items: center;
 }
 
 .nav-jc {
@@ -32,9 +33,8 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    max-width: 1200px; 
-    margin: 0 auto;
-    height: 40px;
+    height: 60px;
+    max-width: 100vw;
 }
 
 .nav-jc > a img {
@@ -76,7 +76,12 @@ header {
     height: 4px;
     background-color: #000;
     border-radius: 2px;
+}
 
+.gamificacao-icon {
+    max-width: 100%;
+    height: auto;
+    width: 24px;
 }
 
 .div-pesquisa {
@@ -278,7 +283,6 @@ footer {
     align-items: flex-start;
     flex-wrap: wrap;
     border-top: 1px solid #ddd;
-    margin-top: 40px;
 }
 
 footer div {

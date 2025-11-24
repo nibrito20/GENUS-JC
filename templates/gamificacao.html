@@ -1,37 +1,32 @@
 {% extends 'layout.html' %}
 {% load static %}
-
 {% block title %}Minha Árvore{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'styles/gamificacao.css' %}">
-{% endblock %}
-
 {% block content %}
-
+    <link rel="stylesheet" href="{% static 'styles/gamificacao.css' %}">
     <a href="#" onclick="window.history.back()" class="arrow-back-link">
-        <i><img src="{% static 'assets/icons/backarrow.png' %}" alt="Voltar"></i>
+        <i><img src="{% static 'assets/icons/arrowback-2.png' %}" alt="Voltar"></i>
     </a>
     
     <div class="gamificacao-info">
         <img src="{% static 'assets/imgs/Arvore-3.png' %}" alt="arvore">
         <h1>Árvore</h1>
         <section class="gamificacao-statistics">
+            <p>Dias consecutivos</p>
             <div>
-                <p>Dias consecutivos</p>
                 <h2>{{ sequencia }}</h2>
+                <hr>
             </div>
-            <hr>
+            <p>Dias para o Próximo visual</p>
             <div>
-                <p>Dias para o Próximo visual</p>
                 <h2>{{ dias_restantes }}</h2>
+                <hr>
             </div>
-            <hr>
+            <p>Status</p>
             <div>
-                <p>Status</p>
                 <h2>{% if sequencia > 0 %}Crescendo{% else %}Parada{% endif %}</h2>
+                <hr>
             </div>
         </section>
     </div>
-
 {% endblock %}
