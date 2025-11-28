@@ -1,22 +1,18 @@
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Perfil from "./pages/Perfil";
+import Registro from "./pages/Registro"
 
 function App() {
-  const [mensagem, setMensagem] = useState("");
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/hello/")
-      .then(res => res.json())
-      .then(data => setMensagem(data.mensagem))
-      .catch(err => console.error("Erro ao buscar API:", err));
-  }, []);
-
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Front React + Django API</h1>
-      <p>Mensagem da API:</p>
-      <h2>{mensagem}</h2>
-    </div>
-  );
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/perfil" element={<Perfil />} />
+      <Route path="/registrar" element={<Registro />}/>
+    </Routes>
+  )
 }
 
 export default App;

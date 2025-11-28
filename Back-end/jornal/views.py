@@ -9,6 +9,10 @@ from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
 from django.http import JsonResponse    #integracao com react
+from rest_framework.decorators import api_view  #integracao com react
+from rest_framework.response import Response    #integracao com react
+
+
 
 from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 from .forms import NoticiaForm
@@ -291,3 +295,9 @@ def admin_secreto_popular_generos(request):
 
 def hello_api(request):
     return JsonResponse({"mensagem": "Olá do Django!"}) #integracao com react
+
+@api_view(["GET"])
+def auth_status(request):
+    return Response({
+        "authenticated": request.user.is_authenticated
+    })
