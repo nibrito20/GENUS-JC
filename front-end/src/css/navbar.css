@@ -16,7 +16,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0px 12px;
-    border-bottom: 1px solid black;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .Jc-image{
