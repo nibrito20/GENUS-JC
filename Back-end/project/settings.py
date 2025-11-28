@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'jornal', 
     'foguinho',  
     'aval',
+    'rest_framework',   #INTEGRACAO COM REACT
+    'corsheaders',  #INTEGRACAO COM REACT
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',    #INTEGRACAO COM REACT
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,3 +141,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # OBSERVAÇÃO: Adicionadas URLs de redirecionamento de Login e Logout
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+
+#INTEGRACAO COM REACT
+CORS_ALLOW_ALL_ORIGINS = True

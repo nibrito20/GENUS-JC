@@ -6,7 +6,6 @@
 
 .container {
   position: relative;
-  padding: 15px;
   max-width: 640px;
   margin: 0 auto;
 }
@@ -52,8 +51,8 @@
 }
 
 .item {
-  width: 250px;
-  height: 250px;
+  width: 70vw;
+  height: 40vh;
   flex-shrink: 0;
   transition: all 600ms ease-in-out;
   opacity: 0.5;
@@ -79,6 +78,14 @@
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0.3s ease;
+    color: white;
+    display: flex;
+    align-items: flex-end;
+}
+
+.overlay-img > p {
+  padding: 0px 0px 20px 20px;
+  font-size: 24px;
 }
 
 .overlay-img.active {

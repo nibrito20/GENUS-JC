@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
+from django.http import JsonResponse    #integracao com react
 
 from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 from .forms import NoticiaForm
@@ -287,3 +288,6 @@ def admin_secreto_popular_generos(request):
         messages.success(request, 'Gêneros atualizados! "a" e "b" removidos e os 8 gêneros padrão foram criados.')
     
     return redirect('jornal:admin_secreto_lista')
+
+def hello_api(request):
+    return JsonResponse({"mensagem": "Olá do Django!"}) #integracao com react

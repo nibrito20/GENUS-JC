@@ -1,10 +1,13 @@
 from django.urls import path
 from . import views 
 from foguinho import views as foguinho_views # Importa as views do app foguinho
+from jornal.views import hello_api  #integracao com react
 
 app_name = 'jornal'
 
 urlpatterns = [
+
+    path("api/hello/", hello_api),  #integracao com react
 
     path('noticia/<slug:slug>/', views.pagina_noticias, name='pagina_noticias'),
     path('configuracoes/', views.configuracoes_conta, name='configuracoes_conta'), 
