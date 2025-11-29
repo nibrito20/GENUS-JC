@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
+import Cacto from "./pages/Cacto";
 
 function App() {
   const { user } = useContext(AuthContext); // pega o usuário logado do contexto
@@ -21,6 +22,10 @@ function App() {
       <Route
         path="/perfil"
         element={user ? <Perfil /> : <Navigate to="/login" replace />}
+      />
+      <Route
+        path="/cacto"
+        element={user ? <Cacto /> : <Navigate to="/login" replace />}
       />
 
       {/* Rota fallback para páginas não encontradas */}

@@ -87,17 +87,17 @@ const Navbar = () => {
             {/* Conteúdo baseado no login */}
             {user ? (
               <>
-                <Link to="">
-                  <img src={Cacto} alt="Cacto" />
+                <Link to="/cacto"className="navlink">
+                  <img src={Cacto} alt="Cacto"  className="cacto"/>
                 </Link>
                 <Link to="/perfil" className="navlink">
-                  <img src={noUserIcon} alt="Perfil" />
+                  <img src={noUserIcon} alt="Perfil" className="redondo"/>
                 </Link>
               </>
             ) : (
               <>
                 <Link to="/login" className="navlink">
-                  <img src={noUserIcon} alt="Login" />
+                  <img src={noUserIcon} alt="Login" className="redondo"/>
                 </Link>
               </>
             )}
@@ -125,3 +125,21 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const Navbar2 = () => {
+  return(
+    <header>
+        <nav className="Uol-nav">
+          <img src={LogoUOL} alt="Logo UOL" />
+        </nav>
+
+        <nav className="Jc-nav-2">
+          <Link to="/">
+            <img src={LogoJC} alt="Logo JC" className="Jc-image" />
+          </Link>
+        </nav>
+    </header>
+  )
+}
+
+export {Navbar2};

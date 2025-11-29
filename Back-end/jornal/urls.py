@@ -38,6 +38,5 @@ urlpatterns = [
     path('admin-secreto/apagar/<int:noticia_id>/', views.admin_secreto_apagar, name='admin_secreto_apagar'),
     path('admin-secreto/popular-generos/', views.admin_secreto_popular_generos, name='admin_secreto_popular_generos'),
 
-    
-    path('gamificacao/', foguinho_views.gamificacao, name='gamificacao')
+    path('api/gamificacao/', foguinho_views.gamificacao_api, name='gamificacao_api'),
 ]

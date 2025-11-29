@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import timedelta
@@ -36,7 +36,7 @@ def registrar_leitura_noticia(usuario):
     arvore.save()
 
 @login_required
-def gamificacao(request):
+def gamificacao_api(request):
     sequencia = atualizar_sequencia_login(request.user)
     
     meta_nivel = 7
@@ -45,8 +45,8 @@ def gamificacao(request):
     if dias_restantes == 7 and sequencia > 0:
         dias_restantes = 0
 
-    context = {
+    data = {
         'sequencia': sequencia,
         'dias_restantes': dias_restantes,
     }
-    return render(request, 'gamificacao.html', context)
+    return JsonResponse(data)

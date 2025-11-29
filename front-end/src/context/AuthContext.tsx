@@ -1,7 +1,7 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useState, useEffect, type ReactNode } from "react";
 
 interface AuthContextType {
-  user: string | null; // ou um objeto User se tiver mais info
+  user: string | null;          // usuário logado
   login: (username: string) => void;
   logout: () => void;
 }
@@ -17,10 +17,31 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<string | null>(null);
+  // Inicializa o user lendo do localStorage
+  const [user, setUser] = useState<string | null>(() => {
+    return localStorage.getItem("user");
+  });
 
-  const login = (username: string) => setUser(username);
-  const logout = () => setUser(null);
+  // Função de login
+  const login = (username: string) => {
+    setUser(username);
+    localStorage.setItem("user", username); // salva no navegador
+  };
+
+  // Função de logout
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("user");       // remove do navegador
+  };
+
+  // Optional: sincroniza se localStorage mudar em outra aba
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUser(localStorage.getItem("user"));
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>

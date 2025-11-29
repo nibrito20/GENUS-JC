@@ -1,0 +1,67 @@
+.container-cacto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 88vh;
+    background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
+}
+
+.arrowback {
+    height: 24px;
+    width: 16px;
+    margin-right: 85vw;
+    margin-top: 30px;
+}
+
+.cacto-representation {
+    width: 320px;
+    height: auto;
+}
+
+.cacto-statistics {
+    width: 90vw;
+    height: 31vh;
+    background: linear-gradient(to bottom, #ffffff, #F5FFE8);
+    padding: 32px 16px;
+    border-radius: 24px;
+}
+
+.hr {
+    height: 1px;
+    width: 96%;
+    background-color: #949494;
+}
+
+.margin-adjust {
+    margin: 8px;
+}
+
+.h1-margin {
+    margin: 16px
+}
+
+@media screen and (min-width: 700px){
+    .cacto-representation {
+    width: 300px;
+    height: auto;
+}
+    .container-cacto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
+}
+    .cacto-statistics {
+    width: 40vw;
+    height: 40vh;
+    background: linear-gradient(to bottom, #ffffff, #F5FFE8);
+    padding: 32px 16px;
+    border-radius: 24px;
+}
+    .pc-adjust {
+        margin-top: 44px;
+    }
+}
