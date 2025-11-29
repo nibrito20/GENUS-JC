@@ -6,34 +6,12 @@ import "../css/Cacto.css";
 import { Navbar2 } from "../components/Navbar";
 
 import BackArrow from "../assets/icons/backArrow.png";
-import Cacto1 from "../assets/imgs/cacto1.png";
-import Cacto2 from "../assets/imgs/cacto2.png";
-import Cacto3 from "../assets/imgs/cacto3.png";
-import Cacto4 from "../assets/imgs/cacto4.png";
-import Cacto5 from "../assets/imgs/cacto5.png";
-import Cacto6 from "../assets/imgs/cacto6.png";
 
 export default function Cacto() {
-  const { sequencia, diasRestantes, loading } = useGamificacao();
+  const { sequencia, diasRestantes, loading, cactoImg} = useGamificacao();
   const navigate = useNavigate();
 
   const voltar = () => navigate(-1);
-  let cactoImg;
-
-  if (sequencia <= 7) {
-    cactoImg = Cacto1;
-  } else if (sequencia <= 14) {
-    cactoImg = Cacto2;
-  } else if (sequencia <= 21) {
-    cactoImg = Cacto3;
-  } else if (sequencia <= 28) {
-    cactoImg = Cacto4;
-  } else if (sequencia <= 35) {
-    cactoImg = Cacto5;
-  } else {
-    cactoImg = Cacto6;
-  }
-
   return (
     <>
       <Navbar2 />
