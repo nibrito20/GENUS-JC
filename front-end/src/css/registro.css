@@ -1,7 +1,7 @@
 .register-card {
     border-radius: 40px;
     width: 350px;
-    height: 72vh;
+    height: 85vh;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     display: flex;
     flex-direction: column;

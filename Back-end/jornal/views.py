@@ -8,14 +8,56 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
-from django.http import JsonResponse    #integracao com react
-from rest_framework.decorators import api_view  #integracao com react
-from rest_framework.response import Response    #integracao com react
 
+# --- DRF (para o React) ---
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
 
-
+# Suas outras views
 from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 from .forms import NoticiaForm
+
+
+class SemCSRF(SessionAuthentication):
+    def enforce_csrf(self, request):
+        return  # desabilita CSRF apenas nesta rota
+
+@api_view(["POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_login(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+
+    user = authenticate(username=email, password=password)
+
+    if user is None:
+        return Response({"error": "Email ou senha incorretos."},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    login(request, user)
+    return Response({"message": "Login realizado com sucesso!"})
+
+@api_view(["POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_register(request):
+    email = request.data.get("email")
+    password = request.data.get("password")
+    password2 = request.data.get("password2")
+
+    if password != password2:
+        return Response({"error": "As senhas não coincidem."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=email).exists():
+        return Response({"error": "Este email já está cadastrado."}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(username=email, email=email, password=password)
+    user.save()
+
+    return Response({"message": "Usuário criado com sucesso!"}, status=status.HTTP_201_CREATED)
 
 def lista_de_noticias(request):
     noticias = Noticia.objects.all().order_by('-data')
@@ -298,6 +340,4 @@ def hello_api(request):
 
 @api_view(["GET"])
 def auth_status(request):
-    return Response({
-        "authenticated": request.user.is_authenticated
-    })
+    return Response({"authenticated": request.user.is_authenticated})
