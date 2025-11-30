@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useGamificacao } from "../hooks/useGamificacao";
 
-import "../css/Cacto.css";
+import "../css/cacto.css";
 
 import { Navbar2 } from "../components/Navbar";
 

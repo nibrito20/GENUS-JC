@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth import logout
 
 # --- DRF (para o React) ---
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -20,9 +21,17 @@ from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 from .forms import NoticiaForm
 
 
+
 class SemCSRF(SessionAuthentication):
     def enforce_csrf(self, request):
         return  # desabilita CSRF apenas nesta rota
+
+@api_view(["POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_logout(request):
+    logout(request)
+    return Response({"message": "Logout realizado com sucesso!"})
 
 @api_view(["POST"])
 @authentication_classes([SemCSRF])

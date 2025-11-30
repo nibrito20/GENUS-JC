@@ -5,7 +5,7 @@ import Container from "../components/Container";
 import "../css/login.css";
 
 import LogoJC from "../assets/imgs/Logo JC.png";
-import BackArrow from "../assets/icons/backArrow.png";
+import backArrow from "../assets/icons/backArrow.png";
 
 import { AuthContext } from "../context/AuthContext";
 
@@ -56,7 +56,7 @@ export default function Login() {
     <Container>
       <div className="login-card">
         <div className="header">
-          <img src={BackArrow} alt="voltar" onClick={voltar} />
+          <img src={backArrow} alt="Voltar" onClick={voltar} />
           <Link to="/"><img src={LogoJC} alt="Logo JC" /></Link>
         </div>
 

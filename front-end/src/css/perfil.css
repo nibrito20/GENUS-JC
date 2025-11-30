@@ -1,0 +1,17 @@
+.back-arrow {
+    margin: 32px 0px 0px 32px;
+}
+
+.user-name-photo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 24px;
+}
+
+.user-name-photo > img {
+    border-radius: 100%;
+    max-width: 128px;
+}

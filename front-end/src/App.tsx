@@ -9,16 +9,19 @@ import Registro from "./pages/Registro";
 import Cacto from "./pages/Cacto";
 
 function App() {
-  const { user } = useContext(AuthContext); // pega o usuário logado do contexto
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return <div>Carregando...</div>;
+
 
   return (
     <Routes>
-      {/* Rota pública */}
+      {/* Rotas públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
 
-      {/* Rota privada */}
+      {/* Rotas privadas */}
       <Route
         path="/perfil"
         element={user ? <Perfil /> : <Navigate to="/login" replace />}
@@ -28,7 +31,7 @@ function App() {
         element={user ? <Cacto /> : <Navigate to="/login" replace />}
       />
 
-      {/* Rota fallback para páginas não encontradas */}
+      {/* 404 */}
       <Route path="*" element={<h1>Página não encontrada</h1>} />
     </Routes>
   );

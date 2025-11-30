@@ -1,0 +1,49 @@
+.top-container-option {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.container-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    padding: 16px;
+    border: 1px solid #949494;
+    border-radius: 4px;
+}
+
+.container-option > div {
+    display: flex;
+    gap: 16px;
+    text-wrap: nowrap;
+}
+
+.link-names{
+    text-decoration: none;
+    color: #000000;
+}
+
+.option-icon-adjust {
+    width: 18px;
+    max-height: auto;
+}
+
+.inverter {
+    transform: rotate(180deg);
+}
+
+/* Faz botão se comportar como o Link */
+.option-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    cursor: pointer;
+
+    /* IMPORTANTE: o Link já é display:block por causa do wrapper.
+       O button precisa igualar. */
+    display: block;
+}

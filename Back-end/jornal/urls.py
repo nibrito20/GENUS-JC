@@ -9,7 +9,7 @@ app_name = 'jornal'
 
 urlpatterns = [
     path("api/login/", views.api_login, name="api_login"),  #react
-
+    path("api/logout/", views.api_logout, name="api_logout"),
     path("api/register/", views.api_register, name="api_register"), #react
 
     path("auth-status/", auth_status), #integracao com react

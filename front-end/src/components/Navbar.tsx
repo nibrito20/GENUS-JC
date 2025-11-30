@@ -24,7 +24,7 @@ const Navbar = () => {
   const toggleCategorias = () => setCategoriasOpen(!categoriasOpen);
 
   return (
-    <>
+    <div>
       {/* Menu lateral */}
       <div
         className={`sidebar-overlay ${menuOpen ? "open" : ""}`}
@@ -120,7 +120,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -128,7 +128,7 @@ export default Navbar;
 
 const Navbar2 = () => {
   return(
-    <header>
+    <header className="all-nav">
         <nav className="Uol-nav">
           <img src={LogoUOL} alt="Logo UOL" />
         </nav>
