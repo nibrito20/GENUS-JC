@@ -8,3 +8,34 @@
     color: white;
     cursor: pointer;
 }
+
+.ad-2 {
+    width: 31%;
+    height: 266px;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+}
+
+.ad-2 > h1 {
+    transform: rotate(-90deg);
+}
+
+@media screen and (min-width: 700px) {
+    .ad-2 > h1 {
+        transform: rotate(0deg);
+    }
+    .ad-2 {
+        width: 40%;
+        height: 512px;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        cursor: pointer;
+    }
+}

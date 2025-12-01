@@ -24,3 +24,13 @@ const Container2 = ({ children }: ContainerProps) => {
 }
 
 export {Container2}
+
+const Container3 = ({ children }: ContainerProps) => {
+    return (
+        <div className="container-3">
+            {children}
+        </div>
+    )
+}
+
+export { Container3 }

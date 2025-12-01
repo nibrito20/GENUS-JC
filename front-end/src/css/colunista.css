@@ -1,0 +1,9 @@
+.colunistas-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.colunistas-container > img {
+    max-width: 30%;
+}

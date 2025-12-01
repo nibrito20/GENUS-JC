@@ -58,3 +58,24 @@ const DividerTopic = ({topicTitle}: topicProps) => {
 
 export { DividerTopic }
 
+const DividerTopicGrey = ({topicTitle}: topicProps) => {
+  return (
+    <div className="diviver-topic-container-grey">
+      <div></div>
+      <h1>{topicTitle}</h1>
+      <div></div>
+    </div>
+  )
+}
+
+export { DividerTopicGrey }
+
+const UnderlinedTopic = ({topicTitle} : topicProps) => {
+  return (
+    <div className="underlined-topic">
+      <h1>{topicTitle}</h1>
+    </div>
+  )
+}
+
+export { UnderlinedTopic }

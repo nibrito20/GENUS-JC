@@ -1,0 +1,28 @@
+.primary-footer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0px;
+    margin: 32px 0px;
+}
+
+.secundary-footer {
+    background-color: #DEDBDB;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 10px;
+    gap: 14px;
+}
+
+.secundary-footer > img {
+    height: 30px;
+}
+
+.secundary-footer > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}

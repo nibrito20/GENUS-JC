@@ -44,24 +44,25 @@
 
 @media screen and (min-width: 700px){
     .cacto-representation {
-    width: 300px;
-    height: auto;
-}
+        width: 300px;
+        height: auto;
+    }
     .container-cacto {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
-}
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
+    }
     .cacto-statistics {
-    width: 40vw;
-    height: 40vh;
-    background: linear-gradient(to bottom, #ffffff, #F5FFE8);
-    padding: 32px 16px;
-    border-radius: 24px;
-}
+        width: 40vw;
+        height: 40vh;
+        background: linear-gradient(to bottom, #ffffff, #F5FFE8);
+        padding: 32px 16px;
+        border-radius: 24px;
+        margin-bottom: 64px;
+    }
     .pc-adjust {
         margin-top: 44px;
     }

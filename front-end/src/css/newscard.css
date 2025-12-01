@@ -11,3 +11,15 @@
 .news-card-container:hover {
     color: #FF0000;
 }
+
+@media screen and (min-width: 700px) {
+    .news-card-container {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        width: 16%;
+        color: #4A4A4A;
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
+}

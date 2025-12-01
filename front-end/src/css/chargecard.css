@@ -1,0 +1,26 @@
+.charge-card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 62%;
+    height: 266px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+@media screen and (min-width: 700px) {
+    .charge-card-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        width: 62%;
+        height: auto;
+        cursor: pointer;
+        overflow: hidden;
+    }
+    .charge-card-container > img {
+        width: 50%;
+    }
+}
