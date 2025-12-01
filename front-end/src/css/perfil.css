@@ -1,5 +1,6 @@
 .back-arrow {
     margin: 32px 0px 0px 32px;
+    cursor: pointer;
 }
 
 .user-name-photo {

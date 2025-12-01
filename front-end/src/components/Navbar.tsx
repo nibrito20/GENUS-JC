@@ -11,6 +11,12 @@ import noUserIcon from "../assets/icons/noUser.png";
 import Cacto from "../assets/icons/Cacto.png";
 import ArrowUp from "../assets/icons/arrow_up.png";
 
+import facebookIcon from "../assets/icons/facebook-icon.png"
+import instagramIcon from "../assets/icons/instagram-icon.png"
+import xIcon from "../assets/icons/x-icon.png"
+import linkedinIcon from "../assets/icons/linkedin-icon.png"
+import youtubeIcon from "../assets/icons/youtube-icon.png"
+
 const Navbar = () => {
   const { user } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,35 +40,87 @@ const Navbar = () => {
           className={`sidebar ${menuOpen ? "open" : ""}`}
           onClick={(e) => e.stopPropagation()}
         >
-          <button className="close-btn" onClick={closeMenu}>X</button>
-          <ul className="main-menu-list">
-            <li>
-              <div className="categorias" onClick={toggleCategorias}>
-                <h1>Categorias</h1>
-                <img src={ArrowUp} alt="Arrow" className={categoriasOpen ? "rotated" : ""}/>
-              </div>
-              <ul className={`secundary-menu-list ${categoriasOpen ? "open" : ""}`}>
-                <li><Link to="/">Recentes</Link></li>
-                <li><Link to="/">Para você</Link></li>
-                <li><Link to="/">Pernambuco</Link></li>
-                <li><Link to="/">Mundo</Link></li>
-                <li><Link to="/">Política</Link></li>
-                <li><Link to="/">Economia</Link></li>
-                <li><Link to="/">Blog do torcedor</Link></li>
-                <li><Link to="/">Social</Link></li>
-                <li><Link to="/">Saúde e Bem-Estar</Link></li>
-                <li><Link to="/">Educação</Link></li>
-                <li><Link to="/">Cultura</Link></li>
-                <li><Link to="/">Opinião</Link></li>
-                <li><Link to="/">Mobilidade</Link></li>
-                <li><Link to="/">Segurança</Link></li>
-                <li><Link to="/">Recall de Marcas</Link></li>
-              </ul>
-            </li>
-            <li>
-              <h1>Anuncie no JC</h1>
-            </li>
-          </ul>
+          <div>
+            <button className="close-btn" onClick={closeMenu}>
+              X
+            </button>
+            <ul className="main-menu-list">
+              <li>
+                <div className="categorias" onClick={toggleCategorias}>
+                  <h1>Categorias</h1>
+                  <img
+                    src={ArrowUp}
+                    alt="Arrow"
+                    className={categoriasOpen ? "rotated" : ""}
+                  />
+                </div>
+                <ul
+                  className={`secundary-menu-list ${
+                    categoriasOpen ? "open" : ""
+                  }`}
+                >
+                  <li>
+                    <Link to="/">Recentes</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Para você</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Pernambuco</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Mundo</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Política</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Economia</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Blog do torcedor</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Social</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Saúde e Bem-Estar</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Educação</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Cultura</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Opinião</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Mobilidade</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Segurança</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Recall de Marcas</Link>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h1>Anuncie no JC</h1>
+              </li>
+            </ul>
+          </div>
+          <div className="aside-footer">
+            <h1>Siga o JC</h1>
+            <div className="net-icons">
+                  <img src={facebookIcon} alt="Facebook" />
+                  <img src={instagramIcon} alt="Instagram" />
+                  <img src={xIcon} alt="X" />
+                  <img src={linkedinIcon} alt="Linkedin" />
+                  <img src={youtubeIcon} alt="Youtube" />
+            </div>
+          </div>
         </aside>
       </div>
 
@@ -87,17 +145,17 @@ const Navbar = () => {
             {/* Conteúdo baseado no login */}
             {user ? (
               <>
-                <Link to="/cacto"className="navlink">
-                  <img src={Cacto} alt="Cacto"  className="cacto"/>
+                <Link to="/cacto" className="navlink">
+                  <img src={Cacto} alt="Cacto" className="cacto" />
                 </Link>
                 <Link to="/perfil" className="navlink">
-                  <img src={noUserIcon} alt="Perfil" className="redondo"/>
+                  <img src={noUserIcon} alt="Perfil" className="redondo" />
                 </Link>
               </>
             ) : (
               <>
                 <Link to="/login" className="navlink">
-                  <img src={noUserIcon} alt="Login" className="redondo"/>
+                  <img src={noUserIcon} alt="Login" className="redondo" />
                 </Link>
               </>
             )}
@@ -127,19 +185,19 @@ const Navbar = () => {
 export default Navbar;
 
 const Navbar2 = () => {
-  return(
+  return (
     <header className="all-nav">
-        <nav className="Uol-nav">
-          <img src={LogoUOL} alt="Logo UOL" />
-        </nav>
+      <nav className="Uol-nav">
+        <img src={LogoUOL} alt="Logo UOL" />
+      </nav>
 
-        <nav className="Jc-nav-2">
-          <Link to="/">
-            <img src={LogoJC} alt="Logo JC" className="Jc-image" />
-          </Link>
-        </nav>
+      <nav className="Jc-nav-2">
+        <Link to="/">
+          <img src={LogoJC} alt="Logo JC" className="Jc-image" />
+        </Link>
+      </nav>
     </header>
-  )
-}
+  );
+};
 
-export {Navbar2};
+export { Navbar2 };

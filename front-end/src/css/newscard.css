@@ -1,0 +1,13 @@
+.news-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 40vw;
+    color: #4A4A4A;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.news-card-container:hover {
+    color: #FF0000;
+}

@@ -12,6 +12,8 @@
     padding: 16px;
     border: 1px solid #949494;
     border-radius: 4px;
+    cursor: pointer;
+    pointer-events: all;
 }
 
 .container-option > div {
@@ -23,6 +25,8 @@
 .link-names{
     text-decoration: none;
     color: #000000;
+    cursor: default;
+    pointer-events: none
 }
 
 .option-icon-adjust {
@@ -41,7 +45,6 @@
     padding: 0;
     margin: 0;
     width: 100%;
-    cursor: pointer;
 
     /* IMPORTANTE: o Link já é display:block por causa do wrapper.
        O button precisa igualar. */

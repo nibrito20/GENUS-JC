@@ -107,6 +107,10 @@
     transition: transform .3s ease;
 
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #AC0000;
 }
 
 .sidebar.open {
@@ -139,6 +143,20 @@
 
 .sidebar ul li a:hover {
     color: #000;
+}
+
+.aside-footer {
+    bottom: -20px;
+    padding: 20px 0px;
+    position: sticky;
+    background-color: #ffffff;
+}
+
+.net-icons {
+    display: flex;
+    gap: 20px;
+    width: 32px;
+    height: 32px;
 }
 
 /* Searchbar */

@@ -1,0 +1,12 @@
+.section-gap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.news-container {
+    display: flex;
+    gap: 7vw;
+    flex-wrap: wrap;
+    justify-content: center;
+}

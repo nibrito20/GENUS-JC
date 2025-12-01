@@ -14,3 +14,13 @@ const Container = ({ children }: ContainerProps) => {
 }
 
 export default Container
+
+const Container2 = ({ children }: ContainerProps) => {
+    return (
+        <div className="container-2">
+            {children}
+        </div>
+    )
+}
+
+export {Container2}
