@@ -228,6 +228,20 @@
     opacity: 48%;
 }
 
+/* new: make search submit an icon-only button */
+.search-submit {
+    background: none;
+    border: none;
+    padding: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.search-submit img {
+    width: 22px;
+    height: 22px;
+}
+
 /* Menu */
 
 .main-menu-list {

@@ -8,14 +8,23 @@ from .views import auth_status  #integracao com react
 app_name = 'jornal'
 
 urlpatterns = [
-    path("api/login/", views.api_login, name="api_login"),  #react
+    # --- Auth Views ---
+    path("api/login/", views.api_login, name="api_login"),
     path("api/logout/", views.api_logout, name="api_logout"),
-    path("api/register/", views.api_register, name="api_register"), #react
+    path("api/register/", views.api_register, name="api_register"),
+    path("auth-status/", auth_status, name="auth_status"),
+    path("api/user/", views.api_user, name="api_user"),
 
-    path("auth-status/", auth_status), #integracao com react
+    # --- API REST Views (React) ---
+    path("api/noticias/", views.api_noticias, name="api_noticias"),
+    path("api/noticias/<slug:slug>/", views.api_noticia_detalhe, name="api_noticia_detalhe"),
+    path("api/favoritos/", views.api_favoritos, name="api_favoritos"),
+    path("api/favoritos/<int:noticia_id>/remover/", views.api_remover_favorito, name="api_remover_favorito"),
+    path("api/generos/", views.api_generos, name="api_generos"),
+    path("api/profile/generos/", views.api_update_profile_generos, name="api_update_profile_generos"),
 
-    path("api/hello/", hello_api),  #integracao com react
-
+    # --- Páginas HTML (Legacy) ---
+    path("api/hello/", hello_api),
     path('noticia/<slug:slug>/', views.pagina_noticias, name='pagina_noticias'),
     path('configuracoes/', views.configuracoes_conta, name='configuracoes_conta'), 
     path('register/', views.register, name='register'),
@@ -31,7 +40,6 @@ urlpatterns = [
     
     path('', views.index, name='index'),
     
-   
     path('admin-secreto/', views.admin_secreto_lista, name='admin_secreto_lista'),
     path('admin-secreto/criar/', views.admin_secreto_criar, name='admin_secreto_criar'),
     path('admin-secreto/editar/<int:noticia_id>/', views.admin_secreto_editar, name='admin_secreto_editar'),

@@ -1,0 +1,67 @@
+.noticia-detalhe {
+  padding: 2rem 0;
+}
+
+.noticia-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.noticia-header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  flex: 1;
+}
+
+.noticia-fav-btn {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+}
+
+.noticia-meta {
+  display: flex;
+  gap: 1rem;
+  color: #666;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.noticia-imagem {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+.noticia-resumo {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 1rem 0;
+}
+
+.noticia-conteudo {
+  line-height: 1.8;
+  color: #333;
+  margin: 2rem 0;
+}
+
+.noticia-generos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.genero-badge {
+  background-color: #f0f0f0;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #333;
+}

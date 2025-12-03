@@ -1,0 +1,40 @@
+.favorito-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.favorito-btn:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.favorito-btn.favorito-active {
+  background-color: #ff6b6b;
+  color: white;
+  border-color: #ff6b6b;
+}
+
+.news-card-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.news-card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

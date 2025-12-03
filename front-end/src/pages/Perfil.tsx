@@ -54,13 +54,13 @@ export default function Perfil() {
         <h1>Nome do usuário</h1>
       </div>
 
-      <PerfilOptions title="Informações da conta" icon={userInfo} link="/" />
-      <PerfilOptions title="Cacto" icon={Cacto} link="/cacto" />
-      <PerfilOptions title="Personalização de conteúdo" icon={engrenagem} link="/" />
-      <PerfilOptions title="Acessibilidade" icon={acessibilidade} link="/" />
-      <PerfilOptions title="Favoritos" icon={star} link="/" />
-      <PerfilOptions title="Redefinir senha" icon={padlock} link="/" />
-      <PerfilOptions title="Suporte" icon={suport} link="/" />
+          <PerfilOptions title="Informações da conta" icon={userInfo} link="/perfil/info" />
+          <PerfilOptions title="Cacto" icon={Cacto} link="/cacto" />
+          <PerfilOptions title="Personalização de conteúdo" icon={engrenagem} link="/perfil/personalizacao" />
+          <PerfilOptions title="Acessibilidade" icon={acessibilidade} link="/perfil/acessibilidade" />
+          <PerfilOptions title="Favoritos" icon={star} link="/favoritos" />
+          <PerfilOptions title="Redefinir senha" icon={padlock} link="/perfil/senha" />
+          <PerfilOptions title="Suporte" icon={suport} link="/perfil/suporte" />
 
       <PerfilOptions
         title="Sair da conta"

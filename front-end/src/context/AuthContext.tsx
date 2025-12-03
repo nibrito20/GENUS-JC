@@ -1,17 +1,20 @@
 import { createContext, useState, useEffect, type ReactNode } from "react";
+import { getUser, logout as apiLogout } from "../services/api";
 
 interface AuthContextType {
   user: any | null;
   loading: boolean;
-  login: (username: string) => void;
-  logout: () => void;
+  login: (userData: any) => void;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   login: () => {},
-  logout: () => {},
+  logout: async () => {},
+  refreshUser: async () => {},
 });
 
 interface Props {
@@ -24,46 +27,45 @@ export const AuthProvider = ({ children }: Props) => {
 
   // --- CARREGA USUÁRIO DO BACKEND AO INICIAR ---
   useEffect(() => {
-    async function loadUser() {
-      try {
-        const res = await fetch("http://localhost:8000/api/user/", {
-          credentials: "include",
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        } else {
-          setUser(null);
-        }
-      } catch (e) {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     loadUser();
   }, []);
 
-  const login = (username: string) => {
-    setUser({ username }); // opcional, depende do seu backend
+  async function loadUser() {
+    try {
+      const data = await getUser();
+      if (data.authenticated) {
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (e) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const login = (userData: any) => {
+    setUser(userData);
   };
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:8000/api/logout/", {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch {}
-
+      await apiLogout();
+    } catch (err) {
+      console.error("Erro ao fazer logout:", err);
+    }
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    await loadUser();
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
+

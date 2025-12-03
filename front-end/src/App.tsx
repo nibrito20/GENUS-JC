@@ -7,12 +7,16 @@ import Login from "./pages/Login";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
 import Cacto from "./pages/Cacto";
+import Noticia from "./pages/Noticia";
+import Favoritos from "./pages/Favoritos";
+import Noticias from "./pages/Noticias";
+import Personalizacao from "./pages/Personalizacao";
+import PerfilInfo from "./pages/PerfilInfo";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
 
   if (loading) return <div>Carregando...</div>;
-
 
   return (
     <Routes>
@@ -20,6 +24,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registro" element={<Registro />} />
+      <Route path="/noticia/:slug" element={<Noticia />} />
+      <Route path="/noticias" element={<Noticias />} />
 
       {/* Rotas privadas */}
       <Route
@@ -27,9 +33,22 @@ function App() {
         element={user ? <Perfil /> : <Navigate to="/login" replace />}
       />
       <Route
+        path="/perfil/personalizacao"
+        element={user ? <Personalizacao /> : <Navigate to="/login" replace />}
+      />
+      <Route
+        path="/perfil/info"
+        element={user ? <PerfilInfo /> : <Navigate to="/login" replace />}
+      />
+      <Route
         path="/cacto"
         element={user ? <Cacto /> : <Navigate to="/login" replace />}
       />
+      <Route
+        path="/favoritos"
+        element={user ? <Favoritos /> : <Navigate to="/login" replace />}
+      />
+      
 
       {/* 404 */}
       <Route path="*" element={<h1>Página não encontrada</h1>} />

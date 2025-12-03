@@ -11,12 +11,8 @@ import AdSimulator, { AdSimulator2 } from "../components/AdSimulator";
 import ChargeCard from "../components/ChargeCard";
 import Colunista from "../components/Colunista";
 import Footer from "../components/Footer";
-
-import CarouselEx1 from "../assets/imgs/carousel-ex1.png";
-import CarouselEx2 from "../assets/imgs/carousel-ex2.png";
-import CarouselEx3 from "../assets/imgs/carousel-ex3.png";
-import CarouselEx4 from "../assets/imgs/carousel-ex4.png";
-import CarouselEx5 from "../assets/imgs/carousel-ex5.png";
+import { useEffect, useState } from "react";
+import { getNoticias } from "../services/api";
 
 import Colunista1 from "../assets/imgs/Colunista1.png";
 import Colunista2 from "../assets/imgs/Colunista2.png";
@@ -28,13 +24,59 @@ import Colunista6 from "../assets/imgs/Colunista6.png";
 import DayleCharge from "../assets/imgs/dayle-charge.png";
 
 export default function Home() {
-  const slides = [
-    { image: CarouselEx1, title: "Greve no metrô chega ao 3º dia" },
-    { image: CarouselEx2, title: "Estações continuam fechadas" },
-    { image: CarouselEx3, title: "Ônibus ficam lotados" },
-    { image: CarouselEx4, title: "Sindicato pede negociação" },
-    { image: CarouselEx5, title: "Cidades buscam alternativas" },
-  ];
+  const [slides, setSlides] = useState<any[]>([]);
+  const [noticias, setNoticias] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        setLoading(true);
+
+        // Carregar notícias para o carousel (relevantes)
+        const dataRelevantes = await getNoticias(
+          undefined,
+          undefined,
+          "-data",
+          5,
+          0
+        );
+        if (dataRelevantes.noticias) {
+          const slidesFormatados = dataRelevantes.noticias.map(
+            (noticia: any) => ({
+              image: noticia.imagem_url || "",
+              title: noticia.titulo,
+              slug: noticia.slug,
+            })
+          );
+          setSlides(slidesFormatados);
+        }
+
+        // Carregar notícias para exibição
+        const dataRecentes = await getNoticias(
+          undefined,
+          undefined,
+          "-data",
+          20,
+          0
+        );
+        if (dataRecentes.noticias) {
+          setNoticias(dataRecentes.noticias);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregarDados();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Carregando notícias...</div>;
+  }
+
   return (
     <>
       <Navbar />
@@ -42,94 +84,66 @@ export default function Home() {
         <Container3>
           <section className="section-gap">
             <Topic topicTitle="Relevantes" />
-            <Carousel slides={slides} />
+            {slides.length > 0 && <Carousel slides={slides} />}
           </section>
           <section className="section-gap"></section>
           <section className="section-gap">
             <Topic topicTitle="Recentes" />
             <div className="news-container">
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
+              {noticias.slice(0, 4).map((noticia) => (
+                <NewsCard
+                  key={noticia.id}
+                  noticia_id={noticia.id}
+                  newsImg={noticia.imagem_url || ""}
+                  newsTitle={noticia.titulo}
+                  topicLink={`/noticia/${noticia.slug}`}
+                  newsTopic={{
+                    topicTitle: noticia.generos[0]?.nome || "Geral",
+                  }}
+                />
+              ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/" />
+            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=recentes" />
           </section>
           <section className="section-gap">
             <AdSimulator />
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Para você" />
-            <Carousel slides={slides} />
             <div className="news-container">
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Política" }}
-              />
+              {noticias.slice(4, 8).map((noticia) => (
+                <NewsCard
+                  key={noticia.id}
+                  noticia_id={noticia.id}
+                  newsImg={noticia.imagem_url || ""}
+                  newsTitle={noticia.titulo}
+                  topicLink={`/noticia/${noticia.slug}`}
+                  newsTopic={{
+                    topicTitle: noticia.generos[0]?.nome || "Geral",
+                  }}
+                />
+              ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/" />
+            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=para-voce" />
           </section>
           <section className="section-gap">
             <AdSimulator />
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Blog do torcedor" />
-            <Carousel slides={slides} />
             <div className="news-container">
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Blog do torcedor" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Blog do torcedor" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Blog do torcedor" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Blog do torcedor" }}
-              />
+              {noticias.slice(8, 12).map((noticia) => (
+                <NewsCard
+                  key={noticia.id}
+                  noticia_id={noticia.id}
+                  newsImg={noticia.imagem_url || ""}
+                  newsTitle={noticia.titulo}
+                  topicLink={`/noticia/${noticia.slug}`}
+                  newsTopic={{ topicTitle: "Blog do torcedor" }}
+                />
+              ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/" />
+            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?genero=Blog%20do%20torcedor" />
           </section>
           <section className="section-gap">
             <div className="charge-container">
@@ -142,57 +156,35 @@ export default function Home() {
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Vídeos da TV jornal" />
-            <Carousel slides={slides} />
             <div className="news-container">
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
+              {noticias.slice(12, 16).map((noticia) => (
+                <NewsCard
+                  key={noticia.id}
+                  noticia_id={noticia.id}
+                  newsImg={noticia.imagem_url || ""}
+                  newsTitle={noticia.titulo}
+                  topicLink={`/noticia/${noticia.slug}`}
+                  newsTopic={{ topicTitle: "Segurança" }}
+                />
+              ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/" />
+            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=videos" />
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Entretenimento" />
-            <Carousel slides={slides} />
             <div className="news-container">
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
-              <NewsCard
-                newsImg={CarouselEx2}
-                newsTitle="sei la o que sei la o que"
-                newsTopic={{ topicTitle: "Segurança" }}
-              />
+              {noticias.slice(16, 20).map((noticia) => (
+                <NewsCard
+                  key={noticia.id}
+                  noticia_id={noticia.id}
+                  newsImg={noticia.imagem_url || ""}
+                  newsTitle={noticia.titulo}
+                  topicLink={`/noticia/${noticia.slug}`}
+                  newsTopic={{ topicTitle: "Segurança" }}
+                />
+              ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/" />
+            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=entretenimento" />
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Colunistas" />

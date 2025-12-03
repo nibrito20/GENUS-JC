@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Noticia, Favoritos, Genero, Profile
+from .models import Noticia, Favoritos, Genero, Profile, Comentarios
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -15,10 +15,12 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.exceptions import NotFound
 
 # Suas outras views
 from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 from .forms import NoticiaForm
+from .serializers import NoticiaSerializer, FavoritosSerializer, UserSerializer, GeneroSerializer
 
 
 
@@ -350,3 +352,169 @@ def hello_api(request):
 @api_view(["GET"])
 def auth_status(request):
     return Response({"authenticated": request.user.is_authenticated})
+
+
+# ===== ENDPOINTS API REST PARA REACT =====
+
+@api_view(["GET"])
+def api_user(request):
+    """Retorna dados do usuário autenticado"""
+    if not request.user.is_authenticated:
+        return Response({"authenticated": False}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    serializer = UserSerializer(request.user, context={'request': request})
+    return Response({
+        "authenticated": True,
+        "user": serializer.data
+    })
+
+
+@api_view(["GET"])
+def api_noticias(request):
+    """Lista todas as notícias com paginação e filtros"""
+    query = request.GET.get('q')
+    genero = request.GET.get('genero')
+    ordenacao = request.GET.get('ordenacao', '-data')
+    limite = int(request.GET.get('limite', 20))
+    offset = int(request.GET.get('offset', 0))
+    
+    noticias = Noticia.objects.all()
+    
+    if query:
+        noticias = noticias.filter(
+            Q(titulo__icontains=query) |
+            Q(resumo__icontains=query) |
+            Q(detalhes__icontains=query)
+        ).distinct()
+    
+    if genero:
+        noticias = noticias.filter(generos__nome=genero).distinct()
+    
+    noticias = noticias.order_by(ordenacao)
+    total = noticias.count()
+    noticias = noticias[offset:offset + limite]
+    
+    serializer = NoticiaSerializer(noticias, many=True, context={'request': request})
+    
+    return Response({
+        "total": total,
+        "offset": offset,
+        "limite": limite,
+        "noticias": serializer.data
+    })
+
+
+@api_view(["GET"])
+def api_noticia_detalhe(request, slug):
+    """Retorna uma notícia específica com notícias relacionadas"""
+    try:
+        noticia = Noticia.objects.get(slug=slug)
+    except Noticia.DoesNotExist:
+        raise NotFound("Notícia não encontrada")
+    
+    is_favorito = False
+    if request.user.is_authenticated:
+        is_favorito = Favoritos.objects.filter(usuario=request.user, noticia=noticia).exists()
+        registrar_leitura_noticia(request.user)
+    
+    generos_da_noticia = noticia.generos.exclude(nome__in=['Brasil', 'Geral'])
+    if not generos_da_noticia.exists():
+        generos_da_noticia = noticia.generos.all()
+    
+    noticias_relacionadas = Noticia.objects.filter(
+        generos__in=generos_da_noticia
+    ).exclude(id=noticia.id).distinct().order_by('-data')[:3]
+    
+    serializer = NoticiaSerializer(noticia, context={'request': request})
+    serializer_relacionadas = NoticiaSerializer(noticias_relacionadas, many=True, context={'request': request})
+    
+    return Response({
+        "noticia": serializer.data,
+        "is_favorito": is_favorito,
+        "noticias_relacionadas": serializer_relacionadas.data
+    })
+
+
+@api_view(["GET", "POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_favoritos(request):
+    """Lista favoritos do usuário (GET) ou adiciona novo favorito (POST)"""
+    if not request.user.is_authenticated:
+        return Response({"error": "Usuário não autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    if request.method == "GET":
+        favoritos = Favoritos.objects.filter(usuario=request.user).order_by('-adicionado')
+        serializer = FavoritosSerializer(favoritos, many=True, context={'request': request})
+        return Response({"favoritos": serializer.data})
+    
+    elif request.method == "POST":
+        noticia_id = request.data.get('noticia_id')
+        
+        if not noticia_id:
+            return Response({"error": "noticia_id é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            noticia = Noticia.objects.get(id=noticia_id)
+        except Noticia.DoesNotExist:
+            return Response({"error": "Notícia não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+        
+        favorito, created = Favoritos.objects.get_or_create(usuario=request.user, noticia=noticia)
+        
+        if created:
+            return Response({"message": "Notícia adicionada aos favoritos", "status": "added"}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"message": "Notícia já está nos favoritos"}, status=status.HTTP_200_OK)
+
+
+@api_view(["DELETE"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_remover_favorito(request, noticia_id):
+    """Remove uma notícia dos favoritos"""
+    if not request.user.is_authenticated:
+        return Response({"error": "Usuário não autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    try:
+        noticia = Noticia.objects.get(id=noticia_id)
+    except Noticia.DoesNotExist:
+        return Response({"error": "Notícia não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+    
+    try:
+        favorito = Favoritos.objects.get(usuario=request.user, noticia=noticia)
+        favorito.delete()
+        return Response({"message": "Removido dos favoritos", "status": "removed"})
+    except Favoritos.DoesNotExist:
+        return Response({"error": "Notícia não estava nos favoritos"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["GET"])
+def api_generos(request):
+    """Lista todos os gêneros"""
+    generos = Genero.objects.all().order_by('nome')
+    serializer = GeneroSerializer(generos, many=True)
+    return Response({"generos": serializer.data})
+
+
+@api_view(["POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_update_profile_generos(request):
+    """Atualiza os gêneros favoritos do usuário autenticado (recebe lista de ids)
+    Exemplo de body: { "genero_ids": [1,2,3] }
+    """
+    if not request.user.is_authenticated:
+        return Response({"error": "Usuário não autenticado"}, status=status.HTTP_401_UNAUTHORIZED)
+
+    genero_ids = request.data.get('genero_ids')
+    if genero_ids is None:
+        return Response({"error": "genero_ids é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        generos = Genero.objects.filter(id__in=genero_ids)
+        profile = request.user.profile
+        profile.generos_favoritos.set(generos)
+        profile.save()
+        return Response({"message": "Preferências atualizadas"})
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

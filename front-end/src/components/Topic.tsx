@@ -35,7 +35,7 @@ const SmallerTopic = ({ topicTitle }: topicProps) => {
       </div>
 
       <img
-        src={favorited ? notStaredImg : staredImg}
+        src={favorited ? staredImg : notStaredImg}
         alt="Favoritar"
         onClick={favoritar}
         style={{ cursor: "pointer" }}

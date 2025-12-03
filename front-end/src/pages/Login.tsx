@@ -8,10 +8,11 @@ import LogoJC from "../assets/imgs/Logo JC.png";
 import backArrow from "../assets/icons/backArrow.png";
 
 import { AuthContext } from "../context/AuthContext";
+import { getUser } from "../services/api";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // pegando função login do contexto
+  const { login, refreshUser } = useContext(AuthContext); // pegando função login do contexto
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,12 +37,12 @@ export default function Login() {
       });
 
       if (resposta.ok) {
-        const dados = await resposta.json();
-
-        // Atualiza o contexto com o usuário logado
-        // Aqui você pode usar o nome do usuário ou o email, dependendo da sua API
-        login(dados.username || email); 
-
+        // Fetch user data after successful login
+        try {
+          await refreshUser();
+        } catch (refreshErr) {
+          console.error("Erro ao atualizar usuário:", refreshErr);
+        }
         navigate("/"); // redireciona para home
       } else {
         const dados = await resposta.json();

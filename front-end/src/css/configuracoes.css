@@ -1,0 +1,43 @@
+.config-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+.config-section h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.config-section p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.generos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.generos-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.generos-list label:hover {
+  background-color: #e9ecef;
+}
+
+.generos-list input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}

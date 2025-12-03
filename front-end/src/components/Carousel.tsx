@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import "../css/carousel.css";
+import { Link } from "react-router-dom";
 
 type Slide = {
   image: string;
   title: string;
+  slug: string;
 };
 
 type CarouselProps = {
@@ -25,19 +27,26 @@ const Carousel = ({ slides }: CarouselProps) => {
   return (
     <div className="carousel-container">
       {slides.map((slide, index) => (
-        <div
-          className={`carousel-slide ${index === current ? "active" : ""} ${
+        <Link
+          to={`/noticia/${slide.slug}`}
+          className={`carousel-slide-link ${index === current ? "active" : ""} ${
             index === 0 ? "initial" : ""
           }`}
           key={index}
         >
-          <img src={slide.image} alt={slide.title} className="carousel-image" />
+          <div
+            className={`carousel-slide ${index === current ? "active" : ""} ${
+              index === 0 ? "initial" : ""
+            }`}
+          >
+            <img src={slide.image} alt={slide.title} className="carousel-image" />
 
-          {/* Overlay com degradê */}
-          <div className="carousel-overlay">
-            <h2 className="carousel-title">{slide.title}</h2>
+            {/* Overlay com degradê */}
+            <div className="carousel-overlay">
+              <h2 className="carousel-title">{slide.title}</h2>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

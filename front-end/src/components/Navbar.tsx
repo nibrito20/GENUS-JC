@@ -1,5 +1,5 @@
 import "../css/navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -19,15 +19,57 @@ import youtubeIcon from "../assets/icons/youtube-icon.png"
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [categoriasOpen, setCategoriasOpen] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const openMenu = () => setMenuOpen(true);
   const closeMenu = () => setMenuOpen(false);
   const openSearch = () => setSearchOpen(true);
   const closeSearch = () => setSearchOpen(false);
   const toggleCategorias = () => setCategoriasOpen(!categoriasOpen);
+
+  // Popular suggestions - tópicos/categorias frequentes
+  const frequentSearches = [
+    "Política",
+    "Economia",
+    "Saúde",
+    "Educação",
+    "Segurança",
+    "Mundo",
+    "Blog do torcedor",
+  ];
+
+  function handleSearchInput(value: string) {
+    setSearchQuery(value);
+    if (value.trim()) {
+      // Filter suggestions based on input
+      const filtered = frequentSearches.filter(term =>
+        term.toLowerCase().includes(value.toLowerCase())
+      );
+      setSearchSuggestions(filtered);
+    } else {
+      setSearchSuggestions([]);
+    }
+  }
+
+  function selectSuggestion(suggestion: string) {
+    navigate(`/noticias?q=${encodeURIComponent(suggestion)}`);
+    setSearchQuery("");
+    setSearchSuggestions([]);
+    closeSearch();
+  }
+
+  function doSearch() {
+    const q = (searchQuery || "").trim();
+    if (!q) return;
+    // navega para a página de notícias com query
+    navigate(`/noticias?q=${encodeURIComponent(q)}`);
+    closeSearch();
+  }
 
   return (
     <div>
@@ -60,49 +102,49 @@ const Navbar = () => {
                   }`}
                 >
                   <li>
-                    <Link to="/">Recentes</Link>
+                    <Link to="/noticias?section=recentes" onClick={closeMenu}>Recentes</Link>
                   </li>
                   <li>
-                    <Link to="/">Para você</Link>
+                    <Link to="/noticias?section=para-voce" onClick={closeMenu}>Para você</Link>
                   </li>
                   <li>
-                    <Link to="/">Pernambuco</Link>
+                    <Link to="/noticias?genero=Pernambuco" onClick={closeMenu}>Pernambuco</Link>
                   </li>
                   <li>
-                    <Link to="/">Mundo</Link>
+                    <Link to="/noticias?genero=Mundo" onClick={closeMenu}>Mundo</Link>
                   </li>
                   <li>
-                    <Link to="/">Política</Link>
+                    <Link to="/noticias?genero=Política" onClick={closeMenu}>Política</Link>
                   </li>
                   <li>
-                    <Link to="/">Economia</Link>
+                    <Link to="/noticias?genero=Economia" onClick={closeMenu}>Economia</Link>
                   </li>
                   <li>
-                    <Link to="/">Blog do torcedor</Link>
+                    <Link to="/noticias?genero=Blog%20do%20torcedor" onClick={closeMenu}>Blog do torcedor</Link>
                   </li>
                   <li>
-                    <Link to="/">Social</Link>
+                    <Link to="/noticias?genero=Social" onClick={closeMenu}>Social</Link>
                   </li>
                   <li>
-                    <Link to="/">Saúde e Bem-Estar</Link>
+                    <Link to="/noticias?genero=Saúde%20e%20Bem-Estar" onClick={closeMenu}>Saúde e Bem-Estar</Link>
                   </li>
                   <li>
-                    <Link to="/">Educação</Link>
+                    <Link to="/noticias?genero=Educação" onClick={closeMenu}>Educação</Link>
                   </li>
                   <li>
-                    <Link to="/">Cultura</Link>
+                    <Link to="/noticias?genero=Cultura" onClick={closeMenu}>Cultura</Link>
                   </li>
                   <li>
-                    <Link to="/">Opinião</Link>
+                    <Link to="/noticias?genero=Opinião" onClick={closeMenu}>Opinião</Link>
                   </li>
                   <li>
-                    <Link to="/">Mobilidade</Link>
+                    <Link to="/noticias?genero=Mobilidade" onClick={closeMenu}>Mobilidade</Link>
                   </li>
                   <li>
-                    <Link to="/">Segurança</Link>
+                    <Link to="/noticias?genero=Segurança" onClick={closeMenu}>Segurança</Link>
                   </li>
                   <li>
-                    <Link to="/">Recall de Marcas</Link>
+                    <Link to="/noticias?genero=Recall%20de%20Marcas" onClick={closeMenu}>Recall de Marcas</Link>
                   </li>
                 </ul>
               </li>
@@ -174,7 +216,31 @@ const Navbar = () => {
         >
           <div className="search-input">
             <img src={SearchIcon} alt="" />
-            <input type="text" placeholder="Pesquisar" />
+            <input
+              type="text"
+              placeholder="Pesquisar"
+              value={searchQuery}
+              onChange={(e) => handleSearchInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") doSearch();
+              }}
+            />
+            <button onClick={doSearch} className="search-submit">
+              <img src={SearchIcon} alt="Buscar" />
+            </button>
+            {searchSuggestions.length > 0 && (
+              <div className="search-suggestions">
+                {searchSuggestions.map((suggestion) => (
+                  <div
+                    key={suggestion}
+                    className="suggestion-item"
+                    onClick={() => selectSuggestion(suggestion)}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
