@@ -168,7 +168,7 @@ export default function Home() {
             <MoreNewsButton buttonText="Ver mais" buttonLink="/" />
           </section>
           <section className="section-gap">
-            <DividerTopic topicTitle="Entrete nimento" />
+            <DividerTopic topicTitle="Entretenimento" />
             <Carousel slides={slides} />
             <div className="news-container">
               <NewsCard

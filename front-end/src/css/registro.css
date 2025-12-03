@@ -1,12 +1,12 @@
 .register-card {
     border-radius: 40px;
     width: 350px;
-    height: 85vh;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    padding: 16px 8px;
 }
 
 .head {
@@ -58,6 +58,7 @@
     width: 184px;
     height: 48px;
     color: #ffffff;
+    margin-top: 32px;
 }
 
 .registrar a {

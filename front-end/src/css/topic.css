@@ -3,6 +3,7 @@
     gap: 24px;
     color: #AC0000;
     font-size: 12px;
+    margin-left: 26px;
 }
 
 .smaller-topic-container {
@@ -80,4 +81,14 @@
     font-size: 24px;
     text-decoration: underline;
     text-underline-offset: 8px;
+}
+
+@media screen and (min-width: 700px) {
+    .topic-container {
+        display: flex;
+        gap: 24px;
+        color: #AC0000;
+        font-size: 12px;
+        margin-left: 112px;
+    }
 }

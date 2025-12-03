@@ -17,8 +17,8 @@
 }
 
 .container-3 {
-    padding: 24px;
-    width: 100vw;
+    padding: 24px 0px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 32px;
