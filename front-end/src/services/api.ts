@@ -194,10 +194,16 @@ export async function logout() {
 }
 
 export async function getUser() {
+  console.log("getUser: Enviando requisição para /api/user/");
   const response = await fetch(`${API_BASE_URL}/api/user/`, {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("Erro ao buscar usuário");
-  return response.json();
+  console.log("getUser: Status da resposta:", response.status, response.ok);
+  const data = await response.json();
+  console.log("getUser: Dados recebidos:", data);
+  
+  // Não lançar erro se o usuário não estiver autenticado (status 401 é normal)
+  // A resposta já contém "authenticated: false"
+  return data;
 }

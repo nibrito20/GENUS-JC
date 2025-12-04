@@ -4,7 +4,7 @@ import { getUser, logout as apiLogout } from "../services/api";
 interface AuthContextType {
   user: any | null;
   loading: boolean;
-  login: (userData: any) => void;
+  setUserLoggedIn: (userData: any) => void;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -12,7 +12,7 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  login: () => {},
+  setUserLoggedIn: () => {},
   logout: async () => {},
   refreshUser: async () => {},
 });
@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // --- CARREGA USUÁRIO DO BACKEND AO INICIAR ---
   useEffect(() => {
     loadUser();
   }, []);
@@ -45,7 +44,7 @@ export const AuthProvider = ({ children }: Props) => {
     }
   }
 
-  const login = (userData: any) => {
+  const setUserLoggedIn = (userData: any) => {
     setUser(userData);
   };
 
@@ -63,9 +62,8 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, setUserLoggedIn, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
-

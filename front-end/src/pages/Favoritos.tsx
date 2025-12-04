@@ -40,6 +40,10 @@ export default function Favoritos() {
   if (loading) return <div>Carregando...</div>;
   if (error) return <div>Erro: {error}</div>;
 
+  const handleRemoverFavorito = (noticia_id: number) => {
+    setFavoritos(favoritos.filter(fav => fav.noticia.id !== noticia_id));
+  };
+
   return (
     <>
       <Navbar />
@@ -54,10 +58,17 @@ export default function Favoritos() {
                 {favoritos.map((fav) => (
                   <NewsCard
                     key={fav.id}
+                    noticia_id={fav.noticia.id}
                     newsImg={fav.noticia.imagem_url || ""}
                     newsTitle={fav.noticia.titulo}
                     topicLink={`/noticia/${fav.noticia.slug}`}
                     newsTopic={{ topicTitle: fav.noticia.generos[0]?.nome || "Geral" }}
+                    isFavorito={true}
+                    onFavoritoChange={(isFavorito) => {
+                      if (!isFavorito) {
+                        handleRemoverFavorito(fav.noticia.id);
+                      }
+                    }}
                   />
                 ))}
               </div>

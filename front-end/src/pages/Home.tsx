@@ -3,7 +3,7 @@ import "../css/home.css";
 import Navbar from "../components/Navbar";
 import { Container3 } from "../components/Container";
 import Topic from "../components/Topic";
-import Carousel from "../components/Carousel";
+import EmblaCarousel from "../components/EmblaCarousel";
 import NewsCard from "../components/NewsCard";
 import MoreNewsButton from "../components/MoreNewsButton";
 import { DividerTopic } from "../components/Topic";
@@ -84,7 +84,7 @@ export default function Home() {
         <Container3>
           <section className="section-gap">
             <Topic topicTitle="Relevantes" />
-            {slides.length > 0 && <Carousel slides={slides} />}
+            {slides.length > 0 && <EmblaCarousel slides={slides} options={{ loop: true }} />}
           </section>
           <section className="section-gap"></section>
           <section className="section-gap">

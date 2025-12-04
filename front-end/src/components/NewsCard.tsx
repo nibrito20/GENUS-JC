@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { adicionarFavorito, removerFavorito } from "../services/api";
-import staredImg from "../assets/icons/stared.png";
-import notStaredImg from "../assets/icons/notStared.png";
 
 type newsCardProps = {
   newsTitle: string;
@@ -30,7 +28,6 @@ const NewsCard = ({
 }: newsCardProps) => {
   const { user } = useContext(AuthContext);
   const [favorito, setFavorito] = useState(isFavorito);
-  const [loading, setLoading] = useState(false);
 
   const handleFavoritoToggle = async (e: React.MouseEvent) => {
     // Evita que o clique no botão dispare o Link pai
@@ -45,7 +42,6 @@ const NewsCard = ({
     if (!noticia_id) return;
 
     try {
-      setLoading(true);
       if (favorito) {
         await removerFavorito(noticia_id);
         setFavorito(false);
@@ -58,8 +54,6 @@ const NewsCard = ({
     } catch (err) {
       console.error("Erro ao atualizar favorito:", err);
       alert("Erro ao atualizar favorito");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -73,16 +67,12 @@ const NewsCard = ({
             <div className="news-placeholder">Sem imagem</div>
           )}
         </div>
-        <div className="topic-and-fav">
-          <Topic topicTitle={newsTopic.topicTitle} />
-          <img
-            src={favorito ? staredImg : notStaredImg}
-            alt={favorito ? "Remover favorito" : "Adicionar favorito"}
-            onClick={handleFavoritoToggle}
-            className={`fav-small ${favorito ? "favorito-active" : ""}`}
-            style={{ cursor: "pointer" }}
-          />
-        </div>
+        <Topic 
+          topicTitle={newsTopic.topicTitle}
+          showStar={true}
+          isFavorito={favorito}
+          onStarClick={handleFavoritoToggle}
+        />
         <div className="news-card-title">{newsTitle}</div>
       </div>
     </Link>

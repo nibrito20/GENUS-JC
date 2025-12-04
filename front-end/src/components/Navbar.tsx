@@ -23,52 +23,61 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [categoriasOpen, setCategoriasOpen] = useState(false);
-  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchSugestoes, setSearchSugestoes] = useState<any[]>([]);
+  const [loadingSugestoes, setLoadingSugestoes] = useState(false);
 
   const openMenu = () => setMenuOpen(true);
   const closeMenu = () => setMenuOpen(false);
   const openSearch = () => setSearchOpen(true);
-  const closeSearch = () => setSearchOpen(false);
+  const closeSearch = () => {
+    setSearchOpen(false);
+    setSearchSugestoes([]);
+  };
   const toggleCategorias = () => setCategoriasOpen(!categoriasOpen);
 
-  // Popular suggestions - tópicos/categorias frequentes
-  const frequentSearches = [
-    "Política",
-    "Economia",
-    "Saúde",
-    "Educação",
-    "Segurança",
-    "Mundo",
-    "Blog do torcedor",
-  ];
-
-  function handleSearchInput(value: string) {
+  async function handleSearchInput(value: string) {
     setSearchQuery(value);
-    if (value.trim()) {
-      // Filter suggestions based on input
-      const filtered = frequentSearches.filter(term =>
-        term.toLowerCase().includes(value.toLowerCase())
-      );
-      setSearchSuggestions(filtered);
+    
+    // Buscar sugestões se tiver pelo menos 2 caracteres
+    if (value.trim().length >= 2) {
+      setLoadingSugestoes(true);
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/search-sugestoes/?q=${encodeURIComponent(value)}`,
+          { credentials: "include" }
+        );
+        const data = await response.json();
+        setSearchSugestoes(data.sugestoes || []);
+      } catch (err) {
+        console.error("Erro ao buscar sugestões:", err);
+        setSearchSugestoes([]);
+      } finally {
+        setLoadingSugestoes(false);
+      }
     } else {
-      setSearchSuggestions([]);
+      setSearchSugestoes([]);
     }
   }
 
-  function selectSuggestion(suggestion: string) {
-    navigate(`/noticias?q=${encodeURIComponent(suggestion)}`);
+  function doSearch(query?: string) {
+    const q = (query || searchQuery || "").trim();
+    if (!q) return;
+    navigate(`/noticias?q=${encodeURIComponent(q)}`);
     setSearchQuery("");
-    setSearchSuggestions([]);
+    setSearchSugestoes([]);
     closeSearch();
   }
 
-  function doSearch() {
-    const q = (searchQuery || "").trim();
-    if (!q) return;
-    // navega para a página de notícias com query
-    navigate(`/noticias?q=${encodeURIComponent(q)}`);
+  function handleSugestaoClick(slug: string) {
+    navigate(`/noticia/${slug}`);
+    setSearchQuery("");
+    setSearchSugestoes([]);
     closeSearch();
+  }
+
+  function handleSearchSubmit() {
+    doSearch();
   }
 
   return (
@@ -177,7 +186,7 @@ const Navbar = () => {
             <img src={LogoJC} alt="Logo JC" className="Jc-image" />
           </Link>
           <div>
-            <button className="navbutton" onClick={openSearch}>
+            <button className="navbutton" onClick={searchOpen ? closeSearch : openSearch}>
               <img src={SearchIcon} alt="Buscar" />
             </button>
             <button className="navbutton" onClick={openMenu}>
@@ -224,24 +233,27 @@ const Navbar = () => {
               onKeyDown={(e) => {
                 if (e.key === "Enter") doSearch();
               }}
+              autoFocus
             />
-            <button onClick={doSearch} className="search-submit">
+            <button onClick={() => doSearch()} className="search-submit">
               <img src={SearchIcon} alt="Buscar" />
             </button>
-            {searchSuggestions.length > 0 && (
-              <div className="search-suggestions">
-                {searchSuggestions.map((suggestion) => (
-                  <div
-                    key={suggestion}
-                    className="suggestion-item"
-                    onClick={() => selectSuggestion(suggestion)}
-                  >
-                    {suggestion}
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
+          {/* Sugestões de busca */}
+          {searchSugestoes.length > 0 && (
+            <div className="search-sugestoes">
+              {searchSugestoes.map((sugestao) => (
+                <div
+                  key={sugestao.id}
+                  className="search-sugestao-item"
+                  onClick={() => handleSugestaoClick(sugestao.slug)}
+                >
+                  <img src={SearchIcon} alt="" style={{ width: "16px", height: "16px", opacity: 0.6 }} />
+                  <span>{sugestao.titulo}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -3,17 +3,32 @@ import "../css/topic.css";
 import { useState } from "react";
 
 import staredImg from "../assets/icons/stared.png"
-import notStaredImg from "../assets/icons/notStared.png"
+import notStaredImg from "../assets/icons/not-stared.png"
 
 
 type topicProps = {
-  topicTitle: string; };
+  topicTitle: string;
+  showStar?: boolean;
+  isFavorito?: boolean;
+  onStarClick?: (e: React.MouseEvent) => void;
+};
   
-const Topic = ({ topicTitle }: topicProps) => {
+const Topic = ({ topicTitle, showStar = false, isFavorito = false, onStarClick }: topicProps) => {
   return (
     <div className="topic-container">
-      <h1>|</h1>
-      <h1>{topicTitle}</h1>
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <h1>|</h1>
+        <h1>{topicTitle}</h1>
+      </div>
+      {showStar && (
+        <img
+          src={isFavorito ? staredImg : notStaredImg}
+          alt={isFavorito ? "Remover favorito" : "Adicionar favorito"}
+          onClick={onStarClick}
+          className="topic-star"
+          style={{ cursor: "pointer", width: "16px", height: "16px", flexShrink: 0 }}
+        />
+      )}
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/noticia.css";
 import staredImg from "../assets/icons/stared.png";
-import notStaredImg from "../assets/icons/notStared.png";
+import notStaredImg from "../assets/icons/not-stared.png";
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();

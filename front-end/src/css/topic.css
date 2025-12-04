@@ -1,26 +1,38 @@
 .topic-container {
     display: flex;
-    gap: 24px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
     color: #AC0000;
     font-size: 12px;
-    margin-left: 26px;
 }
 
 .smaller-topic-container {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     color: #AC0000;
-    font-size: 6px;
+    font-size: 12px;
     align-items: center;
+    flex: 1;
+}
+
+.smaller-topic-container h1 {
+    margin: 0;
+    font-size: 0.8rem;
 }
 
 .smaller-topic-container-divider {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .smaller-topic-container-divider > img {
-    max-width: 20px;
+    max-width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    cursor: pointer;
 }
 
 .diviver-topic-container {
@@ -91,5 +103,12 @@
         color: #AC0000;
         font-size: 12px;
         margin-left: 112px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .topic-container {
+        padding-left: 12px;
+        padding-right: 12px;
     }
 }
