@@ -21,6 +21,17 @@ jobs:
       - name: 4. Rodar Testes (Django Check)
         run: |
           python manage.py check
+      - name: 5. Configurar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: 6. Instalar dependências React e Fazer Build
+        run: |
+          echo "Instalando dependências do React e criando o build..."
+          cd front-end
+          npm install
+          npm run build
 
   deploy:
     needs: build-and-test
