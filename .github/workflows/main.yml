@@ -17,10 +17,10 @@ jobs:
       - name: 3. Instalar dependências
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r Back-end/requirements.txt
       - name: 4. Rodar Testes (Django Check)
         run: |
-          python manage.py check
+          python Back-end/manage.py check
       - name: 5. Configurar o Node.js
         uses: actions/setup-node@v4
         with:
