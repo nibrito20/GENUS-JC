@@ -1,0 +1,64 @@
+name: CI/CD Pipeline para PythonAnywhere
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Fazer checkout do código
+        uses: actions/checkout@v4
+      - name: 2. Configurar o Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: 3. Instalar dependências
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: 4. Rodar Testes (Django Check)
+        run: |
+          python manage.py check
+      - name: 5. Configurar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: 6. Instalar dependências React e Fazer Build
+        run: |
+          echo "Instalando dependências do React e criando o build..."
+          cd front-end
+          npm install
+          npm run build
+
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+
+    env:
+      PA_USERNAME: ${{ secrets.PA_USERNAME }}
+      PA_API_TOKEN: ${{ secrets.PA_API_TOKEN }}
+      PA_DOMAIN: ${{ secrets.PA_DOMAIN }}
+
+    steps:
+    - name: 1. Fazer checkout do repositório
+      uses: actions/checkout@v4
+
+    - name: 2. Executar deploy.sh no PythonAnywhere
+      run: |
+        echo "Executando deploy.sh remoto..."
+
+        curl -X POST \
+          -H "Authorization: Token ${{ env.PA_API_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          -d '{"commands": "/home/'"${{ env.PA_USERNAME }}"'/deploy.sh"}' \
+          "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/bash/"
+
+    - name: 3. Fazer reload da aplicação
+      run: |
+        echo "Recarregando a aplicação web..."
+        curl -s -X POST \
+          "https://www.pythonanywhere.com/api/v0/user/${{ env.PA_USERNAME }}/webapps/${{ env.PA_DOMAIN }}/reload/" \
+          -H "Authorization: Token ${{ env.PA_API_TOKEN }}"
