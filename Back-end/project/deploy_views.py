@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 REPO_PATH = '/home/genuss/GENUS-JC/'
 WSGI_PATH = '/var/www/genuss_pythonanywhere_com_wsgi.py'
 WEBHOOK_SECRET = os.environ.get('GITHUB_WEBHOOK_SECRET', 'NO_SECRET_FOUND')
+MANAGE_PY_PATH = os.path.join(REPO_PATH, 'Back-end', 'manage.py')
 @csrf_exempt
 def deploy_webhook(request):
     """View que recebe o webhook do GitHub e executa os comandos de deploy."""
@@ -30,8 +31,8 @@ def deploy_webhook(request):
         cmd = (
             f"cd {REPO_PATH} && "
             f"git pull origin main && "
-            f"python manage.py collectstatic --noinput && "
-            f"python manage.py migrate --noinput && "
+            f"python3 {MANAGE_PY_PATH} collectstatic --noinput && "
+            f"python3 {MANAGE_PY_PATH} migrate --noinput && "
             f"touch {WSGI_PATH}"
         )
         

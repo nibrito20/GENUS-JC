@@ -58,11 +58,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR.parent, 'front-end', 'build'), 
+]
+
 # Templates desabilitados - usando React no front-end
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            STATIC_ROOT,
+        ],
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
@@ -73,6 +81,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'project.wsgi.application'
 
@@ -127,13 +136,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
 # --- CONFIGURAÇÃO DE MÍDIA (IMAGENS) ---
 MEDIA_URL = '/media/'
