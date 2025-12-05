@@ -8,6 +8,7 @@ from .views import auth_status  #integracao com react
 app_name = 'jornal'
 
 urlpatterns = [
+    path("api/user/update/", views.update_user, name="update_user"),
     # --- Auth Views ---
     path("api/login/", views.api_login, name="api_login"),
     path("api/logout/", views.api_logout, name="api_logout"),

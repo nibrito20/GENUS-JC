@@ -12,7 +12,9 @@ import { getUser } from "../services/api";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login, refreshUser } = useContext(AuthContext); // pegando função login do contexto
+
+  // PEGAR DO CONTEXTO (apenas UMA VEZ!)
+  const { setUserLoggedIn, refreshUser } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,29 +23,29 @@ export default function Login() {
   const voltar = () => navigate(-1);
 
   const fazerLogin = async () => {
-    setErro(""); // limpar erro
+    setErro("");
 
     try {
       const resposta = await fetch("http://localhost:8000/api/login/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // MUITO IMPORTANTE
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
       });
 
       if (resposta.ok) {
-        // Fetch user data after successful login
         try {
-          await refreshUser();
-        } catch (refreshErr) {
-          console.error("Erro ao atualizar usuário:", refreshErr);
+          const userData = await getUser();
+          if (userData.authenticated) {
+            setUserLoggedIn(userData.user);
+          }
+        } catch (e) {
+          console.error("Erro ao buscar usuário:", e);
         }
-        navigate("/"); // redireciona para home
+
+        await refreshUser();
+
+        navigate("/");
       } else {
         const dados = await resposta.json();
         setErro(dados.error || "Credenciais inválidas.");
@@ -58,7 +60,9 @@ export default function Login() {
       <div className="login-card">
         <div className="header">
           <img src={backArrow} alt="Voltar" onClick={voltar} />
-          <Link to="/"><img src={LogoJC} alt="Logo JC" /></Link>
+          <Link to="/">
+            <img src={LogoJC} alt="Logo JC" />
+          </Link>
         </div>
 
         <h1>Entrar</h1>
@@ -67,10 +71,10 @@ export default function Login() {
 
         <section className="inputs-section">
           <div>
-            <p>Email</p>
-            <input 
-              type="text" 
-              placeholder="Digite seu email"
+            <p>Usuario</p>
+            <input
+              type="text"
+              placeholder="Digite seu Usuario"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -78,8 +82,8 @@ export default function Login() {
 
           <div>
             <p>Senha</p>
-            <input 
-              type="password" 
+            <input
+              type="password"
               placeholder="Digite sua senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

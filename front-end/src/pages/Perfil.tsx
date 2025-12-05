@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 import PerfilOptions from "../components/PerfilOption";
+import { Container4 } from "../components/Container";
 
 import backArrow from "../assets/icons/backArrow.png";
 import noUser from "../assets/icons/noUser.png";
@@ -31,8 +32,8 @@ export default function Perfil() {
         credentials: "include",
       });
 
-      logout();       // ← Limpa o user do AuthContext
-      navigate("/");  // ← Volta para home pública
+      logout(); // ← Limpa o user do AuthContext
+      navigate("/"); // ← Volta para home pública
     } catch (err) {
       console.error("Erro ao deslogar:", err);
     }
@@ -41,33 +42,52 @@ export default function Perfil() {
   return (
     <>
       <Navbar2 />
+      <Container4>
+        <div></div>
+      </Container4>
+        <img
+          src={backArrow}
+          alt="Voltar"
+          onClick={voltar}
+          className="back-arrow"
+        />
 
-      <img
-        src={backArrow}
-        alt="Voltar"
-        onClick={voltar}
-        className="back-arrow"
-      />
+        <div className="user-name-photo">
+          <img src={noUser} alt="Foto do usuário" className="user-image" />
+          <h1>Nome do usuário</h1>
+        </div>
 
-      <div className="user-name-photo">
-        <img src={noUser} alt="Foto do usuário" className="user-image" />
-        <h1>Nome do usuário</h1>
-      </div>
+        <PerfilOptions
+          title="Informações da conta"
+          icon={userInfo}
+          link="/perfil/info"
+        />
+        <PerfilOptions title="Cacto" icon={Cacto} link="/cacto" />
+        <PerfilOptions
+          title="Personalização de conteúdo"
+          icon={engrenagem}
+          link="/perfil/personalizacao"
+        />
+        <PerfilOptions
+          title="Acessibilidade"
+          icon={acessibilidade}
+          link="/perfil/acessibilidade"
+        />
+        <PerfilOptions title="Favoritos" icon={star} link="/favoritos" />
+        <PerfilOptions
+          title="Redefinir senha"
+          icon={padlock}
+          link="/perfil/senha"
+        />
+        <PerfilOptions title="Suporte" icon={suport} link="/perfil/suporte" />
 
-          <PerfilOptions title="Informações da conta" icon={userInfo} link="/perfil/info" />
-          <PerfilOptions title="Cacto" icon={Cacto} link="/cacto" />
-          <PerfilOptions title="Personalização de conteúdo" icon={engrenagem} link="/perfil/personalizacao" />
-          <PerfilOptions title="Acessibilidade" icon={acessibilidade} link="/perfil/acessibilidade" />
-          <PerfilOptions title="Favoritos" icon={star} link="/favoritos" />
-          <PerfilOptions title="Redefinir senha" icon={padlock} link="/perfil/senha" />
-          <PerfilOptions title="Suporte" icon={suport} link="/perfil/suporte" />
-
-      <PerfilOptions
-        title="Sair da conta"
-        icon={logoutIcon}
-        onClick={fazerLogout}
-        isButton={true}
-      />
+        <PerfilOptions
+          title="Sair da conta"
+          icon={logoutIcon}
+          onClick={fazerLogout}
+          isButton={true}
+        />
+      
     </>
   );
 }

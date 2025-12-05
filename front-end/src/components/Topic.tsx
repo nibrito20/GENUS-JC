@@ -15,7 +15,7 @@ type topicProps = {
   
 const Topic = ({ topicTitle, showStar = false, isFavorito = false, onStarClick }: topicProps) => {
   return (
-    <div className="topic-container">
+    <div className="topic-container responsible-margin-adjust">
       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
         <h1>|</h1>
         <h1>{topicTitle}</h1>

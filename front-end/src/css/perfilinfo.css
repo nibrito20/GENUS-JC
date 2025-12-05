@@ -1,0 +1,26 @@
+.page-name {
+    font-size: 22px;
+    margin: 24px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.user-info-div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-info-div > input {
+    font-size: 20px;
+    border: none;
+    border-bottom: 1px solid #949494;
+    padding-bottom: 8px;
+}

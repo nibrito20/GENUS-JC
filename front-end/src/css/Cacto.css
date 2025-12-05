@@ -1,9 +1,10 @@
 .container-cacto {
+    margin-top: 114px;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100vw;
-    height: 88vh;
+    height: 100vh;
     background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
 }
 

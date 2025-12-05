@@ -19,3 +19,26 @@
 .centralizer-button > button:hover {
     background-color: #bdbdbd;
 }
+
+.centralizer-button-red {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 48px;
+}
+
+.centralizer-button-red > button {
+    width: 128px;
+    height: 48px;
+    background: none;
+    border: none;
+    color: white;
+    background-color: #AC0000;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.centralizer-button-red > button:hover {
+    background-color: #750000;
+}

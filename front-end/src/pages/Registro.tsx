@@ -53,10 +53,10 @@ export default function Register() {
 
         <section className="input-section">
           <div>
-            <p>Email</p>
+            <p>Usuario</p>
             <input
               type="text"
-              placeholder="Digite seu email"
+              placeholder="Digite seu usuario"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />

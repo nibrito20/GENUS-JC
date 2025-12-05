@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { Container3 } from "../components/Container";
+import { Container4 } from "../components/Container";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { getGeneros, updateProfileGeneros } from "../services/api";
@@ -37,8 +37,7 @@ export default function Personalizacao() {
   return (
     <>
       <Navbar />
-      <div className="page-content">
-        <Container3>
+        <Container4>
           <section className="section-gap">
             <h1>Personalização de conteúdo</h1>
             {loading ? (
@@ -67,8 +66,7 @@ export default function Personalizacao() {
               </div>
             )}
           </section>
-        </Container3>
-      </div>
+        </Container4>
       <Footer />
     </>
   );

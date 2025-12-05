@@ -207,3 +207,17 @@ export async function getUser() {
   // A resposta já contém "authenticated: false"
   return data;
 }
+
+
+export async function updateUser(data: any) {
+  const response = await fetch("http://localhost:8000/api/user/update/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  });
+
+  return response.json();
+}

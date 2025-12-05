@@ -1,7 +1,7 @@
 import "../css/home.css";
 
 import Navbar from "../components/Navbar";
-import { Container3 } from "../components/Container";
+import { Container3, Container4, Container5 } from "../components/Container";
 import Topic from "../components/Topic";
 import EmblaCarousel from "../components/EmblaCarousel";
 import NewsCard from "../components/NewsCard";
@@ -83,12 +83,17 @@ export default function Home() {
       <div className="page-content">
         <Container3>
           <section className="section-gap">
-            <Topic topicTitle="Relevantes" />
-            {slides.length > 0 && <EmblaCarousel slides={slides} options={{ loop: true }} />}
+            <Container4>
+              <Topic topicTitle="Relevantes" />
+            </Container4>
+            {slides.length > 0 && (
+              <EmblaCarousel slides={slides} options={{ loop: true }} />
+            )}
           </section>
-          <section className="section-gap"></section>
           <section className="section-gap">
-            <Topic topicTitle="Recentes" />
+            <Container5>
+              <Topic topicTitle="Recentes" />
+            </Container5>
             <div className="news-container">
               {noticias.slice(0, 4).map((noticia) => (
                 <NewsCard
@@ -103,7 +108,10 @@ export default function Home() {
                 />
               ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=recentes" />
+            <MoreNewsButton
+              buttonText="Ver mais"
+              buttonLink="/noticias?section=recentes"
+            />
           </section>
           <section className="section-gap">
             <AdSimulator />
@@ -124,7 +132,10 @@ export default function Home() {
                 />
               ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=para-voce" />
+            <MoreNewsButton
+              buttonText="Ver mais"
+              buttonLink="/noticias?section=para-voce"
+            />
           </section>
           <section className="section-gap">
             <AdSimulator />
@@ -143,7 +154,10 @@ export default function Home() {
                 />
               ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?genero=Blog%20do%20torcedor" />
+            <MoreNewsButton
+              buttonText="Ver mais"
+              buttonLink="/noticias?genero=Blog%20do%20torcedor"
+            />
           </section>
           <section className="section-gap">
             <div className="charge-container">
@@ -168,7 +182,10 @@ export default function Home() {
                 />
               ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=videos" />
+            <MoreNewsButton
+              buttonText="Ver mais"
+              buttonLink="/noticias?section=videos"
+            />
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Entretenimento" />
@@ -184,7 +201,10 @@ export default function Home() {
                 />
               ))}
             </div>
-            <MoreNewsButton buttonText="Ver mais" buttonLink="/noticias?section=entretenimento" />
+            <MoreNewsButton
+              buttonText="Ver mais"
+              buttonLink="/noticias?section=entretenimento"
+            />
           </section>
           <section className="section-gap">
             <DividerTopic topicTitle="Colunistas" />

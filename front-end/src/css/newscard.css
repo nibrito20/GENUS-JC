@@ -47,9 +47,8 @@
     color: inherit;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 505px) {
     .news-card-container {
-        width: clamp(150px, 45vw, 200px);
-        margin: 0 12px;
+        width: clamp(150px, 18vw, 220px);
     }
 }
