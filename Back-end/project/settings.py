@@ -65,9 +65,7 @@ ROOT_URLCONF = 'project.urls'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../front-end/dist'),
-]
+STATICFILES_DIRS = []
 
 # Templates desabilitados - usando React no front-end
 TEMPLATES = [
