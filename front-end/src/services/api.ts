@@ -1,4 +1,9 @@
-const API_BASE_URL = "http://localhost:8000";
+// const API_BASE_URL = "http://localhost:8000";
+
+const API_BASE_URL =
+  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "http://localhost:8000"
+    : "https://genuss.pythonanywhere.com";
 
 interface Noticia {
   id: number;
@@ -210,7 +215,7 @@ export async function getUser() {
 
 
 export async function updateUser(data: any) {
-  const response = await fetch("http://localhost:8000/api/user/update/", {
+  const response = await fetch(`${API_BASE_URL}/api/user/update/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
