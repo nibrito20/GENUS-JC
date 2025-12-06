@@ -64,8 +64,9 @@ ROOT_URLCONF = 'project.urls'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'front-end/dist'),
 ]
 
 # Templates desabilitados - usando React no front-end
@@ -155,10 +156,12 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://genuss.pythonanywhere.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://genuss.pythonanywhere.com",
 ]
 
 SESSION_COOKIE_SAMESITE = "None"
