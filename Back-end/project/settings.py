@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-ujrslfglevd)es6k26ug&*01afi#=&cx0dn%3@i0a4irenuovp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['genuss.pythonanywhere.com', '*']
+ALLOWED_HOSTS = [
+    'genuss.pythonanywhere.com',
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -61,7 +65,7 @@ ROOT_URLCONF = 'project.urls'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../front-end/dist'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 # Templates desabilitados - usando React no front-end
@@ -69,9 +73,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            STATIC_ROOT,
+            os.path.join(BASE_DIR, 'project', 'templates'),
         ],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
