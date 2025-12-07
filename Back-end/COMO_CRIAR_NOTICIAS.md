@@ -10,7 +10,7 @@ O Django Admin é a forma mais simples e direta de criar notícias.
 
 ### Passo 1: Acessar o Django Admin
 
-1. Acesse: `https://jc-backend-ah3z.onrender.com/admin/`
+1. Acesse: `https://genus-jc.onrender.com/admin/`
 2. Faça login com suas credenciais de superusuário
 
 ### Passo 2: Criar uma Notícia
@@ -38,11 +38,6 @@ A notícia será criada automaticamente com um **slug** único baseado no títul
 ## 🌐 Método 2: Página HTML Admin Secreto
 
 Existe uma página HTML com formulário para criar notícias.
-
-### Passo 1: Acessar a Página
-
-1. Acesse: `https://jc-backend-ah3z.onrender.com/admin-secreto/criar/`
-2. **⚠️ Requer login!** Você precisa estar autenticado
 
 ### Passo 2: Preencher o Formulário
 
