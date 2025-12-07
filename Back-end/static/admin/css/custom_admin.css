@@ -1,0 +1,672 @@
+/* ============================================
+   Django Admin - Design Minimalista Moderno
+   ============================================ */
+
+/* ===== VARIÁVEIS ===== */
+:root {
+    --primary: #0f172a;
+    --primary-light: #1e293b;
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 8px;
+    --radius-sm: 6px;
+}
+
+/* ===== BASE ===== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    background: var(--bg-secondary);
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text);
+    font-weight: 600;
+    margin: 0;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+a:hover {
+    color: var(--accent-hover);
+}
+
+/* ===== HEADER ===== */
+#header {
+    background: var(--primary);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+}
+
+#header h1 {
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+#header a:link,
+#header a:visited {
+    color: white;
+}
+
+#user-tools {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+#user-tools a {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.15s;
+}
+
+#user-tools a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* ===== BREADCRUMBS ===== */
+.breadcrumbs {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    font-size: 0.875rem;
+}
+
+.breadcrumbs a {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.breadcrumbs a:hover {
+    color: var(--accent);
+}
+
+/* ===== CONTEÚDO ===== */
+#content {
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+#content-main {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+/* ===== MENSAGENS ===== */
+.messagelist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+}
+
+.messagelist li {
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.messagelist li.success {
+    background: #ecfdf5;
+    color: #065f46;
+}
+
+.messagelist li.error {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+.messagelist li.warning {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.messagelist li.info {
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+/* ===== BOTÕES ===== */
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover,
+a.button:hover {
+    background: var(--primary-light);
+}
+
+.button:active,
+input[type=submit]:active,
+input[type=button]:active {
+    transform: scale(0.98);
+}
+
+.button.default,
+input[type=submit].default {
+    background: var(--accent);
+}
+
+.button.default:hover,
+input[type=submit].default:hover {
+    background: var(--accent-hover);
+}
+
+.deletelink {
+    background: var(--danger);
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.deletelink:hover {
+    background: #dc2626;
+}
+
+/* ===== FORMULÁRIOS ===== */
+.form-row {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.form-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+label {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: block;
+}
+
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=number],
+input[type=date],
+input[type=datetime-local],
+textarea,
+select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    background: var(--bg);
+    color: var(--text);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.help {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    margin-top: 4px;
+}
+
+.errornote {
+    background: #fef2f2;
+    border: 1px solid var(--danger);
+    color: #991b1b;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 0.875rem;
+}
+
+/* ===== TABELAS ===== */
+#result_list {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+#result_list thead th {
+    background: var(--bg-secondary);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+}
+
+#result_list tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.15s;
+}
+
+#result_list tbody tr:hover {
+    background: var(--bg-secondary);
+}
+
+#result_list tbody tr:last-child {
+    border-bottom: none;
+}
+
+#result_list tbody td {
+    padding: 12px 16px;
+    font-size: 0.875rem;
+}
+
+/* ===== FILTROS ===== */
+#changelist-filter {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+}
+
+#changelist-filter h2 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+#changelist-filter h3 {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 16px 0 8px;
+}
+
+#changelist-filter ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#changelist-filter li {
+    margin-bottom: 2px;
+}
+
+#changelist-filter a {
+    color: var(--text-muted);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    display: block;
+    font-size: 0.875rem;
+    transition: all 0.15s;
+}
+
+#changelist-filter a:hover {
+    background: var(--bg-secondary);
+    color: var(--text);
+}
+
+#changelist-filter a.selected {
+    background: var(--accent);
+    color: white;
+}
+
+/* ===== PAGINAÇÃO ===== */
+.paginator {
+    margin: 20px 0;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginator a,
+.paginator span {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.paginator a {
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.paginator a:hover {
+    background: var(--bg-secondary);
+    color: var(--text);
+}
+
+.paginator .this-page {
+    background: var(--accent);
+    color: white;
+    border: 1px solid var(--accent);
+}
+
+/* ===== CHECKBOXES E RADIOS ===== */
+input[type=checkbox],
+input[type=radio] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--accent);
+}
+
+/* ===== OBJECT TOOLS ===== */
+.object-tools {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 8px;
+}
+
+.object-tools a {
+    background: var(--accent);
+    color: white;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.object-tools a:hover {
+    background: var(--accent-hover);
+}
+
+.object-tools a.addlink {
+    background: var(--success);
+}
+
+.object-tools a.addlink:hover {
+    background: #059669;
+}
+
+/* ===== SUBMIT ROW ===== */
+.submit-row {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+    margin: 24px -24px -24px;
+    border-radius: 0 0 var(--radius) var(--radius);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ===== MODULE ===== */
+.module {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.module h2 {
+    background: var(--bg-secondary);
+    padding: 12px 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.module table {
+    width: 100%;
+}
+
+.module table th {
+    padding: 10px 20px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+}
+
+.module table td {
+    padding: 10px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.875rem;
+}
+
+/* ===== LOGIN ===== */
+.login {
+    background: var(--bg-secondary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login #container {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+    max-width: 380px;
+    width: 100%;
+}
+
+.login #header {
+    background: none;
+    height: auto;
+    padding: 0;
+    margin-bottom: 32px;
+    text-align: center;
+    border: none;
+}
+
+.login #header h1 {
+    color: var(--text);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.login .form-row {
+    border-bottom: none;
+    margin-bottom: 16px;
+}
+
+.login .submit-row {
+    margin: 24px 0 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.login input[type=submit] {
+    width: 100%;
+    padding: 10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    #header {
+        padding: 0 16px;
+    }
+
+    #content {
+        padding: 16px;
+    }
+
+    #content-main {
+        padding: 16px;
+    }
+
+    #changelist-filter {
+        margin-top: 16px;
+    }
+
+    .submit-row {
+        flex-direction: column;
+    }
+
+    .submit-row input {
+        width: 100%;
+    }
+
+    .object-tools {
+        flex-direction: column;
+    }
+
+    .object-tools a {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ===== ESTADOS ===== */
+.success {
+    color: var(--success);
+}
+
+.error {
+    color: var(--danger);
+}
+
+.warning {
+    color: var(--warning);
+}
+
+/* ===== MELHORIAS VISUAIS ===== */
+* {
+    box-sizing: border-box;
+}
+
+::selection {
+    background: var(--accent);
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ===== REMOVER THEME TOGGLE ===== */
+/* Esconder botão de toggle de tema (dark/light mode) */
+button[data-theme-toggle],
+.theme-toggle,
+.admin-theme-toggle,
+#theme-toggle,
+[id*="theme"],
+[class*="theme-toggle"],
+[data-theme],
+button[aria-label*="theme"],
+button[aria-label*="Theme"],
+button[title*="theme"],
+button[title*="Theme"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    position: absolute !important;
+    left: -9999px !important;
+}
+
+/* Esconder qualquer botão no user-tools que possa ser theme toggle */
+#user-tools button[type="button"],
+#user-tools [role="button"] {
+    display: none !important;
+}
+
+/* Manter apenas links no user-tools */
+#user-tools a {
+    display: inline-block !important;
+}

@@ -74,13 +74,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Não usamos Cloudinary para arquivos estáticos, apenas para mídia
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
-# STATICFILES_DIRS só é necessário se você estiver servindo o frontend pelo Django
-# Como estamos usando Firebase para o frontend, isso não é necessário
-# Descomente apenas se precisar servir arquivos estáticos do frontend pelo Django
-# STATICFILES_DIRS = [
-#    '/home/genuss/GENUS-JC/front-end/dist',
-#    '/home/genuss/GENUS-JC/front-end/dist/assets'
-# ]
+# Diretórios adicionais para arquivos estáticos (CSS customizado do admin)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Templates desabilitados - usando React no front-end
 TEMPLATES = [
@@ -225,3 +222,8 @@ SESSION_COOKIE_SECURE = True   # OBRIGATÓRIO com SameSite=None
 
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True      # OBRIGATÓRIO com SameSite=None
+
+# Personalização do Django Admin
+ADMIN_SITE_HEADER = "GENUS-JC Admin"
+ADMIN_SITE_TITLE = "GENUS-JC"
+ADMIN_INDEX_TITLE = "Painel de Administração"

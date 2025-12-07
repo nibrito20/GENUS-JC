@@ -10,7 +10,6 @@ O Django Admin é a forma mais simples e direta de criar notícias.
 
 ### Passo 1: Acessar o Django Admin
 
-1. Acesse: `https://genus-jc.onrender.com/admin/`
 2. Faça login com suas credenciais de superusuário
 
 ### Passo 2: Criar uma Notícia
@@ -38,6 +37,10 @@ A notícia será criada automaticamente com um **slug** único baseado no títul
 ## 🌐 Método 2: Página HTML Admin Secreto
 
 Existe uma página HTML com formulário para criar notícias.
+
+### Passo 1: Acessar a Página
+
+2. **⚠️ Requer login!** Você precisa estar autenticado
 
 ### Passo 2: Preencher o Formulário
 
@@ -135,14 +138,12 @@ Antes de criar notícias, você pode precisar criar gêneros.
 
 ### Via Django Admin:
 
-1. Acesse: `https://jc-backend-ah3z.onrender.com/admin/`
 2. Vá em **"Jornal"** → **"Generos"** → **"Add Genero"**
 3. Digite o nome do gênero
 4. Salve
 
 ### Via Página Admin Secreto:
 
-1. Acesse: `https://jc-backend-ah3z.onrender.com/admin-secreto/popular-generos/`
 2. Esta página cria gêneros padrão automaticamente
 
 ---
@@ -150,15 +151,12 @@ Antes de criar notícias, você pode precisar criar gêneros.
 ## 🔍 Verificar Notícias Criadas
 
 ### Via Django Admin:
-- Acesse: `https://jc-backend-ah3z.onrender.com/admin/jornal/noticia/`
 - Veja todas as notícias em formato de lista
 
 ### Via API:
-- Acesse: `https://jc-backend-ah3z.onrender.com/api/noticias/`
 - Retorna JSON com todas as notícias
 
 ### Via Frontend:
-- Acesse: `https://molest-jc.web.app/`
 - As notícias aparecerão na página inicial
 
 ---
