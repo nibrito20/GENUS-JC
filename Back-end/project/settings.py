@@ -66,7 +66,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-   'GENUS-JC/front-end/dist',
+   '/home/genuss/GENUS-JC/front-end/dist',
+   '/home/genuss/GENUS-JC/front-end/dist/assets'
 ]
 
 # Templates desabilitados - usando React no front-end
