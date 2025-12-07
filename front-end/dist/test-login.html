@@ -14,20 +14,6 @@
     <pre id="output"></pre>
     
     <script>
-
-        function getApiUrl() {
-
-            const hostname = window.location.hostname;
-
-            if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                return 'http://localhost:8000';
-            }
-
-            return ''; 
-        }
-
-        const API_URL = getApiUrl();
-
         async function testLogin() {
             const output = document.getElementById('output');
             output.innerHTML = 'Starting test...\n';
@@ -35,7 +21,7 @@
             try {
                 // Step 1: Login
                 output.innerHTML += '1. Logging in with aaa/aaa...\n';
-                const loginResp = await fetch(`${API_URL}/api/login/`, {
+                const loginResp = await fetch('http://localhost:8000/api/login/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
@@ -47,7 +33,7 @@
                 
                 // Step 2: Get user
                 output.innerHTML += '\n2. Getting user data...\n';
-                const userResp = await fetch(`${API_URL}/api/user/`, {
+                const userResp = await fetch('http://localhost:8000/api/user/', {
                     credentials: 'include'
                 });
                 output.innerHTML += `   Status: ${userResp.status}\n`;

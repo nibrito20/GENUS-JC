@@ -18,12 +18,9 @@ class NoticiaSerializer(serializers.ModelSerializer):
         fields = ['id', 'titulo', 'resumo', 'detalhes', 'imagem', 'imagem_url', 'data', 'reporter', 'slug', 'generos']
     
     def get_imagem_url(self, obj):
-        request = self.context.get('request')
+        # Se imagem é uma URL, retorna diretamente
         if obj.imagem:
-            url = obj.imagem.url
-            if request:
-                return request.build_absolute_uri(url)
-            return url
+            return obj.imagem
         return None
 
 

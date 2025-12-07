@@ -19,6 +19,8 @@ import suport from "../assets/icons/suport.png";
 import logoutIcon from "../assets/icons/logout.png";
 import Cacto from "../assets/icons/Cacto.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 export default function Perfil() {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext); // ← IMPORTANTE
@@ -27,7 +29,7 @@ export default function Perfil() {
 
   const fazerLogout = async () => {
     try {
-      await fetch("http://localhost:8000/api/logout/", {
+      await fetch(`${API_BASE_URL}/api/logout/`, {
         method: "POST",
         credentials: "include",
       });

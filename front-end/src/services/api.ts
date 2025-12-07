@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 interface Noticia {
   id: number;
@@ -213,7 +213,7 @@ export async function getUser() {
 }
 
 export async function updateUser(data: any) {
-  const response = await fetch("http://localhost:8000/api/user/update/", {
+  const response = await fetch(`${API_BASE_URL}/api/user/update/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

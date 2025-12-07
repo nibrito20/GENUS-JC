@@ -7,6 +7,8 @@ import "../css/registro.css";
 import LogoJC from "../assets/imgs/Logo JC.png";
 import BackArrow from "../assets/icons/backArrow.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 export default function Register() {
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ export default function Register() {
   const handleRegister = async () => {
     setErro("");
 
-    const response = await fetch("http://localhost:8000/api/register/", {
+    const response = await fetch(`${API_BASE_URL}/api/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

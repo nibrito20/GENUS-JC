@@ -13,5 +13,6 @@ urlpatterns = [
     # path('', views.index, name='index'), 
 ]
 
-if settings.DEBUG:
+# Servir arquivos de mídia em desenvolvimento (quando não usar Cloudinary)
+if settings.DEBUG and not hasattr(settings, 'DEFAULT_FILE_STORAGE'):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

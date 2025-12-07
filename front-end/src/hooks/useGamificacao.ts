@@ -7,13 +7,15 @@ import Cacto4 from "../assets/imgs/cacto4.png";
 import Cacto5 from "../assets/imgs/cacto5.png";
 import Cacto6 from "../assets/imgs/cacto6.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 export function useGamificacao() {
   const [sequencia, setSequencia] = useState(0);
   const [diasRestantes, setDiasRestantes] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/gamificacao/", {
+    fetch(`${API_BASE_URL}/api/gamificacao/`, {
       credentials: "include",
     })
       .then(res => {

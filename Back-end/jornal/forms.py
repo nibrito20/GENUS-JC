@@ -13,7 +13,7 @@ class NoticiaForm(forms.ModelForm):
         fields = ['titulo', 'imagem', 'resumo', 'detalhes', 'data', 'reporter', 'generos']
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
-            'imagem': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'imagem': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://exemplo.com/imagem.jpg'}),
             'resumo': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'detalhes': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
             'data': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),

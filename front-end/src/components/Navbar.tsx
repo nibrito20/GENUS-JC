@@ -17,6 +17,8 @@ import xIcon from "../assets/icons/x-icon.png";
 import linkedinIcon from "../assets/icons/linkedin-icon.png";
 import youtubeIcon from "../assets/icons/youtube-icon.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 const Navbar = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ const Navbar = () => {
     setLoadingSugestoes(true);
     try {
       const response = await fetch(
-        `http://localhost:8000/api/search-sugestoes/?q=${encodeURIComponent(value)}`,
+        `${API_BASE_URL}/api/search-sugestoes/?q=${encodeURIComponent(value)}`,
         { credentials: "include" }
       );
 

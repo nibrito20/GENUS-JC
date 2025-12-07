@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,16 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ujrslfglevd)es6k26ug&*01afi#=&cx0dn%3@i0a4irenuovp'
+# Use environment variable in production
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-ujrslfglevd)es6k26ug&*01afi#=&cx0dn%3@i0a4irenuovp')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    'genuss.pythonanywhere.com',
-    'localhost',
-    '127.0.0.1'
-]
+# ALLOWED_HOSTS from environment variable, with fallback
+ALLOWED_HOSTS_STR = os.environ.get('ALLOWED_HOSTS', 'genuss.pythonanywhere.com,localhost,127.0.0.1')
+ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STR.split(',') if host.strip()]
 
 
 # Application definition
@@ -41,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',  # Deve vir antes de 'django.contrib.staticfiles' para mídia
     'django.contrib.staticfiles',
+    'cloudinary',  # Cloudinary para armazenamento de imagens
     'jornal', 
     'foguinho',  
     'aval',
@@ -65,10 +70,17 @@ ROOT_URLCONF = 'project.urls'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-   '/home/genuss/GENUS-JC/front-end/dist',
-   '/home/genuss/GENUS-JC/front-end/dist/assets'
-]
+# Configuração de armazenamento de arquivos estáticos
+# Não usamos Cloudinary para arquivos estáticos, apenas para mídia
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# STATICFILES_DIRS só é necessário se você estiver servindo o frontend pelo Django
+# Como estamos usando Firebase para o frontend, isso não é necessário
+# Descomente apenas se precisar servir arquivos estáticos do frontend pelo Django
+# STATICFILES_DIRS = [
+#    '/home/genuss/GENUS-JC/front-end/dist',
+#    '/home/genuss/GENUS-JC/front-end/dist/assets'
+# ]
 
 # Templates desabilitados - usando React no front-end
 TEMPLATES = [
@@ -95,10 +107,39 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# PostgreSQL configuration
+# Parse DATABASE_URL from environment variable (loaded from .env file)
+from urllib.parse import urlparse, parse_qs
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if not DATABASE_URL:
+    raise ValueError(
+        "DATABASE_URL environment variable is not set. "
+        "Please create a .env file in the Back-end directory with your database connection string."
+    )
+
+# Parse the database URL
+parsed = urlparse(DATABASE_URL)
+query_params = parse_qs(parsed.query)
+
+# Extract database name (remove leading /)
+db_name = parsed.path[1:] if parsed.path.startswith('/') else parsed.path
+
+# Build OPTIONS dict from query parameters
+db_options = {}
+if 'sslmode' in query_params:
+    db_options['sslmode'] = query_params['sslmode'][0]
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_name,
+        'USER': parsed.username,
+        'PASSWORD': parsed.password,
+        'HOST': parsed.hostname,
+        'PORT': parsed.port or 5432,
+        'OPTIONS': db_options,
     }
 }
 
@@ -144,8 +185,21 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --- CONFIGURAÇÃO DE MÍDIA (IMAGENS) ---
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Cloudinary para armazenamento de imagens em produção
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+}
+
+# Se Cloudinary estiver configurado, use-o. Caso contrário, use armazenamento local
+if CLOUDINARY_STORAGE['CLOUD_NAME'] and CLOUDINARY_STORAGE['API_KEY'] and CLOUDINARY_STORAGE['API_SECRET']:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    MEDIA_URL = '/media/'
+else:
+    # Fallback para armazenamento local (desenvolvimento)
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # OBSERVAÇÃO: Adicionadas URLs de redirecionamento de Login e Logout
 LOGIN_REDIRECT_URL = '/'
@@ -155,14 +209,15 @@ LOGOUT_REDIRECT_URL = '/'
 #INTEGRACAO COM REACT
 CORS_ALLOW_CREDENTIALS = True
 
+# CORS origins from environment variable, with fallback
+CORS_ALLOWED_ORIGINS_STR = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,https://genuss.pythonanywhere.com')
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://genuss.pythonanywhere.com",
+    origin.strip() for origin in CORS_ALLOWED_ORIGINS_STR.split(',') if origin.strip()
 ]
 
+CSRF_TRUSTED_ORIGINS_STR = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost:5173,https://genuss.pythonanywhere.com')
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "https://genuss.pythonanywhere.com",
+    origin.strip() for origin in CSRF_TRUSTED_ORIGINS_STR.split(',') if origin.strip()
 ]
 
 SESSION_COOKIE_SAMESITE = "None"

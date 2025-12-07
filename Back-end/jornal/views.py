@@ -290,7 +290,7 @@ def admin_secreto_lista(request):
 @login_required
 def admin_secreto_criar(request):
     if request.method == 'POST':
-        form = NoticiaForm(request.POST, request.FILES)
+        form = NoticiaForm(request.POST)  # Removido request.FILES - agora usa URL
         if form.is_valid():
             form.save()
             messages.success(request, 'Notícia criada com sucesso!')
@@ -305,7 +305,7 @@ def admin_secreto_criar(request):
 def admin_secreto_editar(request, noticia_id):
     noticia = get_object_or_404(Noticia, id=noticia_id)
     if request.method == 'POST':
-        form = NoticiaForm(request.POST, request.FILES, instance=noticia)
+        form = NoticiaForm(request.POST, instance=noticia)  # Removido request.FILES - agora usa URL
         if form.is_valid():
             form.save()
             messages.success(request, 'Notícia atualizada com sucesso!')
