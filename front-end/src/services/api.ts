@@ -1,24 +1,4 @@
-// const API_BASE_URL = "http://localhost:8000";
-
-const API_BASE_URL =
-  window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    ? "http://localhost:8000"
-    : "https://genuss.pythonanywhere.com";
-
-function getCookie(name: string): string | null {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    const cookies = document.cookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 interface Noticia {
   id: number;
@@ -109,7 +89,6 @@ export async function adicionarFavorito(noticia_id: number) {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie('csrftoken') || ""
     },
     body: JSON.stringify({ noticia_id }),
   });
@@ -128,9 +107,6 @@ export async function removerFavorito(noticia_id: number) {
     {
       method: "DELETE",
       credentials: "include",
-      headers: {
-        "X-CSRFToken": getCookie('csrftoken') || ""
-      }
     }
   );
 
@@ -158,7 +134,6 @@ export async function updateProfileGeneros(genero_ids: number[]) {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie('csrftoken') || ""
     },
     body: JSON.stringify({ genero_ids }),
   });
@@ -178,7 +153,6 @@ export async function login(email: string, password: string) {
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie('csrftoken') || ""
     },
     body: JSON.stringify({ email, password }),
   });
@@ -191,13 +165,16 @@ export async function login(email: string, password: string) {
   return response.json();
 }
 
-export async function register(email: string, password: string, password2: string) {
+export async function register(
+  email: string,
+  password: string,
+  password2: string
+) {
   const response = await fetch(`${API_BASE_URL}/api/register/`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie('csrftoken') || ""
     },
     body: JSON.stringify({ email, password, password2 }),
   });
@@ -214,9 +191,6 @@ export async function logout() {
   const response = await fetch(`${API_BASE_URL}/api/logout/`, {
     method: "POST",
     credentials: "include",
-    headers: {
-        "X-CSRFToken": getCookie('csrftoken') || "" // <--- ADICIONADO
-    }
   });
 
   if (!response.ok) throw new Error("Erro ao fazer logout");
@@ -232,7 +206,7 @@ export async function getUser() {
   console.log("getUser: Status da resposta:", response.status, response.ok);
   const data = await response.json();
   console.log("getUser: Dados recebidos:", data);
-  
+
   // Não lançar erro se o usuário não estiver autenticado (status 401 é normal)
   // A resposta já contém "authenticated: false"
   return data;
@@ -243,7 +217,6 @@ export async function updateUser(data: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-CSRFToken": getCookie('csrftoken') || ""
     },
     credentials: "include",
     body: JSON.stringify(data),
