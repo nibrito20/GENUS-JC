@@ -179,25 +179,23 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 # -------------------------------------------------------
-#  CORS / CSRF / COOKIES (🔥 ESSENCIAL PARA LOGIN EM FIREBASE)
+#  CORS / CSRF / COOKIES
 # -------------------------------------------------------
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS_STR = os.environ.get(
-    "CORS_ALLOWED_ORIGINS",
-    "https://genus-jc0.web.app"
-)
-CORS_ALLOWED_ORIGINS = [o.strip() for o in CORS_ALLOWED_ORIGINS_STR.split(",")]
+CORS_ALLOWED_ORIGINS = [
+    "https://genus-jc0.web.app",
+    "https://genus-jc0.firebaseapp.com",
+]
 
-CSRF_TRUSTED_ORIGINS_STR = os.environ.get(
-    "CSRF_TRUSTED_ORIGINS",
-    "https://genus-jc.onrender.com,https://genus-jc0.web.app"
-)
-CSRF_TRUSTED_ORIGINS = [o.strip() for o in CSRF_TRUSTED_ORIGINS_STR.split(",")]
+CSRF_TRUSTED_ORIGINS = [
+    "https://genus-jc.onrender.com",
+    "https://genus-jc0.web.app",
+    "https://genus-jc0.firebaseapp.com",
+]
 
-
-# 🔥 Aceita tudo que o navegador enviar (necessário para Content-Type application/json)
+# Aceitar headers necessários
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -209,24 +207,18 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
-CORS_ALLOW_ALL_HEADERS = True
+
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
+# -------------------------------------------------------
+#  COOKIES – ESSENCIAL PARA MOBILE
+# -------------------------------------------------------
 
-# Cookies cross-site obrigatórios:
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_DOMAIN = ".onrender.com"
+SESSION_COOKIE_DOMAIN = "genus-jc.onrender.com"
 
-CSRF_COOKIE_DOMAIN = ".onrender.com"
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
-
-
-# -------------------------------------------------------
-#  ADMIN
-# -------------------------------------------------------
-ADMIN_SITE_HEADER = "GENUS-JC Admin"
-ADMIN_SITE_TITLE = "GENUS-JC"
-ADMIN_INDEX_TITLE = "Painel de Administração"
+CSRF_COOKIE_DOMAIN = "genus-jc.onrender.com"
