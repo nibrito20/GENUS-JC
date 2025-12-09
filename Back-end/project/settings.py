@@ -179,14 +179,20 @@ LOGOUT_REDIRECT_URL = "/"
 
 
 # -------------------------------------------------------
-#  CORS / CSRF / COOKIES
+#  CORS / CSRF / COOKIES – CONFIGURAÇÃO CORRETA
 # -------------------------------------------------------
 
 CORS_ALLOW_CREDENTIALS = True
 
+# Domínios que podem chamar sua API
 CORS_ALLOWED_ORIGINS = [
     "https://genus-jc0.web.app",
     "https://genus-jc0.firebaseapp.com",
+]
+
+# Necessário para permitir mobile WebView (Android/iOS)
+CORS_ALLOW_ORIGIN_REGEXES = [
+    r"^null$",   # Chrome Mobile WebView
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -195,30 +201,34 @@ CSRF_TRUSTED_ORIGINS = [
     "https://genus-jc0.firebaseapp.com",
 ]
 
-# Aceitar headers necessários
+# Headers aceitos pelo navegador durante preflight
 CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
+    "Accept",
+    "Accept-Encoding",
+    "Authorization",
+    "Content-Type",   # <- ESSENCIAL PARA O LOGIN
+    "DNT",
+    "Origin",
+    "User-Agent",
+    "X-CSRFToken",
+    "X-Requested-With",
 ]
+
+CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
 
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
 # -------------------------------------------------------
-#  COOKIES – ESSENCIAL PARA MOBILE
+#  COOKIES – ESSENCIAL PARA LOGIN EM MOBILE
 # -------------------------------------------------------
+
+# O domínio DEVE ser o domínio do backend
+SESSION_COOKIE_DOMAIN = "genus-jc.onrender.com"
+CSRF_COOKIE_DOMAIN = "genus-jc.onrender.com"
 
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_DOMAIN = "genus-jc.onrender.com"
 
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_DOMAIN = "genus-jc.onrender.com"

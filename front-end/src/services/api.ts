@@ -1,5 +1,25 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ||
+  "http://localhost:8000";
 
+// Helpers reutilizáveis
+async function handleJsonResponse(response: Response) {
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error("Erro inesperado no servidor");
+  }
+
+  if (!response.ok) {
+    throw new Error(data.error || "Erro no servidor");
+  }
+
+  return data;
+}
+
+// Tipos
 interface Noticia {
   id: number;
   titulo: string;
@@ -34,7 +54,10 @@ interface User {
   profile?: any;
 }
 
-// --- NOTICIAS ---
+// =========================
+// NOTÍCIAS
+// =========================
+
 export async function getNoticias(
   query?: string,
   genero?: string,
@@ -46,18 +69,14 @@ export async function getNoticias(
   if (query) params.append("q", query);
   if (genero) params.append("genero", genero);
   params.append("ordenacao", ordenacao);
-  params.append("limite", limite.toString());
-  params.append("offset", offset.toString());
+  params.append("limite", String(limite));
+  params.append("offset", String(offset));
 
-  const response = await fetch(
-    `${API_BASE_URL}/api/noticias/?${params.toString()}`,
-    {
-      credentials: "include",
-    }
-  );
+  const response = await fetch(`${API_BASE_URL}/api/noticias/?${params}`, {
+    credentials: "include",
+  });
 
-  if (!response.ok) throw new Error("Erro ao buscar notícias");
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function getNoticiaDetalhe(slug: string) {
@@ -65,40 +84,30 @@ export async function getNoticiaDetalhe(slug: string) {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("Notícia não encontrada");
-  return response.json();
+  return handleJsonResponse(response);
 }
 
-// --- FAVORITOS ---
+// =========================
+// FAVORITOS
+// =========================
+
 export async function getFavoritos() {
   const response = await fetch(`${API_BASE_URL}/api/favoritos/`, {
     credentials: "include",
   });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Erro ao buscar favoritos:", response.status, errorText);
-    throw new Error(`Erro ao buscar favoritos: ${response.status}`);
-  }
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function adicionarFavorito(noticia_id: number) {
   const response = await fetch(`${API_BASE_URL}/api/favoritos/`, {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ noticia_id }),
   });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Erro ao adicionar favorito:", response.status, errorText);
-    throw new Error(`Erro ao adicionar favorito: ${response.status}`);
-  }
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function removerFavorito(noticia_id: number) {
@@ -110,59 +119,45 @@ export async function removerFavorito(noticia_id: number) {
     }
   );
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("Erro ao remover favorito:", response.status, errorText);
-    throw new Error(`Erro ao remover favorito: ${response.status}`);
-  }
-  return response.json();
+  return handleJsonResponse(response);
 }
 
-// --- GENEROS ---
+// =========================
+// GÊNEROS
+// =========================
+
 export async function getGeneros() {
   const response = await fetch(`${API_BASE_URL}/api/generos/`, {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("Erro ao buscar gêneros");
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function updateProfileGeneros(genero_ids: number[]) {
   const response = await fetch(`${API_BASE_URL}/api/profile/generos/`, {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ genero_ids }),
   });
 
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error || "Erro ao atualizar preferências");
-  }
-
-  return response.json();
+  return handleJsonResponse(response);
 }
 
-// --- AUTH ---
+// =========================
+// AUTH
+// =========================
+
 export async function login(email: string, password: string) {
   const response = await fetch(`${API_BASE_URL}/api/login/`, {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Erro ao fazer login");
-  }
-
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function register(
@@ -173,18 +168,11 @@ export async function register(
   const response = await fetch(`${API_BASE_URL}/api/register/`, {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password, password2 }),
   });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Erro ao criar conta");
-  }
-
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function logout() {
@@ -193,34 +181,29 @@ export async function logout() {
     credentials: "include",
   });
 
-  if (!response.ok) throw new Error("Erro ao fazer logout");
-  return response.json();
+  return handleJsonResponse(response);
 }
 
 export async function getUser() {
-  console.log("getUser: Enviando requisição para /api/user/");
+  console.log("getUser → chamada feita para /api/user/");
+
   const response = await fetch(`${API_BASE_URL}/api/user/`, {
     credentials: "include",
   });
 
-  console.log("getUser: Status da resposta:", response.status, response.ok);
-  const data = await response.json();
-  console.log("getUser: Dados recebidos:", data);
+  const data = await handleJsonResponse(response);
 
-  // Não lançar erro se o usuário não estiver autenticado (status 401 é normal)
-  // A resposta já contém "authenticated: false"
+  console.log("getUser → resposta:", data);
   return data;
 }
 
 export async function updateUser(data: any) {
   const response = await fetch(`${API_BASE_URL}/api/user/update/`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     credentials: "include",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
 
-  return response.json();
+  return handleJsonResponse(response);
 }
