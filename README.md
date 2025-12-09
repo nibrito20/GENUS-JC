@@ -26,6 +26,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 ## Entregas Semanais
 - [Documento de Histórias de Usuário](https://docs.google.com/document/d/1aFmJWQ57J6yf8G54d8f4gd4CUoo7hbqy8WJeeoRDG_I/edit?usp=drivesdk)
 - [Relatório da Programação em Par](https://docs.google.com/document/d/1xq8J3EXIh-6UywgYfKDu6SvC37qS3sQsuFjnGYJRfYs/edit?usp=drivesdk)
+- [Issue Tracker atualizado](https://github.com/nibrito20/GENUS-JC/issues)
 
 ## Link Deploy
 - [Clique aqui](https://genus-jc0.web.app)
