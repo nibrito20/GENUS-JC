@@ -23,9 +23,10 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS_STR = os.environ.get(
     "ALLOWED_HOSTS",
-    "localhost,127.0.0.1"
+    "localhost,127.0.0.1,genus-jc.onrender.com"
 )
 ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS_STR.split(",")]
+
 
 # -------------------------------------------------------
 #  APPS
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+
 # -------------------------------------------------------
 #  MIDDLEWARE
 # -------------------------------------------------------
@@ -62,17 +64,22 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "project.urls"
+
 
 # -------------------------------------------------------
 #  STATIC FILES
 # -------------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 
 # -------------------------------------------------------
 #  TEMPLATES
@@ -92,7 +99,9 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = "project.wsgi.application"
+
 
 # -------------------------------------------------------
 #  DATABASE (POSTGRES + NEON)
@@ -122,6 +131,7 @@ DATABASES = {
     }
 }
 
+
 # -------------------------------------------------------
 #  PASSWORDS
 # -------------------------------------------------------
@@ -132,6 +142,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+
 # -------------------------------------------------------
 #  LOCALE
 # -------------------------------------------------------
@@ -141,6 +152,7 @@ USE_I18N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # -------------------------------------------------------
 #  MEDIA (Cloudinary)
@@ -158,34 +170,39 @@ else:
     MEDIA_URL = "/media/"
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+
 # -------------------------------------------------------
 #  LOGIN
 # -------------------------------------------------------
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+
 # -------------------------------------------------------
-#  CORS / COOKIE CONFIG (🔥 ESSENCIAL PARA FIREBASE + RENDER)
+#  CORS / CSRF / COOKIES (🔥 ESSENCIAL PARA LOGIN EM FIREBASE)
 # -------------------------------------------------------
+
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS_STR = os.environ.get(
     "CORS_ALLOWED_ORIGINS",
     "https://genus-jc0.web.app"
 )
-CORS_ALLOWED_ORIGINS = [
-    o.strip() for o in CORS_ALLOWED_ORIGINS_STR.split(",")
-]
+CORS_ALLOWED_ORIGINS = [o.strip() for o in CORS_ALLOWED_ORIGINS_STR.split(",")]
 
 CSRF_TRUSTED_ORIGINS_STR = os.environ.get(
     "CSRF_TRUSTED_ORIGINS",
-    "https://genus-jc0.web.app"
+    "https://genus-jc.onrender.com,https://genus-jc0.web.app"
 )
-CSRF_TRUSTED_ORIGINS = [
-    o.strip() for o in CSRF_TRUSTED_ORIGINS_STR.split(",")
-]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in CSRF_TRUSTED_ORIGINS_STR.split(",")]
 
-# COOKIES PARA FUNCIONAR EM CELULAR / FIREBASE / HTTPS
+
+# 🔥 Aceita tudo que o navegador enviar (necessário para Content-Type application/json)
+CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
+
+
+# Cookies cross-site obrigatórios:
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
@@ -193,11 +210,10 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 
-# Permitir headers adicionais
-CORS_ALLOW_HEADERS = ["*"]
-CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
-# Admin
+# -------------------------------------------------------
+#  ADMIN
+# -------------------------------------------------------
 ADMIN_SITE_HEADER = "GENUS-JC Admin"
 ADMIN_SITE_TITLE = "GENUS-JC"
 ADMIN_INDEX_TITLE = "Painel de Administração"
