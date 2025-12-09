@@ -28,7 +28,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - [Relatório da Programação em Par](https://docs.google.com/document/d/1xq8J3EXIh-6UywgYfKDu6SvC37qS3sQsuFjnGYJRfYs/edit?usp=drivesdk)
 
 ## Link Deploy
-- [Clique aqui](https://genuss.pythonanywhere.com)
+- [Clique aqui](https://genus-jc0.web.app)
 
 ---
 
