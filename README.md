@@ -20,7 +20,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 ## Tecnologias e Ferramentas
 - Frontend: HTML, CSS, JavaScript
 - Backend: Django / Python
-- Banco de Dados: SQLite
+- Banco de Dados: Postergree
 - Controle de Versão: Git e GitHub
 
 ## Entregas Semanais
@@ -28,6 +28,8 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - [Relatório da Programação em Par](https://docs.google.com/document/d/1xq8J3EXIh-6UywgYfKDu6SvC37qS3sQsuFjnGYJRfYs/edit?usp=drivesdk)
 - [Issue Tracker atualizado](https://github.com/nibrito20/GENUS-JC/issues)
 - [Deploy](https://genus-jc0.web.app)
+- [Readme atualizado](https://github.com/nibrito20/GENUS-JC/blob/main/README.md)
+- [Contributing](https://github.com/nibrito20/GENUS-JC/blob/main/CONTRIBUTING.md)
 
 ## Link Deploy
 - [Clique aqui](https://genus-jc0.web.app)
