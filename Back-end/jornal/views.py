@@ -156,7 +156,8 @@ def index(request):
         noticias = Noticia.objects.filter(
             Q(titulo__icontains=query) |
             Q(resumo__icontains=query) |
-            Q(detalhes__icontains=query)
+            Q(detalhes__icontains=query) |
+            Q(reporter_icontains=query)
         ).distinct().order_by('-data')
     else:
         noticias = Noticia.objects.all().order_by('-data')[:8]
@@ -486,6 +487,7 @@ def api_user(request):
 def api_noticias(request):
     query = request.GET.get('q')
     genero = request.GET.get('genero')
+    reporter = request.GET.get('reporter')
     ordenacao = request.GET.get('ordenacao', '-data')
     limite = int(request.GET.get('limite', 20))
     offset = int(request.GET.get('offset', 0))
@@ -496,11 +498,15 @@ def api_noticias(request):
         noticias = noticias.filter(
             Q(titulo__icontains=query) |
             Q(resumo__icontains=query) |
-            Q(detalhes__icontains=query)
+            Q(detalhes__icontains=query) |
+            Q(reporter__icontains=query)
         ).distinct()
 
     if genero:
         noticias = noticias.filter(generos__nome=genero).distinct()
+
+    if reporter:
+        noticias = noticias.filter(reporter__icontains=reporter).distinct()
 
     total = noticias.count()
     noticias = noticias.order_by(ordenacao)[offset:offset + limite]
