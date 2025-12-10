@@ -1,5 +1,5 @@
 """
-Django settings for project project.
+Django settings for project.
 """
 
 from pathlib import Path
@@ -12,7 +12,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # -------------------------------------------------------
-#  SECURITY
+# SECURITY
 # -------------------------------------------------------
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
@@ -21,15 +21,15 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS_STR = os.environ.get(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,genus-jc.onrender.com"
-)
-ALLOWED_HOSTS = [h.strip() for h in ALLOWED_HOSTS_STR.split(",")]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "genus-jc.onrender.com",
+]
 
 
 # -------------------------------------------------------
-#  APPS
+# APPS
 # -------------------------------------------------------
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -51,10 +51,10 @@ INSTALLED_APPS = [
 
 
 # -------------------------------------------------------
-#  MIDDLEWARE
+# MIDDLEWARE
 # -------------------------------------------------------
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",   # <- CORS PRIMEIRO
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -65,11 +65,8 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = "project.urls"
-
-
 # -------------------------------------------------------
-#  STATIC FILES
+# STATIC FILES
 # -------------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -82,7 +79,7 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 
 # -------------------------------------------------------
-#  TEMPLATES
+# TEMPLATES
 # -------------------------------------------------------
 TEMPLATES = [
     {
@@ -104,7 +101,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 
 
 # -------------------------------------------------------
-#  DATABASE (POSTGRES + NEON)
+# DATABASE (POSTGRES + NEON)
 # -------------------------------------------------------
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if not DATABASE_URL:
@@ -113,7 +110,7 @@ if not DATABASE_URL:
 parsed = urlparse(DATABASE_URL)
 query_params = parse_qs(parsed.query)
 
-db_name = parsed.path[1:] if parsed.path.startswith("/") else parsed.path
+db_name = parsed.path.lstrip("/")
 
 db_options = {}
 if "sslmode" in query_params:
@@ -133,7 +130,7 @@ DATABASES = {
 
 
 # -------------------------------------------------------
-#  PASSWORDS
+# PASSWORDS
 # -------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -144,7 +141,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # -------------------------------------------------------
-#  LOCALE
+# LOCALE
 # -------------------------------------------------------
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -155,7 +152,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # -------------------------------------------------------
-#  MEDIA (Cloudinary)
+# MEDIA (Cloudinary)
 # -------------------------------------------------------
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME", ""),
@@ -172,27 +169,26 @@ else:
 
 
 # -------------------------------------------------------
-#  LOGIN
+# LOGIN
 # -------------------------------------------------------
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
 # -------------------------------------------------------
-#  CORS / CSRF / COOKIES – CONFIGURAÇÃO CORRETA
+# CORS / CSRF / COOKIES — ESSENCIAL PARA iOS/macOS
 # -------------------------------------------------------
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Domínios que podem chamar sua API
 CORS_ALLOWED_ORIGINS = [
     "https://genus-jc0.web.app",
     "https://genus-jc0.firebaseapp.com",
 ]
 
-# Necessário para permitir mobile WebView (Android/iOS)
+# Permite WebView iOS/Android (origin = null)
 CORS_ALLOW_ORIGIN_REGEXES = [
-    r"^null$",   # Chrome Mobile WebView
+    r"^null$",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
@@ -201,12 +197,11 @@ CSRF_TRUSTED_ORIGINS = [
     "https://genus-jc0.firebaseapp.com",
 ]
 
-# Headers aceitos pelo navegador durante preflight
 CORS_ALLOW_HEADERS = [
     "Accept",
     "Accept-Encoding",
     "Authorization",
-    "Content-Type",   # <- ESSENCIAL PARA O LOGIN
+    "Content-Type",
     "DNT",
     "Origin",
     "User-Agent",
@@ -215,14 +210,12 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
-
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
-# -------------------------------------------------------
-#  COOKIES – ESSENCIAL PARA LOGIN EM MOBILE
-# -------------------------------------------------------
 
-# O domínio DEVE ser o domínio do backend
+# -------------------------------------------------------
+# COOKIES — ESSENCIAL PARA LOGIN EM MOBILE/IOS
+# -------------------------------------------------------
 SESSION_COOKIE_DOMAIN = "genus-jc.onrender.com"
 CSRF_COOKIE_DOMAIN = "genus-jc.onrender.com"
 
