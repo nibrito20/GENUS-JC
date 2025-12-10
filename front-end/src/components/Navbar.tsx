@@ -9,7 +9,6 @@ import LogoJC from "../assets/imgs/Logo JC.png";
 import HamburguerIcon from "../assets/icons/Hamburguer.png";
 import SearchIcon from "../assets/icons/search.png";
 import noUserIcon from "../assets/icons/noUser.png";
-import Cacto from "../assets/icons/Cacto.png";
 import ArrowUp from "../assets/icons/arrow_up.png";
 
 import facebookIcon from "../assets/icons/facebook-icon.png";
@@ -124,7 +123,7 @@ const Navbar = () => {
               </li>
 
               <li><h1>Anuncie no JC</h1></li>
-              <li><Link to="/feedback"><h1>Avalie o JC</h1></Link></li>
+              <li><Link to="/feedback" className="link-to-feedback"><h1>Avalie o JC</h1></Link></li>
             </ul>
           </div>
 

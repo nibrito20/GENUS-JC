@@ -352,6 +352,10 @@ main {
   color: #ac0000;
 }
 
+.link-to-feedback > h1{
+  color: #ac0000;
+}
+
 .categorias {
   display: flex;
   align-items: center;

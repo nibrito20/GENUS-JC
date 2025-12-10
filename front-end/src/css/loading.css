@@ -1,0 +1,54 @@
+.loading-style {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  align-items: center;
+  color: #ac0000;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.loading-points-style {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+/* ANIMAÇÃO DOS PONTOS */
+.loading-points-style > div {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  background-color: #ac0000;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* Delay para cada ponto pulsar em sequência */
+.loading-points-style > div:nth-child(1) {
+  animation-delay: 0s;
+}
+.loading-points-style > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loading-points-style > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Keyframes da animação */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+}

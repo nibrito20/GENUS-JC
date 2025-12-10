@@ -11,6 +11,7 @@ import AdSimulator, { AdSimulator2 } from "../components/AdSimulator";
 import ChargeCard from "../components/ChargeCard";
 import Colunista from "../components/Colunista";
 import Footer from "../components/Footer";
+import { LoadingNews } from "../components/Loading";
 import { useEffect, useState } from "react";
 import { getNoticias } from "../services/api";
 
@@ -74,7 +75,9 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    return <div className="loading">Carregando notícias...</div>;
+    return (
+      <LoadingNews />
+    )
   }
 
   return (

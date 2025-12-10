@@ -1,38 +1,14 @@
 @font-face {
-    font-family: 'lexend';
-    src: url('./assets/fonts/Lexend-VariableFont_wght.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "lexend";
+  src: url("./assets/fonts/Lexend-VariableFont_wght.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-    font-family: 'lexend';
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: "lexend";
 }
 
-.carregando-style {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #AC0000;
-    font-size: 24px;
-    font-weight: 800;
-}
-
-.loading-points-style {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-}
-
-.loading-points-style > div {
-    width: 48px;
-    height: 48px;
-    border-radius: 100%;
-    background-color: #AC0000;
-}

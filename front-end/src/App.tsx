@@ -6,27 +6,21 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
-import Cacto from "./pages/cacto";
+import Cacto from "./pages/Cacto";
 import Noticia from "./pages/Noticia";
 import Favoritos from "./pages/Favoritos";
 import Noticias from "./pages/Noticias";
 import Personalizacao from "./pages/Personalizacao";
 import PerfilInfo from "./pages/PerfilInfo";
 import Feedback from "./pages/Feedback";
+import Loading from "./components/Loading";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
 
   if (loading)
     return (
-      <div className="loading-style">
-        <h1>carregando</h1>
-        <div className="loading-points-style">
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
+      <Loading />
     );
 
   return (
