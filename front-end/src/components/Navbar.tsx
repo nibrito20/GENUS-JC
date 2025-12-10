@@ -2,6 +2,7 @@ import "../css/navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useGamificacao } from "../hooks/useGamificacao";
 
 import LogoUOL from "../assets/imgs/Logo UOL.png";
 import LogoJC from "../assets/imgs/Logo JC.png";
@@ -86,6 +87,8 @@ const Navbar = () => {
     closeSearch();
   }
 
+  const { cactoImg} = useGamificacao();
+
   return (
     <div>
       {/* Sidebar */}
@@ -159,7 +162,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <Link to="/cacto" className="navlink">
-                  <img src={Cacto} alt="Cacto" className="cacto" />
+                  <img src={cactoImg} alt="Cacto" className="cacto" />
                 </Link>
                 <Link to="/perfil" className="navlink">
                   <img src={noUserIcon} alt="Perfil" className="redondo" />

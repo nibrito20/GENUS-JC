@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Perfil from "./pages/Perfil";
 import Registro from "./pages/Registro";
-import Cacto from "./pages/Cacto";
+import Cacto from "./pages/cacto";
 import Noticia from "./pages/Noticia";
 import Favoritos from "./pages/Favoritos";
 import Noticias from "./pages/Noticias";

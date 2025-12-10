@@ -2,7 +2,7 @@ import "../css/home.css";
 
 import Navbar from "../components/Navbar";
 import { Container3, Container4, Container5 } from "../components/Container";
-import Topic from "../components/Topic";
+import { SmallerTopic } from "../components/Topic";
 import EmblaCarousel from "../components/EmblaCarousel";
 import NewsCard from "../components/NewsCard";
 import MoreNewsButton from "../components/MoreNewsButton";
@@ -84,7 +84,7 @@ export default function Home() {
         <Container3>
           <section className="section-gap">
             <Container4>
-              <Topic topicTitle="Relevantes" />
+              <SmallerTopic topicTitle="Relevantes" />
             </Container4>
             {slides.length > 0 && (
               <EmblaCarousel slides={slides} options={{ loop: true }} />
@@ -92,7 +92,7 @@ export default function Home() {
           </section>
           <section className="section-gap">
             <Container5>
-              <Topic topicTitle="Recentes" />
+              <SmallerTopic topicTitle="Recentes" />
             </Container5>
             <div className="news-container">
               {noticias.slice(0, 4).map((noticia) => (

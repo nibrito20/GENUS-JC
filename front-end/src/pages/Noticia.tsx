@@ -1,13 +1,18 @@
 import Navbar from "../components/Navbar";
-import { Container3 } from "../components/Container";
+import { Container4 } from "../components/Container";
 import Footer from "../components/Footer";
 import { useEffect, useState, useContext } from "react";
-import { getNoticiaDetalhe, adicionarFavorito, removerFavorito } from "../services/api";
+import {
+  getNoticiaDetalhe,
+  adicionarFavorito,
+  removerFavorito,
+} from "../services/api";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../css/noticia.css";
 import staredImg from "../assets/icons/stared.png";
 import notStaredImg from "../assets/icons/not-stared.png";
+import TextToSpeech from "../components/OuvirNoticiaButton";
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();
@@ -27,7 +32,9 @@ export default function Noticia() {
         setNoticia(data.noticia);
         setFavorito(data.is_favorito || false);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Erro ao carregar notícia");
+        setError(
+          err instanceof Error ? err.message : "Erro ao carregar notícia"
+        );
       } finally {
         setLoading(false);
       }
@@ -69,36 +76,52 @@ export default function Noticia() {
     <>
       <Navbar />
       <div className="page-content">
-        <Container3>
+        <Container4>
           <article className="noticia-detalhe">
             <div className="noticia-header">
-              <h1>{noticia.titulo}</h1>
+              <h1 id="texto-noticia">{noticia.titulo}</h1>
+            </div>
+            <div className="noticia-meta-star">
+              <div className="noticia-meta">
+                <p className="reporter-p">por</p>
+                <span className="reporter-red">{noticia.reporter}</span>
+                <span>
+                  {new Date(noticia.data).toLocaleDateString("pt-BR")}
+                </span>
+              </div>
               <img
                 src={favorito ? staredImg : notStaredImg}
                 alt={favorito ? "Remover favorito" : "Adicionar favorito"}
                 onClick={handleFavoritoToggle}
-                className={`noticia-fav-btn ${favorito ? "favorito-active" : ""}`}
+                className={`noticia-fav-btn ${
+                  favorito ? "favorito-active" : ""
+                }`}
                 style={{ cursor: "pointer" }}
               />
             </div>
-            <div className="noticia-meta">
-              <span>{noticia.reporter}</span>
-              <span>{new Date(noticia.data).toLocaleDateString("pt-BR")}</span>
+            <div className="centralizer-speak-button">
+              <TextToSpeech />
             </div>
             {noticia.imagem_url && (
-              <img src={noticia.imagem_url} alt={noticia.titulo} className="noticia-imagem" />
+              <img
+                src={noticia.imagem_url}
+                alt={noticia.titulo}
+                className="noticia-imagem"
+              />
             )}
-            <p className="noticia-resumo">{noticia.resumo}</p>
-            <div className="noticia-conteudo">{noticia.detalhes}</div>
-            <div className="noticia-generos">
-              {noticia.generos.map((genero: any) => (
-                <span key={genero.id} className="genero-badge">
-                  {genero.nome}
-                </span>
-              ))}
+            <div id="texto-noticia" className="padding-for-text">
+              <p className="noticia-resumo">{noticia.resumo}</p>
+              <div className="noticia-conteudo">{noticia.detalhes}</div>
+              <div className="noticia-generos">
+                {noticia.generos.map((genero: any) => (
+                  <span key={genero.id} className="genero-badge">
+                    {genero.nome}
+                  </span>
+                ))}
+              </div>
             </div>
           </article>
-        </Container3>
+        </Container4>
       </div>
       <Footer />
     </>

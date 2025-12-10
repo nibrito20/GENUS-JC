@@ -36,25 +36,10 @@ const Topic = ({ topicTitle, showStar = false, isFavorito = false, onStarClick }
 export default Topic;
 
 const SmallerTopic = ({ topicTitle }: topicProps) => {
-  const [favorited, setFavorited] = useState(false);
-
-  function favoritar() {
-    setFavorited((prev) => !prev); // alterna entre true / false
-  }
-
   return (
-    <div className="smaller-topic-container-divider">
-      <div className="smaller-topic-container">
-        <h1>|</h1>
-        <h1>{topicTitle}</h1>
-      </div>
-
-      <img
-        src={favorited ? staredImg : notStaredImg}
-        alt="Favoritar"
-        onClick={favoritar}
-        style={{ cursor: "pointer" }}
-      />
+    <div className="smaller-topic-container">
+      <h1>|</h1>
+      <h1>{topicTitle}</h1>
     </div>
   );
 };

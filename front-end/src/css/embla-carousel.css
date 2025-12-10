@@ -9,7 +9,6 @@
 
 .embla__viewport {
   overflow: hidden;
-  border-radius: 8px;
   min-height: var(--slide-height);
 }
 
