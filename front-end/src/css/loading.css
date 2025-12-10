@@ -13,16 +13,46 @@
   text-align: center;
 }
 
+.loading-gender-style {
+  width: 100%;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  color: #ac0000;
+  font-size: 22px;
+  font-weight: 800;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
 .loading-points-style {
   display: flex;
   justify-content: center;
   gap: 24px;
 }
 
+.loading-points-style-gender {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
 /* ANIMAÇÃO DOS PONTOS */
 .loading-points-style > div {
   width: 40px;
   height: 40px;
+  border-radius: 100%;
+  background-color: #ac0000;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+/* ANIMAÇÃO DOS PONTOS */
+.loading-points-style-gender > div {
+  width: 22px;
+  height: 22px;
   border-radius: 100%;
   background-color: #ac0000;
   animation: pulse 1.4s ease-in-out infinite;
@@ -36,6 +66,17 @@
   animation-delay: 0.2s;
 }
 .loading-points-style > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Delay para cada ponto pulsar em sequência */
+.loading-points-style-gender > div:nth-child(1) {
+  animation-delay: 0s;
+}
+.loading-points-style-gender > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loading-points-style-gender > div:nth-child(3) {
   animation-delay: 0.4s;
 }
 

@@ -44,3 +44,18 @@ const LoadingInfo = () => {
 }
 
 export { LoadingInfo }
+
+const LoadingGender = () => {
+    return (
+      <div className="loading-gender-style">
+        <h1>Carregando generos</h1>
+        <div className="loading-points-style-gender">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+}
+
+export { LoadingGender }

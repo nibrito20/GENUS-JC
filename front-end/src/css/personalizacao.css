@@ -1,6 +1,13 @@
 .personalizacao-section {
   padding: 48px 0;
   text-align: center;
+
+  /* Centralização completa */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .titulo {
@@ -15,16 +22,20 @@
   margin-bottom: 32px;
 }
 
-/* GRID DE 2 COLUNAS */
+/* GRID DE 2 COLUNAS RESPONSIVO */
 .generos-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Ajusta automaticamente */
   gap: 16px 12px;
-  max-width: 380px;
-  margin: 0 auto;
+
+  width: 100%;
+  max-width: 500px; /* Limita largura para centralizar melhor */
+
+  justify-items: center; /* Centraliza itens dentro de cada célula */
+  align-items: center;
 }
 
-/* BOTÕES GENEROS */
+/* BOTÕES GÊNEROS */
 .genero-btn {
   display: flex;
   align-items: center;
@@ -38,6 +49,7 @@
   font-size: 16px;
   font-weight: 600;
   transition: 0.2s;
+  justify-content: flex-start;
 }
 
 .genero-btn:hover {
@@ -51,9 +63,20 @@
   color: #fff;
 }
 
-/* Ícone padrão (você pode trocar por imagens) */
+/* CONTAINER DO ÍCONE */
 .genero-icone {
-  font-size: 20px;
+  background-color: #AC0000;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gender-img {
+  width: 28px;
+  height: 28px;
 }
 
 /* BOTÃO FINAL */
