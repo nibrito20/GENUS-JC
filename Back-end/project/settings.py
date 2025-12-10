@@ -225,3 +225,27 @@ SESSION_COOKIE_HTTPONLY = True
 
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
+
+# ============================================================
+# LOGGING PARA MOSTRAR OS ERROS REAIS NO RENDER
+# ============================================================
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "ERROR",   # Pode mudar para "DEBUG" se quiser ver tudo
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+    },
+}
