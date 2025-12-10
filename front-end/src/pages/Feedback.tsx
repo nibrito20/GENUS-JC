@@ -1,5 +1,8 @@
 import { useState } from "react";
-import "./feedback.css"; // importa o CSS
+import "../css/feedback.css";
+import { Navbar2 } from "../components/Navbar";
+
+import Interrogation from "../assets/icons/interrogation-feedback.png";
 
 const Feedback = () => {
   const [estrelas, setEstrelas] = useState(0);
@@ -31,38 +34,48 @@ const Feedback = () => {
   };
 
   return (
-    <div className="feedback-container">
-      <h2 className="feedback-title">Avalie nosso site</h2>
+    <>
+      <Navbar2/>
+      <div className="all-feedback-container">
+        <div className="feedback-container">
+          <img
+            src={Interrogation}
+            alt="Interrogação"
+            className="interrogation-img"
+          />
+          <h1 className="feedback-title">gostou da experiencia com o Jc?</h1>
 
-      {/* Estrelas */}
-      <div className="stars-container">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <span
-            key={n}
-            className={`star ${n <= estrelas ? "selected" : ""}`}
-            onClick={() => setEstrelas(n)}
+          {/* Estrelas */}
+          <div className="stars-container">
+            {[1, 2, 3, 4, 5].map((n) => (
+              <span
+                key={n}
+                className={`star ${n <= estrelas ? "selected" : ""}`}
+                onClick={() => setEstrelas(n)}
+              >
+                ★
+              </span>
+            ))}
+          </div>
+
+          {/* Comentário */}
+          <textarea
+            className="feedback-textarea"
+            placeholder="Escreva aqui"
+            value={detalhes}
+            onChange={(e) => setDetalhes(e.target.value)}
+          />
+
+          <button
+            className="feedback-button"
+            onClick={enviar}
+            disabled={loading || estrelas === 0 || detalhes.trim() === ""}
           >
-            ★
-          </span>
-        ))}
+            {loading ? "Enviando..." : "Enviar Feedback"}
+          </button>
+        </div>
       </div>
-
-      {/* Comentário */}
-      <textarea
-        className="feedback-textarea"
-        placeholder="Digite seu comentário..."
-        value={detalhes}
-        onChange={(e) => setDetalhes(e.target.value)}
-      />
-
-      <button
-        className="feedback-button"
-        onClick={enviar}
-        disabled={loading || estrelas === 0 || detalhes.trim() === ""}
-      >
-        {loading ? "Enviando..." : "Enviar Feedback"}
-      </button>
-    </div>
+    </>
   );
 };
 

@@ -11,6 +11,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # -------------------------------------------------------
 # SECURITY
 # -------------------------------------------------------
@@ -27,9 +28,8 @@ ALLOWED_HOSTS = [
     "genus-jc.onrender.com",
 ]
 
-# -------------------------------------------------------
-# ROOT URLS (FALTAVA AQUI — ESSENCIAL)
-# -------------------------------------------------------
+
+# MUITO IMPORTANTE – estava faltando
 ROOT_URLCONF = "project.urls"
 
 
@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "cloudinary_storage",
     "django.contrib.staticfiles",
+
+    "cloudinary_storage",
     "cloudinary",
 
     "jornal",
@@ -80,8 +81,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-
 
 # -------------------------------------------------------
 # TEMPLATES
@@ -100,7 +99,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = "project.wsgi.application"
 
@@ -135,7 +133,7 @@ DATABASES = {
 
 
 # -------------------------------------------------------
-# PASSWORDS
+# PASSWORD
 # -------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -157,7 +155,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # -------------------------------------------------------
-# MEDIA (Cloudinary)
+# CLOUDINARY
 # -------------------------------------------------------
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME", ""),
@@ -174,24 +172,24 @@ else:
 
 
 # -------------------------------------------------------
-# LOGIN
+# LOGIN REDIRECT
 # -------------------------------------------------------
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 
 # -------------------------------------------------------
-# CORS / CSRF / COOKIES — ESSENCIAL PARA iOS/macOS
+# CORS / CSRF — ESSENCIAL PARA LOGIN COM MOBILE / iOS
 # -------------------------------------------------------
 
 CORS_ALLOW_CREDENTIALS = True
 
+# Apenas seu frontend REAL
 CORS_ALLOWED_ORIGINS = [
     "https://genus-jc0.web.app",
-    "https://genus-jc0.firebaseapp.com",
 ]
 
-# Permite WebView iOS/Android (origin = null)
+# WebView iOS/Android envia "null" como origin
 CORS_ALLOW_ORIGIN_REGEXES = [
     r"^null$",
 ]
@@ -199,9 +197,10 @@ CORS_ALLOW_ORIGIN_REGEXES = [
 CSRF_TRUSTED_ORIGINS = [
     "https://genus-jc.onrender.com",
     "https://genus-jc0.web.app",
-    "https://genus-jc0.firebaseapp.com",
 ]
 
+
+# Permitir headers do fetch
 CORS_ALLOW_HEADERS = [
     "Accept",
     "Accept-Encoding",
@@ -219,11 +218,10 @@ CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 
 
 # -------------------------------------------------------
-# COOKIES — ESSENCIAL PARA LOGIN EM MOBILE/IOS
+# COOKIES — MUITO IMPORTANTE PARA LOGIN NO IOS
 # -------------------------------------------------------
-SESSION_COOKIE_DOMAIN = "genus-jc.onrender.com"
-CSRF_COOKIE_DOMAIN = "genus-jc.onrender.com"
 
+# NÃO DEFINA DOMAIN quando backend e frontend não compartilham domínio.
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
@@ -232,26 +230,15 @@ CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 
 
-# ============================================================
-# LOGGING PARA MOSTRAR OS ERROS REAIS NO RENDER
-# ============================================================
+# -------------------------------------------------------
+# LOGGING
+# -------------------------------------------------------
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": "ERROR",
-    },
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "root": {"handlers": ["console"], "level": "ERROR"},
     "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "ERROR",
-            "propagate": True,
-        },
+        "django": {"handlers": ["console"], "level": "ERROR", "propagate": True},
     },
 }

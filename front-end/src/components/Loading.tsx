@@ -29,3 +29,18 @@ const LoadingNews = () => {
 }
 
 export { LoadingNews }
+
+const LoadingInfo = () => {
+    return (
+      <div className="loading-style">
+        <h1>Carregando informações</h1>
+        <div className="loading-points-style">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+}
+
+export { LoadingInfo }

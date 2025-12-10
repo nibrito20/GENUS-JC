@@ -1,25 +1,32 @@
+.all-feedback-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .feedback-container {
-  width: 350px;
-  margin: 40px auto;
-  padding: 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  text-align: center;
-  font-family: Arial, sans-serif;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 28px;
+    border: 1px solid #C7C7C7;
+    border-radius: 30px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .feedback-title {
-  margin-bottom: 15px;
-  font-size: 22px;
-  font-weight: bold;
-  color: #333;
+  font-size: 32px;
+  text-align: center;
+  flex-wrap: wrap;
+  color: black;
 }
 
 /* Estrelas */
-.stars-container {
-  margin: 10px 0 20px 0;
-}
 
 .star {
   font-size: 40px;
@@ -51,7 +58,7 @@
 }
 
 .feedback-textarea:focus {
-  border-color: #4caf50;
+  outline: none;
 }
 
 /* Botão */
@@ -59,12 +66,10 @@
   width: 100%;
   margin-top: 15px;
   padding: 12px 0;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
+  background: none; 
+  border: 2px solid #C7C7C7;
+  color: #7B7B7B;
   font-size: 16px;
-  font-weight: bold;
   cursor: pointer;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
@@ -76,4 +81,16 @@
 .feedback-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.interrogation-img {
+    max-width: 100%;
+    max-height: 128px;
+
+}
+
+@media screen and (min-width: 700px) {
+    .feedback-container {
+        width: 26rem;
+}
 }

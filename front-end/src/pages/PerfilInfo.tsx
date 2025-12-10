@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import backArrow from "../assets/icons/backArrow.png";
 
 import "../css/perfilinfo.css";
-import { LoadingNews } from "../components/Loading";
+import { LoadingInfo } from "../components/Loading";
 
 export default function PerfilInfo() {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ export default function PerfilInfo() {
     }
   }
 
-  if (loading) return (<LoadingNews />);
+  if (loading) return (<LoadingInfo />);
 
   return (
     <>
