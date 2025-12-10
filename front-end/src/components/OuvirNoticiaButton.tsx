@@ -75,7 +75,7 @@ const TextToSpeech = () => {
       <div className="speak-button-container">
         <h1>Clique aqui e escute a matéria</h1>
         <button onClick={handleSpeak} className="speak-button">
-          {isSpeaking ? "⏸" : "▶"}
+          {isSpeaking ? "||" : "▶"}
         </button>
       </div>
     </div>

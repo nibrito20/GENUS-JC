@@ -3,6 +3,7 @@ import "../css/feedback.css";
 import { Navbar2 } from "../components/Navbar";
 
 import Interrogation from "../assets/icons/interrogation-feedback.png";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/";
 
 const Feedback = () => {
   const [estrelas, setEstrelas] = useState(0);
@@ -12,7 +13,7 @@ const Feedback = () => {
   const enviar = async () => {
     setLoading(true);
 
-    const response = await fetch("http://localhost:8000/api/feedback/", {
+    const response = await fetch(`${API_BASE_URL}/api/feedback/`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({

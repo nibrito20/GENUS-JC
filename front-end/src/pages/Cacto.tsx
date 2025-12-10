@@ -40,8 +40,7 @@ export default function Cacto() {
 
           <h2 className="h2-adjust"></h2>
           <p className="pc-adjust margin-adjust">
-            Para acumular dias você deve ler notícias diariamente, se não você
-            perde todos os dias lidos
+            Para acumular dias e subir o nível do seu cacto, leia no JC por, no mínimo, 3 minutos todos os dias!
           </p>
           <div className="hr margin-adjust"></div>
         </section>

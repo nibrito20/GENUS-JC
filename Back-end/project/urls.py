@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('jornal.urls')), 
-    path('avaliacoes/', include('aval.urls')),
+    path('', include('aval.urls')),
 ]
 
 # Servir arquivos de mídia em desenvolvimento (quando não usar Cloudinary)
