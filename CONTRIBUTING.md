@@ -12,7 +12,7 @@ A aplicação é composta por:
 
 * **Frontend**: React
 * **Backend**: Django / Python
-* **Banco de Dados**: SQLite
+* **Banco de Dados**: Postergree
 * **Versionamento**: Git e GitHub
 
 ---
