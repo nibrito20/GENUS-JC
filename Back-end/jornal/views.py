@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -181,7 +182,7 @@ def remover_dos_favoritos(request, noticia_id):
     return redirect('jornal:favoritos')
 
 
-@login_required
+@method_decorator(login_required, name='dispatch')
 class ComentarioInsert(View):
     def get(self, request, slug):  
         noticia = get_object_or_404(Noticia, slug=slug)
