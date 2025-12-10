@@ -8,7 +8,7 @@ import { Navbar2 } from "../components/Navbar";
 import BackArrow from "../assets/icons/backArrow.png";
 
 export default function Cacto() {
-  const { sequencia, diasRestantes, loading, cactoImg} = useGamificacao();
+  const { sequencia, diasRestantes, loading, cactoImg } = useGamificacao();
   const navigate = useNavigate();
 
   const voltar = () => navigate(-1);

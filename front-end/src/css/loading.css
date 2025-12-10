@@ -7,8 +7,10 @@
   gap: 24px;
   align-items: center;
   color: #ac0000;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 800;
+  flex-wrap: wrap;
+  text-align: center;
 }
 
 .loading-points-style {
@@ -19,8 +21,8 @@
 
 /* ANIMAÇÃO DOS PONTOS */
 .loading-points-style > div {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 100%;
   background-color: #ac0000;
   animation: pulse 1.4s ease-in-out infinite;

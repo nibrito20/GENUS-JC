@@ -1,8 +1,6 @@
 from django.urls import path
-from . import views
-
-app_name = 'aval' 
+from .views import api_feedback
 
 urlpatterns = [
-    path('feedback/', views.feedback_view, name='feedback'),
+    path("api/feedback/", api_feedback, name="api_feedback"),
 ]
