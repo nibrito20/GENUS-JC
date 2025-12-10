@@ -1,70 +1,84 @@
+/* ====== LAYOUT GERAL ====== */
 .container-cacto {
-    margin-top: 114px;
+    background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
+
+    padding-top: 114x;
+    padding-bottom: 40px;
 }
 
+/* ====== BOTÃO DE VOLTAR ====== */
 .arrowback {
     height: 24px;
     width: 16px;
-    margin-right: 85vw;
-    margin-top: 30px;
+    margin-right: auto;
+    margin-left: 16px;
+    margin-top: 146px;
     cursor: pointer;
 }
 
+/* ====== IMAGEM DO CACTO ====== */
 .cacto-representation {
-    width: 80px;
+    max-width: 160px;
+    max-height: 160px;
+    width: auto;
     height: auto;
+    object-fit: contain;
+    margin-top: 10px; /* aproxima do topo */
 }
 
+/* ====== CAIXA DE ESTATÍSTICAS ====== */
 .cacto-statistics {
     width: 90vw;
-    height: 31vh;
     background: linear-gradient(to bottom, #ffffff, #F5FFE8);
     padding: 32px 16px;
     border-radius: 24px;
+    margin-top: 16px;
 }
 
+/* ====== LINHA ====== */
 .hr {
     height: 1px;
-    width: 96%;
+    width: 100%;
     background-color: #949494;
+    margin: 8px 0;
 }
 
+/* ====== AJUSTES SIMPLES ====== */
 .margin-adjust {
-    margin: 8px;
+    margin: 8px 0;
 }
 
 .h1-margin {
-    margin: 16px
+    margin: 16px 0;
 }
 
-@media screen and (min-width: 700px){
+/* ====== TEXTO EXTRA ====== */
+.pc-adjust {
+    margin-top: 24px;
+    font-size: 0.95rem;
+    line-height: 1.3rem;
+}
+
+
+/* ====== DESKTOP (TELAS MAIORES) ====== */
+@media screen and (min-width: 700px) {
+
     .cacto-representation {
-        width: 300px;
-        height: auto;
+        max-width: 280px;
+        max-height: 420px;
     }
-    .container-cacto {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
-    }
+
     .cacto-statistics {
         width: 40vw;
-        height: 40vh;
-        background: linear-gradient(to bottom, #ffffff, #F5FFE8);
-        padding: 32px 16px;
-        border-radius: 24px;
+        padding: 40px 24px;
         margin-bottom: 64px;
     }
+
     .pc-adjust {
-        margin-top: 44px;
+        margin-top: 40px;
     }
 }
