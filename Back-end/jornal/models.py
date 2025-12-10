@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.text import slugify
@@ -65,10 +66,12 @@ class Comentarios(models.Model):
     texto = models.TextField(null=False)
     likes = models.IntegerField(default=0)
     data = models.DateTimeField("Postado em: ", default=timezone.now)
-    usuario = models.CharField(max_length=200, null=False)
+    usuario = models.CharField(max_length=200, null=False, default="anonimo")
 
     def __str__(self):
         return f"[{self.noticia}] : {self.texto}"
+    def foi_publicado_recentemente(self):
+        return self.data >= timezone.now() - datetime.timedelta(days=1)
 
 class Favoritos(models.Model): 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)

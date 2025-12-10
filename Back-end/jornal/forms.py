@@ -1,5 +1,5 @@
 from django import forms
-from .models import Noticia, Genero
+from .models import Noticia, Genero, Comentarios
 
 class NoticiaForm(forms.ModelForm):
     generos = forms.ModelMultipleChoiceField(

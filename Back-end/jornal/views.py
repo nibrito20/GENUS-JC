@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
@@ -7,6 +8,9 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
+from django.views import View
+from django.urls import reverse
+from django.utils.text import slugify
 
 from rest_framework.decorators import (
     api_view, authentication_classes, permission_classes
@@ -176,6 +180,37 @@ def remover_dos_favoritos(request, noticia_id):
             pass
     return redirect('jornal:favoritos')
 
+
+@login_required
+class ComentarioInsert(View):
+    def get(self, request, slug):  
+        noticia = get_object_or_404(Noticia, slug=slug)
+        contexto = {'noticia': noticia}
+        return render(request, 'jornal/comentario.html', contexto)
+
+    def post(self, request, slug): 
+        noticia = get_object_or_404(Noticia, slug=slug)
+
+        if request.user.is_authenticated:
+            usuario = request.user.username
+        else:
+            usuario = 'anonimo'
+        
+        texto = request.POST.get('texto')
+        
+  
+        if not texto:
+           
+            return redirect('inserir_comentario', slug=noticia.slug)
+        
+
+        noticia.comentarios_set.create(
+            texto=texto, 
+            usuario=usuario
+        )
+
+
+        return redirect('detalhe_noticia', slug=noticia.slug)
 
 def register(request):
     if request.method == 'POST':

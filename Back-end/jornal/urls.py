@@ -29,6 +29,7 @@ urlpatterns = [
     path('noticia/<slug:slug>/', views.pagina_noticias, name='pagina_noticias'),
     path('configuracoes/', views.configuracoes_conta, name='configuracoes_conta'), 
     path('register/', views.register, name='register'),
+    path("noticia/<slug:slug>/comentario/", views.ComentarioInsert.as_view(), name="inserir_comentario"),
     
     path('favoritos/', views.ver_favoritos, name='favoritos'), 
     path('favorito/toggle/<int:noticia_id>/', views.toggle_favorito, name='toggle_favorito'),
