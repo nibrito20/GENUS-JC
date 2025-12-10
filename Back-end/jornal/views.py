@@ -88,6 +88,9 @@ def api_register(request):
     user = User.objects.create_user(username=email, email=email, password=password)
     user.save()
 
+    # Fazer login automático após registro (importante para Safari/iOS)
+    login(request, user)
+
     return Response({"message": "Usuário criado com sucesso!"}, status=201)
 
 

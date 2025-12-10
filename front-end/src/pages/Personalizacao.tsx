@@ -1,3 +1,5 @@
+import "../css/personalizacao.css"
+
 import Navbar from "../components/Navbar";
 import { Container4 } from "../components/Container";
 import Footer from "../components/Footer";
@@ -27,46 +29,51 @@ export default function Personalizacao() {
     const ids = generos.filter(g => g.selected).map(g => g.id);
     try {
       await updateProfileGeneros(ids);
-      alert('Preferências salvas!');
+      alert("Preferências salvas!");
     } catch (err) {
       console.error(err);
-      alert('Erro ao salvar preferências');
+      alert("Erro ao salvar preferências");
     }
   }
 
   return (
     <>
       <Navbar />
-        <Container4>
-          <section className="section-gap">
-            <h1>Personalização de conteúdo</h1>
-            {loading ? (
-              <p>Carregando gêneros...</p>
-            ) : (
-              <div>
-                <div className="generos-list">
-                  {generos.map((g, idx) => (
-                    <label key={g.id}>
-                      <input
-                        type="checkbox"
-                        checked={!!g.selected}
-                        onChange={() => {
-                          const copy = [...generos];
-                          copy[idx].selected = !copy[idx].selected;
-                          setGeneros(copy);
-                        }}
-                      />
-                      {g.nome}
-                    </label>
-                  ))}
-                </div>
-                <div style={{ marginTop: 16 }}>
-                  <button onClick={salvar}>Salvar preferências</button>
-                </div>
+      <Container4>
+        <section className="personalizacao-section">
+          <h1 className="titulo">Personalização de conteúdo</h1>
+          <p className="subtitulo">
+            Escolha os temas que mais interessam a você
+          </p>
+
+          {loading ? (
+            <p>Carregando gêneros...</p>
+          ) : (
+            <>
+              <div className="generos-grid">
+                {generos.map((g, idx) => (
+                  <button
+                    key={g.id}
+                    className={`genero-btn ${g.selected ? "selecionado" : ""}`}
+                    onClick={() => {
+                      const copy = [...generos];
+                      copy[idx].selected = !copy[idx].selected;
+                      setGeneros(copy);
+                    }}
+                  >
+                    <span className="genero-icone">🔴</span>
+                    <span className="genero-texto">{g.nome}</span>
+                  </button>
+                ))}
               </div>
-            )}
-          </section>
-        </Container4>
+
+              <button className="salvar-btn" onClick={salvar}>
+                Salvar preferências
+              </button>
+            </>
+          )}
+        </section>
+      </Container4>
       <Footer />
     </>
   );

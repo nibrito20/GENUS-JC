@@ -1,0 +1,77 @@
+.personalizacao-section {
+  padding: 48px 0;
+  text-align: center;
+}
+
+.titulo {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #111;
+}
+
+.subtitulo {
+  color: #777;
+  margin-bottom: 32px;
+}
+
+/* GRID DE 2 COLUNAS */
+.generos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* BOTÕES GENEROS */
+.genero-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  width: 100%;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.genero-btn:hover {
+  border-color: #cc0000;
+}
+
+/* ESTADO SELECIONADO */
+.genero-btn.selecionado {
+  background: #cc0000;
+  border-color: #cc0000;
+  color: #fff;
+}
+
+/* Ícone padrão (você pode trocar por imagens) */
+.genero-icone {
+  font-size: 20px;
+}
+
+/* BOTÃO FINAL */
+.salvar-btn {
+  margin-top: 32px;
+  width: 100%;
+  max-width: 360px;
+  background: #cc0000;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.salvar-btn:hover {
+  opacity: 0.9;
+}

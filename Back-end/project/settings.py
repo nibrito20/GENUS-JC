@@ -184,10 +184,19 @@ LOGOUT_REDIRECT_URL = "/"
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Apenas seu frontend REAL
+# Frontend em produção
 CORS_ALLOWED_ORIGINS = [
     "https://genus-jc0.web.app",
 ]
+
+# Em desenvolvimento, permitir localhost
+if DEBUG:
+    CORS_ALLOWED_ORIGINS.extend([
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:3000",
+    ])
 
 # WebView iOS/Android envia "null" como origin
 CORS_ALLOW_ORIGIN_REGEXES = [
@@ -199,6 +208,14 @@ CSRF_TRUSTED_ORIGINS = [
     "https://genus-jc0.web.app",
 ]
 
+# Em desenvolvimento, adicionar localhost
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS.extend([
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:3000",
+    ])
 
 # Permitir headers do fetch
 CORS_ALLOW_HEADERS = [
@@ -222,12 +239,23 @@ CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 # -------------------------------------------------------
 
 # NÃO DEFINA DOMAIN quando backend e frontend não compartilham domínio.
-SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
+# Safari/iOS requer SameSite=None + Secure=True em HTTPS
+# Em desenvolvimento (HTTP), usar SameSite=Lax ou None sem Secure
+if DEBUG:
+    # Desenvolvimento: permite cookies em HTTP
+    SESSION_COOKIE_SAMESITE = "Lax"
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SAMESITE = "Lax"
+    CSRF_COOKIE_SECURE = False
+else:
+    # Produção: requer HTTPS com SameSite=None
+    SESSION_COOKIE_SAMESITE = "None"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = "None"
+    CSRF_COOKIE_SECURE = True
 
-CSRF_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE = 1209600  # 2 semanas
 
 
 # -------------------------------------------------------
