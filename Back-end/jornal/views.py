@@ -1,17 +1,18 @@
+# jornal/views.py (corrigido / pronto para deploy)
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.http import JsonResponse
 from django.utils import timezone
 from datetime import timedelta
 from django.views import View
 from django.urls import reverse
 from django.utils.text import slugify
+from django.template import TemplateDoesNotExist
 
 from rest_framework.decorators import (
     api_view, authentication_classes, permission_classes
@@ -35,16 +36,15 @@ from foguinho.views import atualizar_sequencia_login, registrar_leitura_noticia
 # ==========================================================
 #   Autenticação sem CSRF (para o React)
 # ==========================================================
-
 class SemCSRF(SessionAuthentication):
     def enforce_csrf(self, request):
+        # desativa verificação CSRF para endpoints que usam Session auth via fetch do React
         return
 
 
 # ==========================================================
 #   LOGIN / LOGOUT / REGISTER API PARA REACT
 # ==========================================================
-
 @api_view(["POST"])
 @authentication_classes([SemCSRF])
 @permission_classes([])
@@ -67,6 +67,7 @@ def api_login(request):
                         status=status.HTTP_400_BAD_REQUEST)
 
     login(request, user)
+    # ao logar com session auth, o cookie de sessão será enviado automaticamente
     return Response({"message": "Login realizado com sucesso!"})
 
 
@@ -91,12 +92,16 @@ def api_register(request):
 
 
 # ==========================================================
-#   PÁGINAS HTML NORMAIS DO DJANGO
+#   PÁGINAS HTML (legacy) — com fallback JSON para deploy API-only
 # ==========================================================
-
 def lista_de_noticias(request):
     noticias = Noticia.objects.all().order_by('-data')
-    return render(request, 'index.html', {'noticias': noticias})
+    try:
+        return render(request, 'index.html', {'noticias': noticias})
+    except TemplateDoesNotExist:
+        # fallback JSON quando template não existe (deploy API-only)
+        serializer = NoticiaSerializer(noticias, many=True, context={'request': request})
+        return JsonResponse({"noticias": serializer.data}, safe=False)
 
 
 def pagina_noticias(request, slug):
@@ -115,11 +120,21 @@ def pagina_noticias(request, slug):
         generos__in=generos_da_noticia
     ).exclude(id=noticia.id).distinct().order_by('-data')[:3]
 
-    return render(request, 'pagina-noticia.html', {
-        'noticia': noticia,
-        'is_favorito': is_favorito,
-        'noticias_relacionadas': noticias_relacionadas
-    })
+    try:
+        return render(request, 'pagina-noticia.html', {
+            'noticia': noticia,
+            'is_favorito': is_favorito,
+            'noticias_relacionadas': noticias_relacionadas
+        })
+    except TemplateDoesNotExist:
+        # fallback JSON
+        noticia_ser = NoticiaSerializer(noticia, context={'request': request}).data
+        relacionadas_ser = NoticiaSerializer(noticias_relacionadas, many=True, context={'request': request}).data
+        return JsonResponse({
+            "noticia": noticia_ser,
+            "is_favorito": is_favorito,
+            "noticias_relacionadas": relacionadas_ser
+        })
 
 
 def index(request):
@@ -128,7 +143,11 @@ def index(request):
     sequencia_dias = 0
 
     if request.user.is_authenticated:
-        sequencia_dias = atualizar_sequencia_login(request.user)
+        try:
+            sequencia_dias = atualizar_sequencia_login(request.user)
+        except Exception:
+            # proteger caso a função externa falhe
+            sequencia_dias = 0
 
     if query:
         noticias = Noticia.objects.filter(
@@ -149,26 +168,47 @@ def index(request):
         except Profile.DoesNotExist:
             pass
 
-    return render(request, 'index.html', {
-        'noticias': noticias,
-        'noticias_recomendadas': noticias_recomendadas,
-        'query': query,
-        'sequencia_dias': sequencia_dias,
-    })
+    try:
+        return render(request, 'index.html', {
+            'noticias': noticias,
+            'noticias_recomendadas': noticias_recomendadas,
+            'query': query,
+            'sequencia_dias': sequencia_dias,
+        })
+    except TemplateDoesNotExist:
+        # fallback JSON quando template não existe (útil para front React separado)
+        serializer = NoticiaSerializer(noticias, many=True, context={'request': request})
+        recom_serializer = NoticiaSerializer(noticias_recomendadas, many=True, context={'request': request})
+        return JsonResponse({
+            "noticias": serializer.data,
+            "noticias_recomendadas": recom_serializer.data,
+            "query": query,
+            "sequencia_dias": sequencia_dias
+        }, safe=False)
 
 
+# ==========================================================
+# Páginas protegidas (favoritos, add, remove)
+# ==========================================================
 @login_required
 def ver_favoritos(request):
     favs = Favoritos.objects.filter(usuario=request.user).order_by('-adicionado')
-    return render(request, 'favoritos.html', {
-        'favoritos': [f.noticia for f in favs]
-    })
+    try:
+        return render(request, 'favoritos.html', {
+            'favoritos': [f.noticia for f in favs]
+        })
+    except TemplateDoesNotExist:
+        serializer = FavoritosSerializer(favs, many=True, context={'request': request})
+        return JsonResponse({"favoritos": serializer.data})
 
 
 @login_required
 def add_aos_fav(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     Favoritos.objects.get_or_create(usuario=request.user, noticia=noticia)
+    # para chamadas API, preferimos resposta simples
+    if request.is_ajax() or request.headers.get('Accept') == 'application/json':
+        return JsonResponse({"message": "Adicionado aos favoritos"})
     return redirect('jornal:index')
 
 
@@ -182,36 +222,31 @@ def remover_dos_favoritos(request, noticia_id):
     return redirect('jornal:favoritos')
 
 
+# ==========================================================
+# Comentários (class view)
+# ==========================================================
 @method_decorator(login_required, name='dispatch')
 class ComentarioInsert(View):
-    def get(self, request, slug):  
+    def get(self, request, slug):
         noticia = get_object_or_404(Noticia, slug=slug)
         contexto = {'noticia': noticia}
-        return render(request, 'jornal/comentario.html', contexto)
+        try:
+            return render(request, 'jornal/comentario.html', contexto)
+        except TemplateDoesNotExist:
+            return JsonResponse({"error": "Template de comentário não encontrado", "noticia": noticia.id})
 
-    def post(self, request, slug): 
+    def post(self, request, slug):
         noticia = get_object_or_404(Noticia, slug=slug)
 
-        if request.user.is_authenticated:
-            usuario = request.user.username
-        else:
-            usuario = 'anonimo'
-        
+        usuario = request.user.username if request.user.is_authenticated else 'anonimo'
         texto = request.POST.get('texto')
-        
-  
+
         if not texto:
-           
             return redirect('inserir_comentario', slug=noticia.slug)
-        
 
-        noticia.comentarios_set.create(
-            texto=texto, 
-            usuario=usuario
-        )
-
-
+        noticia.comentarios_set.create(texto=texto, usuario=usuario)
         return redirect('detalhe_noticia', slug=noticia.slug)
+
 
 def register(request):
     if request.method == 'POST':
@@ -229,10 +264,16 @@ def register(request):
 
         user = User.objects.create_user(username=email, email=email, password=password)
         login(request, user)
-        atualizar_sequencia_login(user)
+        try:
+            atualizar_sequencia_login(user)
+        except Exception:
+            pass
         return redirect('jornal:index')
 
-    return render(request, 'registration/register.html')
+    try:
+        return render(request, 'registration/register.html')
+    except TemplateDoesNotExist:
+        return JsonResponse({"error": "Template de registro não encontrado"})
 
 
 @login_required
@@ -256,16 +297,24 @@ def configuracoes_conta(request):
 
         return redirect('jornal:configuracoes_conta')
 
-    return render(request, 'configuracoes.html', {
-        'all_genres': Genero.objects.all(),
-        'generos_salvos': profile.generos_favoritos.all()
-    })
+    try:
+        return render(request, 'configuracoes.html', {
+            'all_genres': Genero.objects.all(),
+            'generos_salvos': profile.generos_favoritos.all()
+        })
+    except TemplateDoesNotExist:
+        # fallback JSON
+        generos = GeneroSerializer(Genero.objects.all(), many=True).data
+        generos_salvos = GeneroSerializer(profile.generos_favoritos.all(), many=True).data
+        return JsonResponse({
+            "all_genres": generos,
+            "generos_salvos": generos_salvos
+        })
 
 
 # ==========================================================
-#   TOGGLE FAVORITO (ESSA É A QUE VOCÊ DISSE QUE SUMIU)
+#   TOGGLE FAVORITO (web legacy)
 # ==========================================================
-
 @login_required
 def toggle_favorito(request, noticia_id):
     if request.method == 'POST':
@@ -281,7 +330,6 @@ def toggle_favorito(request, noticia_id):
 # ==========================================================
 #   FILTRAR POR GÊNERO
 # ==========================================================
-
 def filtrar_por_genero(request):
     all_genres = Genero.objects.all().order_by('nome')
     selected = request.GET.getlist('genres')
@@ -303,24 +351,38 @@ def filtrar_por_genero(request):
             noticias_filtradas = noticias_filtradas.distinct().order_by('-data')
             titulo_pagina = f"Resultados para: {', '.join(selected)}"
 
-    return render(request, 'filtrar_noticias.html', {
-        'all_genres': all_genres,
-        'noticias': noticias_filtradas,
-        'selected_genres_names': selected,
-        'titulo_pagina': titulo_pagina,
-        'search_error': search_error,
-        'form_submitted': form_submitted,
-    })
+    try:
+        return render(request, 'filtrar_noticias.html', {
+            'all_genres': all_genres,
+            'noticias': noticias_filtradas,
+            'selected_genres_names': selected,
+            'titulo_pagina': titulo_pagina,
+            'search_error': search_error,
+            'form_submitted': form_submitted,
+        })
+    except TemplateDoesNotExist:
+        serializer = NoticiaSerializer(noticias_filtradas, many=True, context={'request': request})
+        return JsonResponse({
+            "all_genres": [g.nome for g in all_genres],
+            "noticias": serializer.data,
+            "selected_genres_names": selected,
+            "titulo_pagina": titulo_pagina,
+            "search_error": search_error,
+            "form_submitted": form_submitted,
+        })
 
 
 # ==========================================================
-#   ADMIN SECRETO
+#   ADMIN SECRETO (legacy)
 # ==========================================================
-
 @login_required
 def admin_secreto_lista(request):
     noticias = Noticia.objects.all().order_by('-data')
-    return render(request, 'admin_secreto_lista.html', {'noticias': noticias})
+    try:
+        return render(request, 'admin_secreto_lista.html', {'noticias': noticias})
+    except TemplateDoesNotExist:
+        serializer = NoticiaSerializer(noticias, many=True, context={'request': request})
+        return JsonResponse({"noticias": serializer.data})
 
 
 @login_required
@@ -334,7 +396,10 @@ def admin_secreto_criar(request):
     else:
         form = NoticiaForm(initial={'data': timezone.localtime(timezone.now())})
 
-    return render(request, 'admin_secreto_form.html', {'form': form, 'tipo': 'Criar'})
+    try:
+        return render(request, 'admin_secreto_form.html', {'form': form, 'tipo': 'Criar'})
+    except TemplateDoesNotExist:
+        return JsonResponse({"error": "Template admin_secreto_form não encontrado"})
 
 
 @login_required
@@ -348,7 +413,10 @@ def admin_secreto_editar(request, noticia_id):
             return redirect('jornal:admin_secreto_lista')
     else:
         form = NoticiaForm(instance=noticia)
-    return render(request, 'admin_secreto_form.html', {'form': form, 'noticia': noticia, 'tipo': 'Editar'})
+    try:
+        return render(request, 'admin_secreto_form.html', {'form': form, 'noticia': noticia, 'tipo': 'Editar'})
+    except TemplateDoesNotExist:
+        return JsonResponse({"error": "Template admin_secreto_form não encontrado"})
 
 
 @login_required
@@ -358,7 +426,10 @@ def admin_secreto_apagar(request, noticia_id):
         noticia.delete()
         messages.success(request, 'Notícia apagada com sucesso!')
         return redirect('jornal:admin_secreto_lista')
-    return render(request, 'admin_secreto_apagar_confirm.html', {'noticia': noticia})
+    try:
+        return render(request, 'admin_secreto_apagar_confirm.html', {'noticia': noticia})
+    except TemplateDoesNotExist:
+        return JsonResponse({"error": "Template admin_secreto_apagar_confirm não encontrado"})
 
 
 @login_required
@@ -387,7 +458,6 @@ def admin_secreto_popular_generos(request):
 # ==========================================================
 #   API — USUÁRIO, NOTÍCIAS, FAVORITOS E GÊNEROS
 # ==========================================================
-
 def hello_api(request):
     return JsonResponse({"mensagem": "Olá do Django!"})
 
@@ -452,7 +522,10 @@ def api_noticia_detalhe(request, slug):
     is_favorito = False
     if request.user.is_authenticated:
         is_favorito = Favoritos.objects.filter(usuario=request.user, noticia=noticia).exists()
-        registrar_leitura_noticia(request.user)
+        try:
+            registrar_leitura_noticia(request.user)
+        except Exception:
+            pass
 
     generos_da_noticia = noticia.generos.exclude(nome__in=['Brasil', 'Geral'])
     if not generos_da_noticia.exists():
@@ -537,11 +610,9 @@ def api_update_profile_generos(request):
     except Exception as e:
         return Response({"error": str(e)}, status=400)
 
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
 
+# Update user (legacy)
+from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @login_required
 def update_user(request):
@@ -550,7 +621,7 @@ def update_user(request):
 
     try:
         data = json.loads(request.body.decode())
-    except:
+    except Exception:
         return JsonResponse({"error": "JSON inválido"}, status=400)
 
     user = request.user
@@ -560,13 +631,12 @@ def update_user(request):
     user.email = data.get("email", user.email)
 
     # Campos extras — telefone, nascimento (se existirem no model Profile)
-    profile = None
     try:
         profile = user.profile
         profile.telefone = data.get("telefone", profile.telefone)
         profile.nascimento = data.get("nascimento", profile.nascimento)
         profile.save()
-    except:
+    except Exception:
         pass  # Se não existir Profile, ignora
 
     user.save()
