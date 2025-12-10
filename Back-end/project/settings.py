@@ -27,6 +27,11 @@ ALLOWED_HOSTS = [
     "genus-jc.onrender.com",
 ]
 
+# -------------------------------------------------------
+# ROOT URLS (FALTAVA AQUI — ESSENCIAL)
+# -------------------------------------------------------
+ROOT_URLCONF = "project.urls"
+
 
 # -------------------------------------------------------
 # APPS
@@ -54,7 +59,7 @@ INSTALLED_APPS = [
 # MIDDLEWARE
 # -------------------------------------------------------
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",   # <- CORS PRIMEIRO
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -226,6 +231,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 
+
 # ============================================================
 # LOGGING PARA MOSTRAR OS ERROS REAIS NO RENDER
 # ============================================================
@@ -239,7 +245,7 @@ LOGGING = {
     },
     "root": {
         "handlers": ["console"],
-        "level": "ERROR",   # Pode mudar para "DEBUG" se quiser ver tudo
+        "level": "ERROR",
     },
     "loggers": {
         "django": {
