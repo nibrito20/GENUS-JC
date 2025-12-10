@@ -124,6 +124,7 @@ const Navbar = () => {
               </li>
 
               <li><h1>Anuncie no JC</h1></li>
+              <li><Link to="/feedback"><h1>Avalie o JC</h1></Link></li>
             </ul>
           </div>
 

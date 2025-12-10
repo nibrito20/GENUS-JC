@@ -79,7 +79,7 @@ export default function Noticia() {
         <Container4>
           <article className="noticia-detalhe">
             <div className="noticia-header">
-              <h1 id="texto-noticia">{noticia.titulo}</h1>
+              <h1>{noticia.titulo}</h1>
             </div>
             <div className="noticia-meta-star">
               <div className="noticia-meta">

@@ -12,11 +12,22 @@ import Favoritos from "./pages/Favoritos";
 import Noticias from "./pages/Noticias";
 import Personalizacao from "./pages/Personalizacao";
 import PerfilInfo from "./pages/PerfilInfo";
+import Feedback from "./pages/Feedback";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading)
+    return (
+      <div className="loading-style">
+        <h1>carregando</h1>
+        <div className="loading-points-style">
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
 
   return (
     <Routes>
@@ -48,7 +59,10 @@ function App() {
         path="/favoritos"
         element={user ? <Favoritos /> : <Navigate to="/login" replace />}
       />
-      
+      <Route
+        path="/feedback"
+        element={user ? <Feedback /> : <Navigate to="/login" replace />}
+      />
 
       {/* 404 */}
       <Route path="*" element={<h1>Página não encontrada</h1>} />
