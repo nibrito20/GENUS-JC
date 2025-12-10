@@ -8,6 +8,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "../css/favoritos.css";
+import { LoadingNews } from "../components/Loading";
 
 export default function Favoritos() {
   const { user } = useContext(AuthContext);
@@ -39,7 +40,9 @@ export default function Favoritos() {
     carregarFavoritos();
   }, [user, navigate]);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return (
+    <LoadingNews />
+  );
   if (error) return <div>Erro: {error}</div>;
 
   const handleRemoverFavorito = (noticia_id: number) => {

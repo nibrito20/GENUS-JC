@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { getGeneros } from "../services/api";
 import "../css/configuracoes.css";
+import { LoadingNews } from "../components/Loading";
 
 export default function Configuracoes() {
   const { user } = useContext(AuthContext);
@@ -33,7 +34,7 @@ export default function Configuracoes() {
     carregarGeneros();
   }, [user, navigate]);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return (<LoadingNews />);
 
   return (
     <>

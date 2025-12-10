@@ -5,6 +5,7 @@ import NewsCard from "../components/NewsCard";
 import { useEffect, useState } from "react";
 import { getNoticias } from "../services/api";
 import { useLocation } from "react-router-dom";
+import { LoadingNews } from "../components/Loading";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -43,7 +44,7 @@ export default function Noticias() {
     carregar();
   }, [location.search]);
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return (<LoadingNews />);
   if (error) return <div>Erro: {error}</div>;
 
   // título da página

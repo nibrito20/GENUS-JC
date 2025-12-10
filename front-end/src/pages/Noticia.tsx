@@ -13,6 +13,7 @@ import "../css/noticia.css";
 import staredImg from "../assets/icons/stared.png";
 import notStaredImg from "../assets/icons/not-stared.png";
 import TextToSpeech from "../components/OuvirNoticiaButton";
+import { LoadingNews } from "../components/Loading";
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();
@@ -68,7 +69,9 @@ export default function Noticia() {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) return (
+    <LoadingNews />
+  );
   if (error) return <div>Erro: {error}</div>;
   if (!noticia) return <div>Notícia não encontrada</div>;
 
