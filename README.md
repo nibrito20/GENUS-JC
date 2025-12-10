@@ -30,6 +30,8 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - [Deploy](https://genus-jc0.web.app)
 - [Readme atualizado](https://github.com/nibrito20/GENUS-JC/blob/main/README.md)
 - [Contributing](https://github.com/nibrito20/GENUS-JC/blob/main/CONTRIBUTING.md)
+- [Instruções de login](https://docs.google.com/document/d/1IBAL1rtBTzsCxE4akOxq71LHj3gg4EBqZ-ay7yZo9EU/edit?usp=sharing)
+- [Documento de Pipeline de CI/CD](https://docs.google.com/document/d/19bPeVYs5bMXjC_SNsERfNhGCVfuNuPEXz1aWhbDmRJ8/edit?usp=sharing)
 
 ## Link Deploy
 - [Clique aqui](https://genus-jc0.web.app)
