@@ -13,7 +13,7 @@ import Colunista from "../components/Colunista";
 import Footer from "../components/Footer";
 import { LoadingNews } from "../components/Loading";
 import { useEffect, useState } from "react";
-import { getNoticias } from "../services/api";
+import { getNoticias, getUser } from "../services/api";
 
 import Colunista1 from "../assets/imgs/Colunista1.png";
 import Colunista2 from "../assets/imgs/Colunista2.png";
@@ -27,6 +27,7 @@ import DayleCharge from "../assets/imgs/dayle-charge.png";
 export default function Home() {
   const [slides, setSlides] = useState<any[]>([]);
   const [noticias, setNoticias] = useState<any[]>([]);
+  const [noticiasParaVoce, setNoticiasParaVoce] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -63,6 +64,50 @@ export default function Home() {
         );
         if (dataRecentes.noticias) {
           setNoticias(dataRecentes.noticias);
+        }
+
+        // Carregar preferências do usuário e filtrar notícias "Para Você"
+        try {
+          const userData = await getUser();
+          if (userData.authenticated && userData.user?.profile?.generos_favoritos) {
+            const generosFavoritos = userData.user.profile.generos_favoritos;
+            
+            if (generosFavoritos && generosFavoritos.length > 0) {
+              // Buscar notícias de todos os gêneros favoritos
+              const nomesGeneros = generosFavoritos.map((g: any) => g.nome);
+              
+              // Buscar notícias para cada gênero e combinar
+              const promessas = nomesGeneros.map((nomeGenero: string) =>
+                getNoticias(undefined, nomeGenero, "-data", 10, 0)
+              );
+              
+              const resultados = await Promise.all(promessas);
+              
+              // Combinar e remover duplicatas
+              const todasNoticias = resultados.flatMap(r => r.noticias || []);
+              const noticiasUnicas = todasNoticias.filter(
+                (noticia, index, self) =>
+                  index === self.findIndex((n) => n.id === noticia.id)
+              );
+              
+              // Ordenar por data (mais recentes primeiro)
+              noticiasUnicas.sort((a, b) => 
+                new Date(b.data).getTime() - new Date(a.data).getTime()
+              );
+              
+              setNoticiasParaVoce(noticiasUnicas.slice(0, 8));
+            } else {
+              // Se não tiver preferências, mostrar notícias recentes
+              setNoticiasParaVoce(dataRecentes.noticias?.slice(4, 12) || []);
+            }
+          } else {
+            // Se não estiver autenticado, mostrar notícias recentes
+            setNoticiasParaVoce(dataRecentes.noticias?.slice(4, 12) || []);
+          }
+        } catch (err) {
+          console.error("Erro ao carregar preferências:", err);
+          // Em caso de erro, mostrar notícias recentes
+          setNoticiasParaVoce(dataRecentes.noticias?.slice(4, 12) || []);
         }
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
@@ -122,18 +167,24 @@ export default function Home() {
           <section className="section-gap">
             <DividerTopic topicTitle="Para você" />
             <div className="news-container">
-              {noticias.slice(4, 8).map((noticia) => (
-                <NewsCard
-                  key={noticia.id}
-                  noticia_id={noticia.id}
-                  newsImg={noticia.imagem_url || ""}
-                  newsTitle={noticia.titulo}
-                  topicLink={`/noticia/${noticia.slug}`}
-                  newsTopic={{
-                    topicTitle: noticia.generos[0]?.nome || "Geral",
-                  }}
-                />
-              ))}
+              {noticiasParaVoce.length > 0 ? (
+                noticiasParaVoce.map((noticia) => (
+                  <NewsCard
+                    key={noticia.id}
+                    noticia_id={noticia.id}
+                    newsImg={noticia.imagem_url || ""}
+                    newsTitle={noticia.titulo}
+                    topicLink={`/noticia/${noticia.slug}`}
+                    newsTopic={{
+                      topicTitle: noticia.generos[0]?.nome || "Geral",
+                    }}
+                  />
+                ))
+              ) : (
+                <p style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
+                  Personalize suas preferências para ver notícias recomendadas
+                </p>
+              )}
             </div>
             <MoreNewsButton
               buttonText="Ver mais"

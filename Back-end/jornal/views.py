@@ -597,7 +597,25 @@ def api_remover_favorito(request, noticia_id):
 @api_view(["GET"])
 def api_generos(request):
     generos = Genero.objects.all().order_by('nome')
-    return Response({"generos": GeneroSerializer(generos, many=True).data})
+    generos_data = GeneroSerializer(generos, many=True).data
+    
+    # Se usuário estiver autenticado, marcar quais gêneros estão selecionados
+    if request.user.is_authenticated:
+        try:
+            generos_favoritos_ids = set(
+                request.user.profile.generos_favoritos.values_list('id', flat=True)
+            )
+            for genero in generos_data:
+                genero['selected'] = genero['id'] in generos_favoritos_ids
+        except Profile.DoesNotExist:
+            for genero in generos_data:
+                genero['selected'] = False
+    else:
+        # Se não estiver autenticado, nenhum está selecionado
+        for genero in generos_data:
+            genero['selected'] = False
+    
+    return Response({"generos": generos_data})
 
 
 @api_view(["POST"])

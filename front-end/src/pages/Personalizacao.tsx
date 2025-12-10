@@ -49,6 +49,7 @@ export default function Personalizacao() {
       try {
         setLoading(true);
         const data = await getGeneros();
+        // Os gêneros já vêm com o campo 'selected' do backend
         setGeneros(data.generos || []);
       } catch (err) {
         console.error(err);
