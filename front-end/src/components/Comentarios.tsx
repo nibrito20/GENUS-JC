@@ -81,6 +81,11 @@ const Comentarios = ({ slug }: ComentariosProps) => {
   }
 
   function getAvatarUrl(comentario: Comentario) {
+    // Se o comentário tiver foto do usuário, usar ela
+    if (comentario.foto_usuario) {
+      return comentario.foto_usuario;
+    }
+    // Caso contrário, usar ícone padrão
     return UserIcon;
   }
 

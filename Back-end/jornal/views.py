@@ -660,7 +660,7 @@ def api_comentarios_noticia(request, slug):
         raise NotFound("Notícia não encontrada")
     
     comentarios = Comentarios.objects.filter(noticia=noticia).order_by('-data')
-    serializer = ComentariosSerializer(comentarios, many=True)
+    serializer = ComentariosSerializer(comentarios, many=True, context={'request': request})
     return Response({"comentarios": serializer.data})
 
 
@@ -688,7 +688,7 @@ def api_criar_comentario(request, slug):
         usuario=request.user.username
     )
     
-    serializer = ComentariosSerializer(comentario)
+    serializer = ComentariosSerializer(comentario, context={'request': request})
     return Response(serializer.data, status=201)
 
 
@@ -709,7 +709,7 @@ def api_curtir_comentario(request, comentario_id):
     comentario.likes += 1
     comentario.save()
     
-    serializer = ComentariosSerializer(comentario)
+    serializer = ComentariosSerializer(comentario, context={'request': request})
     return Response(serializer.data)
 
 

@@ -165,7 +165,15 @@ const Navbar = () => {
                   <img src={cactoImg} alt="Cacto" className="cacto" />
                 </Link>
                 <Link to="/perfil" className="navlink">
-                  <img src={noUserIcon} alt="Perfil" className="redondo" />
+                  <img 
+                    src={
+                      user?.profile?.foto_url_display || 
+                      user?.profile?.foto_url || 
+                      noUserIcon
+                    } 
+                    alt="Perfil" 
+                    className="redondo" 
+                  />
                 </Link>
               </>
             ) : (

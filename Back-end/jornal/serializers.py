@@ -26,10 +26,11 @@ class NoticiaSerializer(serializers.ModelSerializer):
 
 class ComentariosSerializer(serializers.ModelSerializer):
     nome_usuario = serializers.SerializerMethodField()
+    foto_usuario = serializers.SerializerMethodField()
     
     class Meta:
         model = Comentarios
-        fields = ['id', 'noticia', 'texto', 'likes', 'data', 'usuario', 'nome_usuario']
+        fields = ['id', 'noticia', 'texto', 'likes', 'data', 'usuario', 'nome_usuario', 'foto_usuario']
     
     def get_nome_usuario(self, obj):
         # Tenta buscar o usuário pelo username
@@ -41,6 +42,26 @@ class ComentariosSerializer(serializers.ModelSerializer):
             return user.username
         except User.DoesNotExist:
             return obj.usuario
+    
+    def get_foto_usuario(self, obj):
+        # Busca a foto do perfil do usuário que comentou
+        try:
+            user = User.objects.get(username=obj.usuario)
+            if hasattr(user, 'profile'):
+                profile = user.profile
+                # Prioriza foto_url (URL externa)
+                if profile.foto_url:
+                    return profile.foto_url
+                # Se não tiver foto_url, retorna a URL do upload
+                request = self.context.get('request')
+                if profile.foto:
+                    url = profile.foto.url
+                    if request:
+                        return request.build_absolute_uri(url)
+                    return url
+        except (User.DoesNotExist, AttributeError):
+            pass
+        return None
 
 
 class FavoritosSerializer(serializers.ModelSerializer):

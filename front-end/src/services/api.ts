@@ -62,6 +62,7 @@ interface Comentario {
   data: string;
   usuario: string;
   nome_usuario: string;
+  foto_usuario?: string | null;
 }
 
 // =========================
