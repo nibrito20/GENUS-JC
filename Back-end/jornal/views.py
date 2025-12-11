@@ -767,6 +767,15 @@ def update_user(request):
 
     # NÃO permitir alterar telefone e data_nascimento (permanecem inalterados)
     # Esses campos só podem ser definidos no registro
+    
+    # Atualizar foto_url do perfil se fornecida
+    if "foto_url" in data:
+        try:
+            profile = user.profile
+            profile.foto_url = data["foto_url"] if data["foto_url"] else None
+            profile.save()
+        except Profile.DoesNotExist:
+            Profile.objects.create(user=user, foto_url=data["foto_url"] if data["foto_url"] else None)
 
     user.save()
 

@@ -85,6 +85,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
    
     foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
+    foto_url = models.URLField(max_length=500, blank=True, null=True, verbose_name="URL da Foto")
     generos_favoritos = models.ManyToManyField(Genero, blank=True, related_name="perfis_favoritos")
     telefone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Telefone")
     data_nascimento = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")

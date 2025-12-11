@@ -78,6 +78,9 @@ const Comentarios = ({ slug }: ComentariosProps) => {
   }
 
   function getUserAvatar() {
+    if (user?.profile?.foto_url_display) {
+      return user.profile.foto_url_display;
+    }
     if (user?.profile?.foto_url) {
       return user.profile.foto_url;
     }

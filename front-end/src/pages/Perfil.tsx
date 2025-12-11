@@ -24,9 +24,28 @@ const API_BASE_URL =
 
 export default function Perfil() {
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext); // ← IMPORTANTE
+  const { logout, user } = useContext(AuthContext);
 
   const voltar = () => navigate(-1);
+  
+  // Função para obter a foto do usuário
+  function getUserPhoto() {
+    if (user?.profile?.foto_url_display) {
+      return user.profile.foto_url_display;
+    }
+    if (user?.profile?.foto_url) {
+      return user.profile.foto_url;
+    }
+    return noUser;
+  }
+  
+  // Função para obter o nome do usuário
+  function getUserName() {
+    if (user?.first_name || user?.last_name) {
+      return `${user.first_name || ""} ${user.last_name || ""}`.trim();
+    }
+    return user?.username || "Nome do usuário";
+  }
 
   const fazerLogout = async () => {
     try {
@@ -56,8 +75,8 @@ export default function Perfil() {
       />
 
       <div className="user-name-photo">
-        <img src={noUser} alt="Foto do usuário" className="user-image" />
-        <h1>Nome do usuário</h1>
+        <img src={getUserPhoto()} alt="Foto do usuário" className="user-image" />
+        <h1>{getUserName()}</h1>
       </div>
 
       <PerfilOptions

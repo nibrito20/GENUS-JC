@@ -1,9 +1,10 @@
 import Navbar from "../components/Navbar";
 import { Container4 } from "../components/Container";
 import { ButtonRed } from "../components/MoreNewsButton";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getUser, updateUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 import backArrow from "../assets/icons/backArrow.png";
 
@@ -12,6 +13,7 @@ import { LoadingInfo } from "../components/Loading";
 
 export default function PerfilInfo() {
   const navigate = useNavigate();
+  const { refreshUser } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
 
   // Estado para os campos do formulário
@@ -20,6 +22,7 @@ export default function PerfilInfo() {
     email: "",
     password: "",
     password2: "",
+    foto_url: "",
   });
 
   // Campos somente leitura (não podem ser alterados)
@@ -43,6 +46,7 @@ export default function PerfilInfo() {
             email: data.user.email || "",
             password: "",
             password2: "",
+            foto_url: data.user.profile?.foto_url || "",
           });
 
           // Campos somente leitura do profile
@@ -93,6 +97,13 @@ export default function PerfilInfo() {
         dataToSend.password = form.password;
       }
 
+      // Incluir foto_url se fornecida
+      if (form.foto_url) {
+        dataToSend.foto_url = form.foto_url.trim();
+      } else {
+        dataToSend.foto_url = null; // Permite limpar a foto
+      }
+
       const resp = await updateUser(dataToSend);
       alert("Alterações salvas com sucesso!");
       
@@ -102,6 +113,18 @@ export default function PerfilInfo() {
         password: "",
         password2: "",
       });
+      
+      // Recarregar dados do usuário no AuthContext para atualizar a foto em toda a aplicação
+      await refreshUser();
+      
+      // Atualizar o campo foto_url no formulário
+      const data = await getUser();
+      if (data?.user) {
+        setForm(prev => ({
+          ...prev,
+          foto_url: data.user.profile?.foto_url || "",
+        }));
+      }
     } catch (err: any) {
       console.error(err);
       alert(err.message || "Erro ao salvar alterações");
@@ -180,6 +203,20 @@ export default function PerfilInfo() {
                 disabled
                 style={{ opacity: 0.6, cursor: "not-allowed" }}
               />
+            </div>
+
+            <div className="user-info-div">
+              <label>URL da foto de perfil</label>
+              <input
+                type="url"
+                name="foto_url"
+                placeholder="https://exemplo.com/foto.jpg"
+                value={form.foto_url}
+                onChange={handleChange}
+              />
+              <small style={{ color: "#666", fontSize: "12px", marginTop: "4px", display: "block" }}>
+                Cole aqui a URL da imagem que deseja usar como foto de perfil
+              </small>
             </div>
 
             <ButtonRed

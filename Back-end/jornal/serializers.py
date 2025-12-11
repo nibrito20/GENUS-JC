@@ -54,13 +54,19 @@ class FavoritosSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     generos_favoritos = GeneroSerializer(many=True, read_only=True)
-    foto_url = serializers.SerializerMethodField()
+    foto_url_display = serializers.SerializerMethodField()
     
     class Meta:
         model = Profile
-        fields = ['id', 'foto', 'foto_url', 'generos_favoritos', 'telefone', 'data_nascimento']
+        fields = ['id', 'foto', 'foto_url', 'foto_url_display', 'generos_favoritos', 'telefone', 'data_nascimento']
     
-    def get_foto_url(self, obj):
+    def get_foto_url_display(self, obj):
+        """Retorna a URL da foto para exibição (prioriza foto_url, depois foto upload)"""
+        # Prioriza foto_url (URL externa)
+        if obj.foto_url:
+            return obj.foto_url
+        
+        # Se não tiver foto_url, retorna a URL do upload
         request = self.context.get('request')
         if obj.foto:
             url = obj.foto.url
