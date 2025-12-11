@@ -14,24 +14,58 @@ import staredImg from "../assets/icons/stared.png";
 import notStaredImg from "../assets/icons/not-stared.png";
 import TextToSpeech from "../components/OuvirNoticiaButton";
 import { LoadingNews } from "../components/Loading";
+import AdSimulator from "../components/AdSimulator";
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useContext(AuthContext);
+
   const [noticia, setNoticia] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [favorito, setFavorito] = useState(false);
+  const [relacionadas, setRelacionadas] = useState<any[]>([]);
 
   useEffect(() => {
     if (!slug) return;
+
+    async function carregarRelacionadas(
+      generosIds: number[],
+      noticiaId: number
+    ) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/noticias/relacionadas/`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              generos: generosIds,
+              id: noticiaId,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        setRelacionadas(data.recomendadas || []);
+      } catch (err) {
+        console.error("Erro ao buscar relacionadas", err);
+      }
+    }
 
     async function carregarNoticia() {
       try {
         setLoading(true);
         const data = await getNoticiaDetalhe(slug as string);
+
         setNoticia(data.noticia);
         setFavorito(data.is_favorito || false);
+
+        // Buscar notícias relacionadas
+        if (data.noticia.generos) {
+          const generosIds = data.noticia.generos.map((g: any) => g.id);
+          carregarRelacionadas(generosIds, data.noticia.id);
+        }
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Erro ao carregar notícia"
@@ -54,6 +88,7 @@ export default function Noticia() {
 
     try {
       setLoading(true);
+
       if (favorito) {
         await removerFavorito(noticia.id);
         setFavorito(false);
@@ -69,9 +104,7 @@ export default function Noticia() {
     }
   };
 
-  if (loading) return (
-    <LoadingNews />
-  );
+  if (loading) return <LoadingNews />;
   if (error) return <div>Erro: {error}</div>;
   if (!noticia) return <div>Notícia não encontrada</div>;
 
@@ -84,6 +117,7 @@ export default function Noticia() {
             <div className="noticia-header">
               <h1>{noticia.titulo}</h1>
             </div>
+
             <div className="noticia-meta-star">
               <div className="noticia-meta">
                 <p className="reporter-p">por</p>
@@ -92,6 +126,7 @@ export default function Noticia() {
                   {new Date(noticia.data).toLocaleDateString("pt-BR")}
                 </span>
               </div>
+
               <img
                 src={favorito ? staredImg : notStaredImg}
                 alt={favorito ? "Remover favorito" : "Adicionar favorito"}
@@ -102,9 +137,11 @@ export default function Noticia() {
                 style={{ cursor: "pointer" }}
               />
             </div>
+
             <div className="centralizer-speak-button">
               <TextToSpeech />
             </div>
+
             {noticia.imagem_url && (
               <img
                 src={noticia.imagem_url}
@@ -112,15 +149,42 @@ export default function Noticia() {
                 className="noticia-imagem"
               />
             )}
+
             <div id="texto-noticia" className="padding-for-text">
               <p className="noticia-resumo">{noticia.resumo}</p>
+
+              <AdSimulator />
+
               <div className="noticia-conteudo">{noticia.detalhes}</div>
+
               <div className="noticia-generos">
                 {noticia.generos.map((genero: any) => (
                   <span key={genero.id} className="genero-badge">
                     {genero.nome}
                   </span>
                 ))}
+              </div>
+
+              <div className="noticias-relacionadas">
+                <h2>Notícias relacionadas</h2>
+
+                {relacionadas.length === 0 && (
+                  <p>Nenhuma notícia relacionada encontrada.</p>
+                )}
+
+                <div className="relacionadas-grid">
+                  {relacionadas.map((item) => (
+                    <a
+                      href={`/noticia/${item.slug}`}
+                      key={item.id}
+                      className="rel-card"
+                    >
+                      <img src={item.imagem_url} alt={item.titulo} />
+                      <h3>{item.titulo}</h3>
+                      <p>{item.resumo}</p>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </article>

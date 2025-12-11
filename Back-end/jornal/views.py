@@ -711,3 +711,35 @@ def update_user(request):
             "email": user.email,
         }
     })
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(["POST"])
+def api_noticias_relacionadas(request):
+    generos = request.data.get("generos", [])
+    noticia_id = request.data.get("id")
+
+    if not generos:
+        return Response({"recomendadas": []})
+
+    relacionadas = (
+        Noticia.objects.filter(generos__in=generos)
+        .exclude(id=noticia_id)
+        .distinct()[:10]
+    )
+
+    data = [
+        {
+            "id": n.id,
+            "slug": n.slug,
+            "titulo": n.titulo,
+            "descricao": n.descricao,
+            "imagem": n.imagem.url if n.imagem else None,
+            "tema": n.tema,
+            "data_hora": n.data_hora.isoformat(),
+        }
+        for n in relacionadas
+    ]
+
+    return Response({"recomendadas": data})
