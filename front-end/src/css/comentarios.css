@@ -2,5 +2,65 @@
     padding: 32px 8px;
     display: flex;
     flex-direction: column;
-    
+    gap: 32px;
+    width: 400px;
+    overflow-y: scroll;
+    border-top: 1px solid #C1C0C0;
+    border-bottom: 1px solid #C1C0C0;
+    background-color: #F2F2F2;
+}
+
+.comentarios-container > h1 {
+    color: #4A4A4A;
+    font-size: 20px;
+}
+
+.redondo {
+    border-radius: 100%;
+}
+
+.enviar-comentarios {
+    background-color: #D9D9D9;
+    border-radius: 8px;
+    min-width: 300px;
+    max-width: 600px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.enviar-comentarios > img {
+    max-width: 36px;
+    max-height: 36px;
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+}
+
+.enviar-comentarios > input {
+    height: 40px;
+    min-width: 250px;
+    max-width: 550px;
+    padding: 0px 16px;
+}
+
+.enviar-comentarios > input:focus {
+    outline: none;
+}
+
+.comentario {
+    border: 1px solid #D9D9D9;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comentarios > img {
+    max-width: 36px;
+    max-height: 36px;
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
 }

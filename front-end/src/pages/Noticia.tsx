@@ -15,11 +15,9 @@ import notStaredImg from "../assets/icons/not-stared.png";
 import TextToSpeech from "../components/OuvirNoticiaButton";
 import { LoadingNews } from "../components/Loading";
 import AdSimulator from "../components/AdSimulator";
-<<<<<<< HEAD
 import Topic from "../components/Topic";
-=======
 import NewsCard from "../components/NewsCard";
->>>>>>> a5e20e2d4f65bbd43ef03bdda7d353efc4b7a62b
+import Comentarios from "../components/Comentarios";
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();
@@ -147,6 +145,8 @@ export default function Noticia() {
                   </span>
                 ))}
               </div>
+
+              <Comentarios/>
 
               <div className="noticias-relacionadas">
                 <h2>Notícias relacionadas</h2>

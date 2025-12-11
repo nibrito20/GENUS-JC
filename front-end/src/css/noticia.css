@@ -3,9 +3,6 @@
   gap: 8px;
 }
 
-.noticia-detalhe {
-  padding: 2rem 0;
-}
 
 .noticia-header {
   display: flex;
@@ -101,9 +98,12 @@
 }
 
 .relacionadas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 24px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-self: start;
+  gap: 16px;
 }
 
 .rel-card {
