@@ -12,7 +12,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000
 export default function Register() {
   const navigate = useNavigate();
 
+  const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [erro, setErro] = useState("");
@@ -20,13 +23,31 @@ export default function Register() {
   const handleRegister = async () => {
     setErro("");
 
+    // Validações básicas
+    if (!nome || !email || !password) {
+      setErro("Nome, email e senha são obrigatórios.");
+      return;
+    }
+
+    if (password !== password2) {
+      setErro("As senhas não coincidem.");
+      return;
+    }
+
     const response = await fetch(`${API_BASE_URL}/api/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ email, password, password2 }),
+      body: JSON.stringify({
+        nome,
+        email,
+        data_nascimento: dataNascimento || null,
+        telefone: telefone || null,
+        password,
+        password2,
+      }),
     });
 
     const data = await response.json();
@@ -36,7 +57,7 @@ export default function Register() {
       return;
     }
 
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -55,12 +76,43 @@ export default function Register() {
 
         <section className="input-section">
           <div>
-            <p>Usuario</p>
+            <p>Nome completo</p>
             <input
               type="text"
-              placeholder="Digite seu usuario"
+              placeholder="Digite seu nome completo"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <p>Email</p>
+            <input
+              type="email"
+              placeholder="Digite seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <p>Data de nascimento</p>
+            <input
+              type="date"
+              value={dataNascimento}
+              onChange={(e) => setDataNascimento(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <p>Telefone</p>
+            <input
+              type="tel"
+              placeholder="(00) 00000-0000"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
             />
           </div>
 
@@ -71,6 +123,7 @@ export default function Register() {
               placeholder="Digite sua senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
@@ -81,6 +134,7 @@ export default function Register() {
               placeholder="Confirme sua senha"
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
+              required
             />
           </div>
         </section>

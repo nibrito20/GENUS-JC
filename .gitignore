@@ -35,7 +35,11 @@ node_modules/
 
 # Vite output
 dist/
+<<<<<<< HEAD
 dist-ssr/
+=======
+# dist-ssr/
+>>>>>>> 2178e7ba6b2fc3ea1505acd48267e31595e22c67
 
 # Logs
 npm-debug.log*
