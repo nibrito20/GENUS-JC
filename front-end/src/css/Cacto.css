@@ -1,6 +1,7 @@
 /* ====== LAYOUT GERAL ====== */
 .container-cacto {
     background: linear-gradient(to bottom, #ffffff, #f9fcf6, #95C99D);
+    min-height: 100vh;
 
     display: flex;
     flex-direction: column;
