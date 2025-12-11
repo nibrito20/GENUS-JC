@@ -146,6 +146,21 @@ export async function updateProfileGeneros(genero_ids: number[]) {
 }
 
 // =========================
+// SUPORTE
+// =========================
+
+export async function submitSupportTicket(description: string) {
+  const response = await fetch(`${API_BASE_URL}/api/suporte/submit/`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ description }),
+  });
+
+  return handleJsonResponse(response);
+}
+
+// =========================
 // AUTH
 // =========================
 

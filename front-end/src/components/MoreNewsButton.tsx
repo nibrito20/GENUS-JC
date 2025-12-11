@@ -19,17 +19,20 @@ const MoreNewsButton = ({buttonText, buttonLink} : moreNewsButtonProps) => {
 export default MoreNewsButton
 
 type ButtonRedProps = {
-  buttonText: string;
-  onClick?: () => void; // <-- ADICIONADO
-};
-
-const ButtonRed = ({ buttonText, onClick }: ButtonRedProps) => {
-
+    buttonText: string;
+    onClick?: () => void;
+    disabled?: boolean;
+  };
+  
+  const ButtonRed = ({ buttonText, onClick, disabled }: ButtonRedProps) => {
     return (
-        <div className="centralizer-button-red">
-            <button onClick={onClick}>{buttonText}</button>
-        </div>
-    )
-}
-
-export { ButtonRed }
+      <div className="centralizer-button-red">
+        <button onClick={onClick} disabled={disabled}>
+          {buttonText}
+        </button>
+      </div>
+    );
+  };
+  
+  export { ButtonRed };
+  

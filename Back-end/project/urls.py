@@ -7,6 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('jornal.urls')), 
     path('', include('aval.urls')),
+    path('api/suporte/', include('suporte.urls')),
 ]
 
 # Servir arquivos de mídia em desenvolvimento (quando não usar Cloudinary)

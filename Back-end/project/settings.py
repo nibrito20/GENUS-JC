@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "jornal",
     "foguinho",
     "aval",
+    "suporte",
 
     "rest_framework",
     "corsheaders",
