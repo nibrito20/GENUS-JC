@@ -36,6 +36,10 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 ## Link Deploy
 - [Clique aqui](https://genus-jc0.web.app)
 
+## Testes E2E com Cypress
+
+- [Clique aqui para acessar o screencast](https://youtu.be/htrv8ZzmmRQ)
+
 ---
 
 ## Grupo GENUS
