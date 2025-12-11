@@ -137,38 +137,40 @@ export default function Noticia() {
               <AdSimulator />
 
               <div className="noticia-conteudo">{noticia.detalhes}</div>
+            </div>
+            <div className="noticia-generos">
+              {noticia.generos.map((genero: any) => (
+                <span key={genero.id} className="genero-badge">
+                  {genero.nome}
+                </span>
+              ))}
+            </div>
 
-              <div className="noticia-generos">
-                {noticia.generos.map((genero: any) => (
-                  <span key={genero.id} className="genero-badge">
-                    {genero.nome}
-                  </span>
+            <Comentarios slug={slug as string} />
+
+            <div className="noticias-relacionadas">
+              <h2>Notícias relacionadas</h2>
+
+              {relacionadas.length === 0 && (
+                <p>Nenhuma notícia relacionada encontrada.</p>
+              )}
+
+              <div className="relacionadas-grid">
+                {relacionadas.map((item) => (
+                  <NewsCard
+                    key={item.id}
+                    noticia_id={item.id}
+                    newsTitle={item.titulo}
+                    newsImg={item.imagem_url}
+                    topicLink={`/noticia/${item.slug}`}
+                    newsTopic={{
+                      topicTitle:
+                        item.generos.length > 0
+                          ? item.generos[0].nome
+                          : "Geral",
+                    }}
+                  />
                 ))}
-              </div>
-
-              <Comentarios slug={slug as string} />
-
-              <div className="noticias-relacionadas">
-                <h2>Notícias relacionadas</h2>
-
-                {relacionadas.length === 0 && (
-                  <p>Nenhuma notícia relacionada encontrada.</p>
-                )}
-
-                <div className="relacionadas-grid">
-                  {relacionadas.map((item) => (
-                    <NewsCard
-                      key={item.id}
-                      noticia_id={item.id}
-                      newsTitle={item.titulo}
-                      newsImg={item.imagem_url}
-                      topicLink={`/noticia/${item.slug}`}
-                      newsTopic={{
-                        topicTitle: item.generos.length > 0 ? item.generos[0].nome : "Geral",
-                      }}
-                    />
-                  ))}
-                </div>
               </div>
             </div>
           </article>
