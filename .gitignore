@@ -34,8 +34,8 @@ ENV/
 node_modules/
 
 # Vite output
-# dist/
-# dist-ssr/
+dist/
+dist-ssr/
 
 # Logs
 npm-debug.log*

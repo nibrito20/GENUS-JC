@@ -57,6 +57,10 @@ function App() {
         path="/feedback"
         element={user ? <Feedback /> : <Navigate to="/login" replace />}
       />
+      <Route
+        path="/suporte"
+        element={user ? <Suporte /> : <Navigate to="/login" replace />}
+      />
 
       {/* 404 */}
       <Route path="*" element={<h1>Página não encontrada</h1>} />
