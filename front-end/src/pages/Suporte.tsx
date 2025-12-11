@@ -1,15 +1,31 @@
-import "../css/suporte.css"
+import "../css/suporte.css";
+
+import { ButtonRed } from "../components/MoreNewsButton";
+import { useNavigate } from "react-router-dom";
+
+import LogojcCentralizada from "../components/LogojcCentralizada";
+import SuporteImage from "../assets/imgs/suport-image.png"
+import BackArrow from "../assets/icons/backArrow.png"
+
+
 
 const Suporte = () => {
-    return (
-        <div>
-            <img src="" alt="" />
-            <img src="" alt="" />
-            <img src="" alt="" />
-            <h1></h1>
-            <button><p>Fale conosco</p></button>
-        </div>
-    )
-}
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/perfil/suporte/mensagem-enviada");
+  };
 
-export default Suporte
+  return (
+    <div className="suport-container">
+      <LogojcCentralizada/>
+      <i><img src={BackArrow} alt="Voltar" /></i>
+      
+      <img src={SuporteImage} alt="Imagem do suporte" />
+      <h1>Descricao do problema</h1>
+      <input type="text" placeholder="Escreva aqui..." />
+      <ButtonRed buttonText="Enviar" onClick={handleClick} />
+    </div>
+  );
+};
+
+export default Suporte;

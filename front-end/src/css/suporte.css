@@ -1,0 +1,12 @@
+.suport-container {
+    margin: 64px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+.suport-container > i {
+    width: 100%;
+}

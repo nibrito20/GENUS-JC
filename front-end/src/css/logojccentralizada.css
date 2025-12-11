@@ -1,0 +1,8 @@
+.logojcCentralizada {
+    display: flex;
+    justify-content: center;
+}
+
+.logojcCentralizada > img {
+    max-height: 300px;
+}

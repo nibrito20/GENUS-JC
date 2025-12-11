@@ -15,6 +15,7 @@ import PerfilInfo from "./pages/PerfilInfo";
 import Feedback from "./pages/Feedback";
 import Loading from "./components/Loading";
 import Suporte from "./pages/Suporte";
+import MensagemEnviada from "./pages/MensagemEnviada"
 
 function App() {
   const { user, loading } = useContext(AuthContext);
@@ -59,8 +60,12 @@ function App() {
         element={user ? <Feedback /> : <Navigate to="/login" replace />}
       />
       <Route
-        path="/suporte"
+        path="/perfil/suporte"
         element={user ? <Suporte /> : <Navigate to="/login" replace />}
+      />
+      <Route
+        path="/perfil/suporte/mensagem-enviada"
+        element={user ? <MensagemEnviada/> : <Navigate to="/login" replace />}
       />
 
       {/* 404 */}
