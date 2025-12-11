@@ -19,7 +19,8 @@ import suport from "../assets/icons/suport.png";
 import logoutIcon from "../assets/icons/logout.png";
 import Cacto from "../assets/icons/Cacto.png";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 export default function Perfil() {
   const navigate = useNavigate();
@@ -47,49 +48,44 @@ export default function Perfil() {
       <Container4>
         <div></div>
       </Container4>
-        <img
-          src={backArrow}
-          alt="Voltar"
-          onClick={voltar}
-          className="back-arrow"
-        />
+      <img
+        src={backArrow}
+        alt="Voltar"
+        onClick={voltar}
+        className="back-arrow"
+      />
 
-        <div className="user-name-photo">
-          <img src={noUser} alt="Foto do usuário" className="user-image" />
-          <h1>Nome do usuário</h1>
-        </div>
+      <div className="user-name-photo">
+        <img src={noUser} alt="Foto do usuário" className="user-image" />
+        <h1>Nome do usuário</h1>
+      </div>
 
-        <PerfilOptions
-          title="Informações da conta"
-          icon={userInfo}
-          link="/perfil/info"
-        />
-        <PerfilOptions title="Cacto" icon={Cacto} link="/cacto" />
-        <PerfilOptions
-          title="Personalização de conteúdo"
-          icon={engrenagem}
-          link="/perfil/personalizacao"
-        />
-        <PerfilOptions
-          title="Acessibilidade"
-          icon={acessibilidade}
-          link="/perfil/acessibilidade"
-        />
-        <PerfilOptions title="Favoritos" icon={star} link="/favoritos" />
-        <PerfilOptions
-          title="Redefinir senha"
-          icon={padlock}
-          link="/perfil/senha"
-        />
-        <PerfilOptions title="Suporte" icon={suport} link="/perfil/suporte" />
+      <PerfilOptions
+        title="Informações da conta"
+        icon={userInfo}
+        link="/perfil/info"
+      />
+      <PerfilOptions title="Cacto" icon={Cacto} link="/cacto" />
+      <PerfilOptions
+        title="Personalização de conteúdo"
+        icon={engrenagem}
+        link="/perfil/personalizacao"
+      />
+      <PerfilOptions
+        title="Acessibilidade"
+        icon={acessibilidade}
+        link="/perfil/acessibilidade"
+      />
+      <PerfilOptions title="Favoritos" icon={star} link="/favoritos" />
 
-        <PerfilOptions
-          title="Sair da conta"
-          icon={logoutIcon}
-          onClick={fazerLogout}
-          isButton={true}
-        />
-      
+      <PerfilOptions title="Suporte" icon={suport} link="/perfil/suporte" />
+
+      <PerfilOptions
+        title="Sair da conta"
+        icon={logoutIcon}
+        onClick={fazerLogout}
+        isButton={true}
+      />
     </>
   );
 }

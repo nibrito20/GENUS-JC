@@ -1,0 +1,18 @@
+.mensagem-enviada-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 128px 24px;
+    gap: 64px;
+}
+
+.text-mensagem-enviada {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    text-align: center;
+}
