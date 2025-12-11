@@ -1,0 +1,6 @@
+.comentarios-container {
+    padding: 32px 8px;
+    display: flex;
+    flex-direction: column;
+    
+}

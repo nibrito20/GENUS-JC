@@ -15,6 +15,7 @@ import notStaredImg from "../assets/icons/not-stared.png";
 import TextToSpeech from "../components/OuvirNoticiaButton";
 import { LoadingNews } from "../components/Loading";
 import AdSimulator from "../components/AdSimulator";
+import Topic from "../components/Topic";
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();
@@ -85,6 +86,13 @@ export default function Noticia() {
       <div className="page-content">
         <Container4>
           <article className="noticia-detalhe">
+            <div className="noticia-topico">
+              <p>Notícias</p>
+              <Topic
+                topicTitle={noticia.generos.map((g: any) => g.nome).join(", ")}
+              />
+            </div>
+
             <div className="noticia-header">
               <h1>{noticia.titulo}</h1>
             </div>

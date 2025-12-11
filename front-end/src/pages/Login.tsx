@@ -73,10 +73,10 @@ export default function Login() {
 
         <section className="inputs-section">
           <div>
-            <p>Usuario</p>
+            <p>Email</p>
             <input
               type="text"
-              placeholder="Digite seu Usuario"
+              placeholder="Digite seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
