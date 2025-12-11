@@ -24,6 +24,10 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    max-height: 50vh;
+    overflow-y: scroll;
+    border-top: 1px solid #C1C0C0;
+    border-bottom: 1px solid #C1C0C0;
 }
 
 .comentario {
@@ -34,6 +38,9 @@
     gap: 12px;
     align-items: flex-start;
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible; /* importante */
 }
 
 .comentario-avatar {
@@ -63,6 +70,10 @@
     color: #4A4A4A;
     margin: 0;
     line-height: 1.4;
+
+    overflow-wrap: break-word; 
+    word-break: break-word;
+    white-space: normal;  /* mantém comportamento natural */
 }
 
 .responder-link {
