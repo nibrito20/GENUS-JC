@@ -60,7 +60,22 @@ def api_login(request):
     email = request.data.get("email")
     password = request.data.get("password")
 
-    user = authenticate(username=email, password=password)
+    if not email or not password:
+        return Response({"error": "Email e senha são obrigatórios."},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    # Buscar usuário pelo email
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response({"error": "Email ou senha incorretos."},
+                        status=status.HTTP_400_BAD_REQUEST)
+    except User.MultipleObjectsReturned:
+        # Se houver múltiplos usuários com o mesmo email, pegar o primeiro
+        user = User.objects.filter(email=email).first()
+
+    # Autenticar usando o username do usuário encontrado
+    user = authenticate(username=user.username, password=password)
 
     if user is None:
         return Response({"error": "Email ou senha incorretos."},
@@ -752,11 +767,15 @@ def update_user(request):
     user = request.user
 
     try:
-        # Atualizar campos permitidos: username e email
+        # Atualizar campos permitidos: username, email, first_name e last_name
         if "username" in data:
             user.username = data["username"]
         if "email" in data:
             user.email = data["email"]
+        if "first_name" in data:
+            user.first_name = data["first_name"]
+        if "last_name" in data:
+            user.last_name = data["last_name"]
 
         # Atualizar senha se fornecida
         if "password" in data and data["password"]:
@@ -804,6 +823,8 @@ def update_user(request):
             "user": {
                 "username": user.username,
                 "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
             }
         })
     except Exception as e:

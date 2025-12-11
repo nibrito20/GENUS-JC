@@ -20,6 +20,8 @@ export default function PerfilInfo() {
   const [form, setForm] = useState({
     username: "",
     email: "",
+    first_name: "",
+    last_name: "",
     password: "",
     password2: "",
     foto_url: "",
@@ -44,6 +46,8 @@ export default function PerfilInfo() {
           setForm({
             username: data.user.username || "",
             email: data.user.email || "",
+            first_name: data.user.first_name || "",
+            last_name: data.user.last_name || "",
             password: "",
             password2: "",
             foto_url: data.user.profile?.foto_url || "",
@@ -90,6 +94,8 @@ export default function PerfilInfo() {
       const dataToSend: any = {
         username: form.username,
         email: form.email,
+        first_name: form.first_name,
+        last_name: form.last_name,
       };
 
       // Incluir senha apenas se fornecida
@@ -142,6 +148,26 @@ export default function PerfilInfo() {
           <h1 className="page-name">Informações da conta</h1>
 
           <div className="user-info-container">
+            <div className="user-info-div">
+              <label>Nome completo</label>
+              <input
+                name="first_name"
+                placeholder="Primeiro nome"
+                value={form.first_name}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="user-info-div">
+              <label>Sobrenome</label>
+              <input
+                name="last_name"
+                placeholder="Sobrenome"
+                value={form.last_name}
+                onChange={handleChange}
+              />
+            </div>
+
             <div className="user-info-div">
               <label>Nome de usuário</label>
               <input
