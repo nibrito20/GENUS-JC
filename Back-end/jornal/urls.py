@@ -21,9 +21,6 @@ urlpatterns = [
     path("api/noticias/", views.api_noticias, name="api_noticias"),
     path("api/noticias/<slug:slug>/", views.api_noticia_detalhe, name="api_noticia_detalhe"),
 
-    # ⭐ NOVA ROTA QUE FALTAVA ⭐
-    path("api/noticias/relacionadas/", views.api_noticias_relacionadas, name="api_noticias_relacionadas"),
-
     path("api/favoritos/", views.api_favoritos, name="api_favoritos"),
     path("api/favoritos/<int:noticia_id>/remover/", views.api_remover_favorito, name="api_remover_favorito"),
     path("api/generos/", views.api_generos, name="api_generos"),

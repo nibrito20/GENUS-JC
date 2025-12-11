@@ -110,16 +110,16 @@ const Navbar = () => {
                   <li><Link to="/noticias?genero=Mundo" onClick={closeMenu}>Mundo</Link></li>
                   <li><Link to="/noticias?genero=Política" onClick={closeMenu}>Política</Link></li>
                   <li><Link to="/noticias?genero=Economia" onClick={closeMenu}>Economia</Link></li>
-                  <li><Link to="/noticias?genero=Blog%20do%20torcedor" onClick={closeMenu}>Blog do torcedor</Link></li>
+                  <li><Link to="/noticias?genero=Esportes" onClick={closeMenu}>Blog do torcedor</Link></li>
                   <li><Link to="/noticias?genero=Social" onClick={closeMenu}>Social</Link></li>
-                  <li><Link to="/noticias?genero=Saúde%20e%20Bem-Estar" onClick={closeMenu}>Saúde e Bem-Estar</Link></li>
+                  <li><Link to="/noticias?genero=Saúde" onClick={closeMenu}>Saúde e Bem-Estar</Link></li>
                   <li><Link to="/noticias?genero=Educação" onClick={closeMenu}>Educação</Link></li>
                   <li><Link to="/noticias?genero=Cultura" onClick={closeMenu}>Cultura</Link></li>
                   <li><Link to="/noticias?genero=Opinião" onClick={closeMenu}>Opinião</Link></li>
                   <li><Link to="/noticias?genero=Mobilidade" onClick={closeMenu}>Mobilidade</Link></li>
                   <li><Link to="/noticias?genero=Segurança" onClick={closeMenu}>Segurança</Link></li>
                   <li><Link to="/noticias?genero=Recall%20de%20Marcas" onClick={closeMenu}>Recall de Marcas</Link></li>
-                </ul>
+                </ul> 
               </li>
 
               <li><h1>Anuncie no JC</h1></li>

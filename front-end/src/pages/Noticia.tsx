@@ -29,30 +29,6 @@ export default function Noticia() {
   useEffect(() => {
     if (!slug) return;
 
-    async function carregarRelacionadas(
-      generosIds: number[],
-      noticiaId: number
-    ) {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/noticias/relacionadas/`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              generos: generosIds,
-              id: noticiaId,
-            }),
-          }
-        );
-
-        const data = await response.json();
-        setRelacionadas(data.recomendadas || []);
-      } catch (err) {
-        console.error("Erro ao buscar relacionadas", err);
-      }
-    }
-
     async function carregarNoticia() {
       try {
         setLoading(true);
@@ -60,12 +36,7 @@ export default function Noticia() {
 
         setNoticia(data.noticia);
         setFavorito(data.is_favorito || false);
-
-        // Buscar notícias relacionadas
-        if (data.noticia.generos) {
-          const generosIds = data.noticia.generos.map((g: any) => g.id);
-          carregarRelacionadas(generosIds, data.noticia.id);
-        }
+        setRelacionadas(data.noticias_relacionadas || []);
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Erro ao carregar notícia"
