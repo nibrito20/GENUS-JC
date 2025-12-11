@@ -146,7 +146,7 @@ export default function Noticia() {
                 ))}
               </div>
 
-              <Comentarios/>
+              <Comentarios slug={slug as string} />
 
               <div className="noticias-relacionadas">
                 <h2>Notícias relacionadas</h2>

@@ -26,7 +26,7 @@ from rest_framework.exceptions import NotFound
 from .models import Noticia, Favoritos, Genero, Profile, Comentarios
 from .forms import NoticiaForm
 from .serializers import (
-    NoticiaSerializer, FavoritosSerializer, UserSerializer, GeneroSerializer
+    NoticiaSerializer, FavoritosSerializer, UserSerializer, GeneroSerializer, ComentariosSerializer
 )
 
 # Funções externas
@@ -645,6 +645,72 @@ def api_generos(request):
             genero['selected'] = False
     
     return Response({"generos": generos_data})
+
+
+# =========================
+# COMENTÁRIOS API
+# =========================
+
+@api_view(["GET"])
+def api_comentarios_noticia(request, slug):
+    """Lista todos os comentários de uma notícia"""
+    try:
+        noticia = Noticia.objects.get(slug=slug)
+    except Noticia.DoesNotExist:
+        raise NotFound("Notícia não encontrada")
+    
+    comentarios = Comentarios.objects.filter(noticia=noticia).order_by('-data')
+    serializer = ComentariosSerializer(comentarios, many=True)
+    return Response({"comentarios": serializer.data})
+
+
+@api_view(["POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_criar_comentario(request, slug):
+    """Cria um novo comentário em uma notícia"""
+    if not request.user.is_authenticated:
+        return Response({"error": "Usuário não autenticado"}, status=401)
+    
+    try:
+        noticia = Noticia.objects.get(slug=slug)
+    except Noticia.DoesNotExist:
+        raise NotFound("Notícia não encontrada")
+    
+    texto = request.data.get('texto')
+    if not texto or not texto.strip():
+        return Response({"error": "O texto do comentário é obrigatório"}, status=400)
+    
+    # Criar comentário com o username do usuário autenticado
+    comentario = Comentarios.objects.create(
+        noticia=noticia,
+        texto=texto.strip(),
+        usuario=request.user.username
+    )
+    
+    serializer = ComentariosSerializer(comentario)
+    return Response(serializer.data, status=201)
+
+
+@api_view(["POST"])
+@authentication_classes([SemCSRF])
+@permission_classes([])
+def api_curtir_comentario(request, comentario_id):
+    """Curtir/descurtir um comentário"""
+    if not request.user.is_authenticated:
+        return Response({"error": "Usuário não autenticado"}, status=401)
+    
+    try:
+        comentario = Comentarios.objects.get(id=comentario_id)
+    except Comentarios.DoesNotExist:
+        raise NotFound("Comentário não encontrado")
+    
+    # Incrementa likes (implementação simples - pode ser melhorada com modelo de likes)
+    comentario.likes += 1
+    comentario.save()
+    
+    serializer = ComentariosSerializer(comentario)
+    return Response(serializer.data)
 
 
 @api_view(["POST"])

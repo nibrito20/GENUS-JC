@@ -54,6 +54,16 @@ interface User {
   profile?: any;
 }
 
+interface Comentario {
+  id: number;
+  noticia: number;
+  texto: string;
+  likes: number;
+  data: string;
+  usuario: string;
+  nome_usuario: string;
+}
+
 // =========================
 // NOTÍCIAS
 // =========================
@@ -222,3 +232,38 @@ export async function updateUser(data: any) {
 
   return handleJsonResponse(response);
 }
+
+// =========================
+// COMENTÁRIOS
+// =========================
+
+export async function getComentariosNoticia(slug: string): Promise<{ comentarios: Comentario[] }> {
+  const response = await fetch(`${API_BASE_URL}/api/noticias/${slug}/comentarios/`, {
+    credentials: "include",
+  });
+
+  return handleJsonResponse(response);
+}
+
+export async function criarComentario(slug: string, texto: string): Promise<Comentario> {
+  const response = await fetch(`${API_BASE_URL}/api/noticias/${slug}/comentarios/criar/`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ texto }),
+  });
+
+  return handleJsonResponse(response);
+}
+
+export async function curtirComentario(comentario_id: number): Promise<Comentario> {
+  const response = await fetch(`${API_BASE_URL}/api/comentarios/${comentario_id}/curtir/`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  return handleJsonResponse(response);
+}
+
+export type { Comentario };

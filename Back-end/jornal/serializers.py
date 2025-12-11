@@ -25,9 +25,22 @@ class NoticiaSerializer(serializers.ModelSerializer):
 
 
 class ComentariosSerializer(serializers.ModelSerializer):
+    nome_usuario = serializers.SerializerMethodField()
+    
     class Meta:
         model = Comentarios
-        fields = ['id', 'noticia', 'texto', 'likes', 'data', 'usuario']
+        fields = ['id', 'noticia', 'texto', 'likes', 'data', 'usuario', 'nome_usuario']
+    
+    def get_nome_usuario(self, obj):
+        # Tenta buscar o usuário pelo username
+        try:
+            user = User.objects.get(username=obj.usuario)
+            if user.first_name or user.last_name:
+                nome_completo = f"{user.first_name} {user.last_name}".strip()
+                return nome_completo if nome_completo else user.username
+            return user.username
+        except User.DoesNotExist:
+            return obj.usuario
 
 
 class FavoritosSerializer(serializers.ModelSerializer):

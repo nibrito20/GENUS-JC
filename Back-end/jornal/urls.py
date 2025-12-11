@@ -25,6 +25,11 @@ urlpatterns = [
     path("api/favoritos/<int:noticia_id>/remover/", views.api_remover_favorito, name="api_remover_favorito"),
     path("api/generos/", views.api_generos, name="api_generos"),
     path("api/profile/generos/", views.api_update_profile_generos, name="api_update_profile_generos"),
+    
+    # Comentários
+    path("api/noticias/<slug:slug>/comentarios/", views.api_comentarios_noticia, name="api_comentarios_noticia"),
+    path("api/noticias/<slug:slug>/comentarios/criar/", views.api_criar_comentario, name="api_criar_comentario"),
+    path("api/comentarios/<int:comentario_id>/curtir/", views.api_curtir_comentario, name="api_curtir_comentario"),
 
     # --- Páginas HTML (Legacy) ---
     path("api/hello/", hello_api),
