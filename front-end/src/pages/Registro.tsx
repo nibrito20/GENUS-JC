@@ -23,7 +23,6 @@ export default function Register() {
   const handleRegister = async () => {
     setErro("");
 
-    // Validações básicas
     if (!nome || !email || !password) {
       setErro("Nome, email e senha são obrigatórios.");
       return;
@@ -34,39 +33,43 @@ export default function Register() {
       return;
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/register/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        nome,
-        email,
-        data_nascimento: dataNascimento || null,
-        telefone: telefone || null,
-        password,
-        password2,
-      }),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/register/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          nome,
+          email,
+          data_nascimento: dataNascimento || null,
+          telefone: telefone || null,
+          password,
+          password2,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      setErro(data.error);
-      return;
+      if (!response.ok) {
+        setErro(data.error || "Erro ao registrar.");
+        return;
+      }
+
+      navigate("/");
+    } catch (error) {
+      setErro("Erro de conexão. Tente novamente.");
     }
-
-    navigate("/");
   };
 
   return (
     <Container>
       <div className="register-card">
         <div className="head">
-          <img src={BackArrow} alt="voltar" onClick={() => navigate(-1)} />
+          <img src={BackArrow} alt="voltar" onClick={() => navigate(-1)} className="back-arrow"/>
           <Link to="/">
-            <img src={LogoJC} alt="Logo JC" />
+            <img src={LogoJC} alt="Logo JC" className="logo"/>
           </Link>
         </div>
 

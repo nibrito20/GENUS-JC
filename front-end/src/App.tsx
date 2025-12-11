@@ -14,6 +14,7 @@ import Personalizacao from "./pages/Personalizacao";
 import PerfilInfo from "./pages/PerfilInfo";
 import Feedback from "./pages/Feedback";
 import Loading from "./components/Loading";
+import Suporte from "./pages/Suporte";
 
 function App() {
   const { user, loading } = useContext(AuthContext);
