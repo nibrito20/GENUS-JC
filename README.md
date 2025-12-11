@@ -12,7 +12,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - Entrega de conteúdo relevante ao consumidor através de um **algoritmo**.
 
 ### 2. Otimização da Interface
-- Redesenho completo da interface do site, **priorizando dispositivos móveis**.
+- Redesenho completo da interface do site, **priorizando dispositivos móveis Android**.
 
 ### 3. Engajamento e Fidelização
 - Implementação de novos recursos de forma **simples e lúdica** por meio de uma **sequencia de leitura diaria**.
@@ -32,6 +32,7 @@ O grupo GENUS estruturou a solução em **três frentes principais**:
 - [Contributing](https://github.com/nibrito20/GENUS-JC/blob/main/CONTRIBUTING.md)
 - [Instruções de login](https://docs.google.com/document/d/1IBAL1rtBTzsCxE4akOxq71LHj3gg4EBqZ-ay7yZo9EU/edit?usp=sharing)
 - [Documento de Pipeline de CI/CD](https://docs.google.com/document/d/19bPeVYs5bMXjC_SNsERfNhGCVfuNuPEXz1aWhbDmRJ8/edit?usp=sharing)
+- [Screencast Testes E2E](https://youtu.be/htrv8ZzmmRQ?si=E81lLLoHEBH4D38q)
 
 ## Link Deploy
 - [Clique aqui](https://genus-jc0.web.app)
