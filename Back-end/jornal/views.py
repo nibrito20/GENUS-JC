@@ -75,18 +75,47 @@ def api_login(request):
 @authentication_classes([SemCSRF])
 @permission_classes([])
 def api_register(request):
+    nome = request.data.get("nome")
     email = request.data.get("email")
+    data_nascimento = request.data.get("data_nascimento")
+    telefone = request.data.get("telefone")
     password = request.data.get("password")
     password2 = request.data.get("password2")
+
+    # Validações
+    if not nome or not email or not password:
+        return Response({"error": "Nome, email e senha são obrigatórios."}, status=400)
 
     if password != password2:
         return Response({"error": "As senhas não coincidem."}, status=400)
 
-    if User.objects.filter(username=email).exists():
+    if User.objects.filter(username=email).exists() or User.objects.filter(email=email).exists():
         return Response({"error": "Este email já está cadastrado."}, status=400)
 
-    user = User.objects.create_user(username=email, email=email, password=password)
+    # Criar usuário
+    user = User.objects.create_user(
+        username=email,
+        email=email,
+        password=password,
+        first_name=nome.split()[0] if nome else "",
+        last_name=" ".join(nome.split()[1:]) if nome and len(nome.split()) > 1 else ""
+    )
     user.save()
+
+    # Atualizar perfil com dados adicionais
+    try:
+        profile = user.profile
+        if data_nascimento:
+            from datetime import datetime
+            try:
+                profile.data_nascimento = datetime.strptime(data_nascimento, "%Y-%m-%d").date()
+            except ValueError:
+                pass  # Ignora se formato inválido
+        if telefone:
+            profile.telefone = telefone
+        profile.save()
+    except Profile.DoesNotExist:
+        pass
 
     # Fazer login automático após registro (importante para Safari/iOS)
     login(request, user)
@@ -639,7 +668,10 @@ def api_update_profile_generos(request):
 
 
 # Update user (legacy)
+import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import update_session_auth_hash
+
 @csrf_exempt
 @login_required
 def update_user(request):
@@ -653,18 +685,22 @@ def update_user(request):
 
     user = request.user
 
-    # Atualizar campos permitidos
-    user.username = data.get("username", user.username)
-    user.email = data.get("email", user.email)
+    # Atualizar campos permitidos: username e email
+    if "username" in data:
+        user.username = data["username"]
+    if "email" in data:
+        user.email = data["email"]
 
-    # Campos extras — telefone, nascimento (se existirem no model Profile)
-    try:
-        profile = user.profile
-        profile.telefone = data.get("telefone", profile.telefone)
-        profile.nascimento = data.get("nascimento", profile.nascimento)
-        profile.save()
-    except Exception:
-        pass  # Se não existir Profile, ignora
+    # Atualizar senha se fornecida
+    if "password" in data and data["password"]:
+        if len(data["password"]) < 8:
+            return JsonResponse({"error": "A senha deve ter pelo menos 8 caracteres."}, status=400)
+        user.set_password(data["password"])
+        # Manter sessão ativa após alterar senha
+        update_session_auth_hash(request, user)
+
+    # NÃO permitir alterar telefone e data_nascimento (permanecem inalterados)
+    # Esses campos só podem ser definidos no registro
 
     user.save()
 

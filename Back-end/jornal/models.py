@@ -86,6 +86,8 @@ class Profile(models.Model):
    
     foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
     generos_favoritos = models.ManyToManyField(Genero, blank=True, related_name="perfis_favoritos")
+    telefone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Telefone")
+    data_nascimento = models.DateField(blank=True, null=True, verbose_name="Data de Nascimento")
 
     def __str__(self):
         return f'Perfil de {self.user.username}'

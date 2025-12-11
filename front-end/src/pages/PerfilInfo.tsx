@@ -18,8 +18,14 @@ export default function PerfilInfo() {
   const [form, setForm] = useState({
     username: "",
     email: "",
+    password: "",
+    password2: "",
+  });
+
+  // Campos somente leitura (não podem ser alterados)
+  const [readOnlyFields, setReadOnlyFields] = useState({
     telefone: "",
-    nascimento: "",
+    data_nascimento: "",
   });
 
   const voltar = () => navigate(-1);
@@ -35,8 +41,14 @@ export default function PerfilInfo() {
           setForm({
             username: data.user.username || "",
             email: data.user.email || "",
-            telefone: data.user.telefone || "",
-            nascimento: data.user.nascimento || "",
+            password: "",
+            password2: "",
+          });
+
+          // Campos somente leitura do profile
+          setReadOnlyFields({
+            telefone: data.user.profile?.telefone || "",
+            data_nascimento: data.user.profile?.data_nascimento || "",
           });
         }
       } catch (err) {
@@ -59,12 +71,40 @@ export default function PerfilInfo() {
   // Função para salvar no backend
   async function salvar() {
     try {
-      const resp = await updateUser(form);
+      // Validar senhas se fornecidas
+      if (form.password && form.password !== form.password2) {
+        alert("As senhas não coincidem.");
+        return;
+      }
+
+      if (form.password && form.password.length < 8) {
+        alert("A senha deve ter pelo menos 8 caracteres.");
+        return;
+      }
+
+      // Preparar dados para envio (sem telefone e nascimento)
+      const dataToSend: any = {
+        username: form.username,
+        email: form.email,
+      };
+
+      // Incluir senha apenas se fornecida
+      if (form.password) {
+        dataToSend.password = form.password;
+      }
+
+      const resp = await updateUser(dataToSend);
       alert("Alterações salvas com sucesso!");
-      console.log(resp);
-    } catch (err) {
+      
+      // Limpar campos de senha após salvar
+      setForm({
+        ...form,
+        password: "",
+        password2: "",
+      });
+    } catch (err: any) {
       console.error(err);
-      alert("Erro ao salvar alterações");
+      alert(err.message || "Erro ao salvar alterações");
     }
   }
 
@@ -91,6 +131,7 @@ export default function PerfilInfo() {
             <div className="user-info-div">
               <label>Email</label>
               <input
+                type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
@@ -98,22 +139,46 @@ export default function PerfilInfo() {
             </div>
 
             <div className="user-info-div">
-              <label>Telefone</label>
+              <label>Nova senha (deixe em branco para não alterar)</label>
               <input
-                name="telefone"
-                placeholder="(opcional)"
-                value={form.telefone}
+                type="password"
+                name="password"
+                placeholder="Digite a nova senha"
+                value={form.password}
                 onChange={handleChange}
               />
             </div>
 
             <div className="user-info-div">
-              <label>Data de nascimento</label>
+              <label>Confirmar nova senha</label>
+              <input
+                type="password"
+                name="password2"
+                placeholder="Confirme a nova senha"
+                value={form.password2}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="user-info-div">
+              <label>Telefone (somente leitura)</label>
+              <input
+                type="tel"
+                name="telefone"
+                value={readOnlyFields.telefone || "Não informado"}
+                disabled
+                style={{ opacity: 0.6, cursor: "not-allowed" }}
+              />
+            </div>
+
+            <div className="user-info-div">
+              <label>Data de nascimento (somente leitura)</label>
               <input
                 type="date"
-                name="nascimento"
-                value={form.nascimento}
-                onChange={handleChange}
+                name="data_nascimento"
+                value={readOnlyFields.data_nascimento || ""}
+                disabled
+                style={{ opacity: 0.6, cursor: "not-allowed" }}
               />
             </div>
 
