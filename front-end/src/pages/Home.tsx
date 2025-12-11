@@ -28,6 +28,7 @@ export default function Home() {
   const [slides, setSlides] = useState<any[]>([]);
   const [noticias, setNoticias] = useState<any[]>([]);
   const [noticiasParaVoce, setNoticiasParaVoce] = useState<any[]>([]);
+  const [noticiasEsportes, setNoticiasEsportes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,6 +65,18 @@ export default function Home() {
         );
         if (dataRecentes.noticias) {
           setNoticias(dataRecentes.noticias);
+        }
+
+        // Carregar notícias de Esportes para "Blog do torcedor"
+        const dataEsportes = await getNoticias(
+          undefined,
+          "Esportes",
+          "-data",
+          8,
+          0
+        );
+        if (dataEsportes.noticias) {
+          setNoticiasEsportes(dataEsportes.noticias);
         }
 
         // Carregar preferências do usuário e filtrar notícias "Para Você"
@@ -197,20 +210,26 @@ export default function Home() {
           <section className="section-gap">
             <DividerTopic topicTitle="Blog do torcedor" />
             <div className="news-container">
-              {noticias.slice(8, 12).map((noticia) => (
-                <NewsCard
-                  key={noticia.id}
-                  noticia_id={noticia.id}
-                  newsImg={noticia.imagem_url || ""}
-                  newsTitle={noticia.titulo}
-                  topicLink={`/noticia/${noticia.slug}`}
-                  newsTopic={{ topicTitle: "Blog do torcedor" }}
-                />
-              ))}
+              {noticiasEsportes.length > 0 ? (
+                noticiasEsportes.slice(0, 4).map((noticia) => (
+                  <NewsCard
+                    key={noticia.id}
+                    noticia_id={noticia.id}
+                    newsImg={noticia.imagem_url || ""}
+                    newsTitle={noticia.titulo}
+                    topicLink={`/noticia/${noticia.slug}`}
+                    newsTopic={{ topicTitle: "Esportes" }}
+                  />
+                ))
+              ) : (
+                <p style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
+                  Nenhuma notícia de Esportes no momento
+                </p>
+              )}
             </div>
             <MoreNewsButton
               buttonText="Ver mais"
-              buttonLink="/noticias?genero=Blog%20do%20torcedor"
+              buttonLink="/noticias?genero=Esportes"
             />
           </section>
           <section className="section-gap">
