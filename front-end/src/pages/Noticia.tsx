@@ -15,7 +15,11 @@ import notStaredImg from "../assets/icons/not-stared.png";
 import TextToSpeech from "../components/OuvirNoticiaButton";
 import { LoadingNews } from "../components/Loading";
 import AdSimulator from "../components/AdSimulator";
+<<<<<<< HEAD
 import Topic from "../components/Topic";
+=======
+import NewsCard from "../components/NewsCard";
+>>>>>>> a5e20e2d4f65bbd43ef03bdda7d353efc4b7a62b
 
 export default function Noticia() {
   const { slug } = useParams<{ slug: string }>();
@@ -153,15 +157,16 @@ export default function Noticia() {
 
                 <div className="relacionadas-grid">
                   {relacionadas.map((item) => (
-                    <a
-                      href={`/noticia/${item.slug}`}
+                    <NewsCard
                       key={item.id}
-                      className="rel-card"
-                    >
-                      <img src={item.imagem_url} alt={item.titulo} />
-                      <h3>{item.titulo}</h3>
-                      <p>{item.resumo}</p>
-                    </a>
+                      noticia_id={item.id}
+                      newsTitle={item.titulo}
+                      newsImg={item.imagem_url}
+                      topicLink={`/noticia/${item.slug}`}
+                      newsTopic={{
+                        topicTitle: item.generos.length > 0 ? item.generos[0].nome : "Geral",
+                      }}
+                    />
                   ))}
                 </div>
               </div>
