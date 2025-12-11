@@ -4,7 +4,6 @@
 describe("Página de Feedback", () => {
   
   beforeEach(() => {
-   
     cy.intercept("GET", "**/api/user/**", {
       statusCode: 200,
       body: { 
@@ -16,27 +15,23 @@ describe("Página de Feedback", () => {
     cy.visit("http://localhost:5173/feedback");
   });
 
-  it("deve manter o botão desabilitado até preencher estrelas e comentário", () => {
-
+  it("deve iniciar com o botão desabilitado", () => {
     cy.get(".feedback-button").should("be.disabled");
-
-    cy.get(".star").eq(2).click(); 
-    
-    cy.get(".feedback-button").should("be.disabled");
-
-    cy.reload();
-
-    cy.get(".feedback-textarea").type("Apenas texto sem nota");
-    
-    cy.get(".feedback-button").should("be.disabled");
-
-    cy.get(".star").eq(4).click();
-    
-    cy.get(".feedback-button").should("not.be.disabled");
   });
 
-  it("deve enviar feedback com sucesso e limpar o formulário", () => {
+  it("deve manter desabilitado se preencher APENAS estrelas", () => {
+    cy.get(".star").eq(2).click();
+    cy.get(".feedback-button").should("be.disabled");
+  });
 
+
+  it("deve manter desabilitado se preencher APENAS texto", () => {
+
+    cy.get(".feedback-textarea").type("Apenas texto sem nota");
+    cy.get(".feedback-button").should("be.disabled");
+  });
+
+  it("deve habilitar o botão e enviar feedback com sucesso", () => {
     cy.intercept("POST", "**/api/feedback/", {
       statusCode: 200,
       body: { success: true } 
@@ -46,22 +41,21 @@ describe("Página de Feedback", () => {
     cy.on("window:alert", stub);
 
     cy.get(".star").last().click();
-    
     cy.get(".star.selected").should("have.length", 5);
 
     const textoFeedback = "Adorei a experiência gamificada!";
     cy.get(".feedback-textarea").type(textoFeedback);
 
+    cy.get(".feedback-button").should("not.be.disabled");
+
     cy.get(".feedback-button").click();
 
     cy.wait("@enviarFeedback").then((interception) => {
-
        expect(interception.request.body).to.include("estrelas=5");
-       expect(interception.request.body).to.include("detalhes=");
+       expect(interception.request.body).to.include("Adorei"); 
     });
 
     cy.wrap(stub).should("be.calledWith", "Feedback enviado!");
-
     cy.get(".feedback-textarea").should("have.value", "");
     cy.get(".star.selected").should("have.length", 0); 
   });
