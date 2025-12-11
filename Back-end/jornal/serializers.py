@@ -79,7 +79,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Profile
-        fields = ['id', 'foto', 'foto_url', 'foto_url_display', 'generos_favoritos', 'telefone', 'data_nascimento']
+        fields = ['id', 'nome', 'foto', 'foto_url', 'foto_url_display', 'generos_favoritos', 'telefone', 'data_nascimento']
     
     def get_foto_url_display(self, obj):
         """Retorna a URL da foto para exibição (prioriza foto_url, depois foto upload)"""
@@ -99,7 +99,15 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
+    nome = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'profile']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'nome', 'profile']
+    
+    def get_nome(self, obj):
+        """Retorna o nome do profile ou combina first_name + last_name como fallback"""
+        if hasattr(obj, 'profile') and obj.profile.nome:
+            return obj.profile.nome
+        nome_completo = f"{obj.first_name or ''} {obj.last_name or ''}".strip()
+        return nome_completo if nome_completo else None

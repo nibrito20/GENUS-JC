@@ -120,6 +120,9 @@ def api_register(request):
     # Atualizar perfil com dados adicionais
     try:
         profile = user.profile
+        # Salvar nome completo no Profile
+        if nome:
+            profile.nome = nome.strip()
         if data_nascimento:
             from datetime import datetime
             try:
@@ -767,15 +770,29 @@ def update_user(request):
     user = request.user
 
     try:
-        # Atualizar campos permitidos: username, email, first_name e last_name
-        if "username" in data:
-            user.username = data["username"]
+        # Atualizar campos permitidos: email e nome
         if "email" in data:
             user.email = data["email"]
-        if "first_name" in data:
-            user.first_name = data["first_name"]
-        if "last_name" in data:
-            user.last_name = data["last_name"]
+        
+        # Atualizar nome completo no Profile
+        if "nome" in data:
+            try:
+                profile = user.profile
+            except Profile.DoesNotExist:
+                profile = Profile.objects.create(user=user)
+            
+            nome_completo = data["nome"].strip() if data["nome"] else ""
+            profile.nome = nome_completo if nome_completo else None
+            profile.save()
+            
+            # Manter compatibilidade: também atualizar first_name e last_name no User
+            if nome_completo:
+                partes_nome = nome_completo.split()
+                user.first_name = partes_nome[0] if partes_nome else ""
+                user.last_name = " ".join(partes_nome[1:]) if len(partes_nome) > 1 else ""
+            else:
+                user.first_name = ""
+                user.last_name = ""
 
         # Atualizar senha se fornecida
         if "password" in data and data["password"]:
@@ -818,6 +835,12 @@ def update_user(request):
 
         user.save()
 
+        # Obter nome do profile ou combinar first_name + last_name
+        try:
+            nome_completo = user.profile.nome if user.profile.nome else f"{user.first_name} {user.last_name}".strip()
+        except Profile.DoesNotExist:
+            nome_completo = f"{user.first_name} {user.last_name}".strip()
+        
         return JsonResponse({
             "message": "Dados atualizados com sucesso!",
             "user": {
@@ -825,6 +848,7 @@ def update_user(request):
                 "email": user.email,
                 "first_name": user.first_name,
                 "last_name": user.last_name,
+                "nome": nome_completo if nome_completo else None,
             }
         })
     except Exception as e:

@@ -84,6 +84,7 @@ class Favoritos(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
    
+    nome = models.CharField(max_length=200, blank=True, null=True, verbose_name="Nome Completo")
     foto = models.ImageField(upload_to='perfis/', blank=True, null=True)
     foto_url = models.URLField(max_length=2000, blank=True, null=True, verbose_name="URL da Foto")
     generos_favoritos = models.ManyToManyField(Genero, blank=True, related_name="perfis_favoritos")

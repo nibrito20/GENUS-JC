@@ -41,6 +41,13 @@ export default function Perfil() {
   
   // Função para obter o nome do usuário
   function getUserName() {
+    // Prioriza nome do profile, depois nome combinado, depois username
+    if (user?.profile?.nome) {
+      return user.profile.nome;
+    }
+    if (user?.nome) {
+      return user.nome;
+    }
     if (user?.first_name || user?.last_name) {
       return `${user.first_name || ""} ${user.last_name || ""}`.trim();
     }

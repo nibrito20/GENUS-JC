@@ -18,10 +18,8 @@ export default function PerfilInfo() {
 
   // Estado para os campos do formulário
   const [form, setForm] = useState({
-    username: "",
+    nome: "",
     email: "",
-    first_name: "",
-    last_name: "",
     password: "",
     password2: "",
     foto_url: "",
@@ -43,11 +41,11 @@ export default function PerfilInfo() {
         const data = await getUser();
 
         if (data?.user) {
+          // Usar nome do profile ou nome combinado como fallback
+          const nomeCompleto = data.user.profile?.nome || data.user.nome || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim();
           setForm({
-            username: data.user.username || "",
+            nome: nomeCompleto || "",
             email: data.user.email || "",
-            first_name: data.user.first_name || "",
-            last_name: data.user.last_name || "",
             password: "",
             password2: "",
             foto_url: data.user.profile?.foto_url || "",
@@ -92,10 +90,8 @@ export default function PerfilInfo() {
 
       // Preparar dados para envio (sem telefone e nascimento)
       const dataToSend: any = {
-        username: form.username,
         email: form.email,
-        first_name: form.first_name,
-        last_name: form.last_name,
+        nome: form.nome,
       };
 
       // Incluir senha apenas se fornecida
@@ -120,14 +116,16 @@ export default function PerfilInfo() {
         password2: "",
       });
       
-      // Recarregar dados do usuário no AuthContext para atualizar a foto em toda a aplicação
+      // Recarregar dados do usuário no AuthContext para atualizar a foto e nome em toda a aplicação
       await refreshUser();
       
-      // Atualizar o campo foto_url no formulário
+      // Atualizar os campos no formulário
       const data = await getUser();
       if (data?.user) {
+        const nomeCompleto = data.user.profile?.nome || data.user.nome || `${data.user.first_name || ""} ${data.user.last_name || ""}`.trim();
         setForm(prev => ({
           ...prev,
+          nome: nomeCompleto || "",
           foto_url: data.user.profile?.foto_url || "",
         }));
       }
@@ -151,28 +149,9 @@ export default function PerfilInfo() {
             <div className="user-info-div">
               <label>Nome completo</label>
               <input
-                name="first_name"
-                placeholder="Primeiro nome"
-                value={form.first_name}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="user-info-div">
-              <label>Sobrenome</label>
-              <input
-                name="last_name"
-                placeholder="Sobrenome"
-                value={form.last_name}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className="user-info-div">
-              <label>Nome de usuário</label>
-              <input
-                name="username"
-                value={form.username}
+                name="nome"
+                placeholder="Seu nome completo"
+                value={form.nome}
                 onChange={handleChange}
               />
             </div>
