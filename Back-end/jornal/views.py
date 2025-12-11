@@ -746,46 +746,72 @@ def update_user(request):
 
     try:
         data = json.loads(request.body.decode())
-    except Exception:
-        return JsonResponse({"error": "JSON inválido"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": f"JSON inválido: {str(e)}"}, status=400)
 
     user = request.user
 
-    # Atualizar campos permitidos: username e email
-    if "username" in data:
-        user.username = data["username"]
-    if "email" in data:
-        user.email = data["email"]
+    try:
+        # Atualizar campos permitidos: username e email
+        if "username" in data:
+            user.username = data["username"]
+        if "email" in data:
+            user.email = data["email"]
 
-    # Atualizar senha se fornecida
-    if "password" in data and data["password"]:
-        if len(data["password"]) < 8:
-            return JsonResponse({"error": "A senha deve ter pelo menos 8 caracteres."}, status=400)
-        user.set_password(data["password"])
-        # Manter sessão ativa após alterar senha
-        update_session_auth_hash(request, user)
+        # Atualizar senha se fornecida
+        if "password" in data and data["password"]:
+            if len(data["password"]) < 8:
+                return JsonResponse({"error": "A senha deve ter pelo menos 8 caracteres."}, status=400)
+            user.set_password(data["password"])
+            # Manter sessão ativa após alterar senha
+            update_session_auth_hash(request, user)
 
-    # NÃO permitir alterar telefone e data_nascimento (permanecem inalterados)
-    # Esses campos só podem ser definidos no registro
-    
-    # Atualizar foto_url do perfil se fornecida
-    if "foto_url" in data:
-        try:
-            profile = user.profile
-            profile.foto_url = data["foto_url"] if data["foto_url"] else None
-            profile.save()
-        except Profile.DoesNotExist:
-            Profile.objects.create(user=user, foto_url=data["foto_url"] if data["foto_url"] else None)
+        # NÃO permitir alterar telefone e data_nascimento (permanecem inalterados)
+        # Esses campos só podem ser definidos no registro
+        
+        # Atualizar foto_url do perfil se fornecida
+        if "foto_url" in data:
+            try:
+                profile = user.profile
+            except Profile.DoesNotExist:
+                profile = Profile.objects.create(user=user)
+            
+            # Tratar foto_url: se for string vazia, definir como None
+            foto_url_value = data["foto_url"]
+            if foto_url_value and isinstance(foto_url_value, str) and foto_url_value.strip():
+                foto_url_clean = foto_url_value.strip()
+                # Validar se é uma URL válida (básico - deve começar com http:// ou https://)
+                if foto_url_clean.startswith(('http://', 'https://')):
+                    # Verificar se a URL não excede o limite do campo
+                    if len(foto_url_clean) > 2000:
+                        return JsonResponse({"error": "A URL da foto é muito longa (máximo 2000 caracteres)"}, status=400)
+                    try:
+                        profile.foto_url = foto_url_clean
+                        profile.save()
+                    except Exception as e:
+                        # Se houver erro de validação do Django, retornar mensagem mais clara
+                        return JsonResponse({"error": f"URL inválida: {str(e)}"}, status=400)
+                else:
+                    return JsonResponse({"error": "A URL da foto deve começar com http:// ou https://"}, status=400)
+            else:
+                profile.foto_url = None
+                profile.save()
 
-    user.save()
+        user.save()
 
-    return JsonResponse({
-        "message": "Dados atualizados com sucesso!",
-        "user": {
-            "username": user.username,
-            "email": user.email,
-        }
-    })
+        return JsonResponse({
+            "message": "Dados atualizados com sucesso!",
+            "user": {
+                "username": user.username,
+                "email": user.email,
+            }
+        })
+    except Exception as e:
+        import traceback
+        error_trace = traceback.format_exc()
+        print(f"Erro ao atualizar usuário: {str(e)}")
+        print(f"Traceback: {error_trace}")
+        return JsonResponse({"error": f"Erro ao atualizar dados: {str(e)}"}, status=500)
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
